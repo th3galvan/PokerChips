@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.widget.RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="2dp"
+    tools:context="galvan.pokerchips.GameActivity">
+
+    <ListView
+        android:id="@+id/players_list"
+        android:layout_width="180dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true" />
+
+    <TextView
+        android:id="@+id/txt_total_bet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/players_list"
+        android:layout_toRightOf="@+id/players_list"
+        android:text="APUESTA TOTAL"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/txt_total_bet_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_total_bet"
+        android:layout_toEndOf="@+id/players_list"
+        android:layout_toRightOf="@+id/players_list"
+        android:text="650"
+        android:textSize="36sp" />
+
+    <TextView
+        android:id="@+id/txt_current_total_bet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_total_bet_number"
+        android:layout_toEndOf="@+id/players_list"
+        android:layout_toRightOf="@+id/players_list"
+        android:text="APUESTA ACTUAL TOTAL"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/txt_current_total_bet_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_current_total_bet"
+        android:layout_toEndOf="@+id/players_list"
+        android:layout_toRightOf="@+id/players_list"
+        android:text="1000"
+        android:textSize="36sp" />
+
+    <TextView
+        android:id="@+id/txt_current_individual_bet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_current_total_bet_number"
+        android:layout_toEndOf="@+id/players_list"
+        android:layout_toRightOf="@+id/players_list"
+        android:text="APUESTA ACTUAL INDIVIDUAL"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/txt_current_individual_bet_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_current_individual_bet"
+        android:layout_toEndOf="@+id/players_list"
+        android:layout_toRightOf="@+id/players_list"
+        android:text="500"
+        android:textSize="48sp" />
+
+    <TextView
+        android:id="@+id/txt_time_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toEndOf="@+id/players_list"
+        android:layout_toRightOf="@+id/players_list"
+        android:text="15:00"
+        android:textSize="48sp" />
+
+    <TextView
+        android:id="@+id/txt_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/txt_time_number"
+        android:layout_toEndOf="@+id/players_list"
+        android:layout_toRightOf="@+id/players_list"
+        android:text="TIEMPO SUBIDA CIEGAS"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/txt_big_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_big"
+        android:layout_toEndOf="@+id/players_list"
+        android:layout_toRightOf="@+id/players_list"
+        android:text="50"
+        android:textSize="36sp" />
+
+    <TextView
+        android:id="@+id/txt_big"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_current_individual_bet_number"
+        android:layout_toEndOf="@+id/players_list"
+        android:layout_toRightOf="@+id/players_list"
+        android:text="VALOR BIG BLIND"
+        android:textSize="12sp" />
+
+    <Button
+        android:id="@+id/btn_bet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/txt_time"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:text="APOSTAR" />
+
+    <Button
+        android:id="@+id/btn_equalize"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/btn_bet"
+        android:layout_alignBottom="@+id/btn_bet"
+        android:layout_marginEnd="18dp"
+        android:layout_marginRight="18dp"
+        android:layout_toLeftOf="@+id/btn_bet"
+        android:layout_toStartOf="@+id/btn_bet"
+        android:text="IGUALAR" />
+
+    <Button
+        android:id="@+id/btn_plus_chip"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/btn_minus_chip"
+        android:layout_alignBottom="@+id/btn_minus_chip"
+        android:layout_alignLeft="@+id/btn_plus_bet"
+        android:layout_alignStart="@+id/btn_plus_bet"
+        android:text="+" />
+
+    <Button
+        android:id="@+id/btn_minus_chip"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/txt_big"
+        android:layout_alignLeft="@+id/btn_minus_bet"
+        android:layout_alignStart="@+id/btn_minus_bet"
+        android:text="-" />
+
+    <Button
+        android:id="@+id/btn_minus_bet"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/txt_time"
+        android:layout_alignLeft="@+id/btn_equalize"
+        android:layout_alignStart="@+id/btn_equalize"
+        android:text="-" />
+
+    <Button
+        android:id="@+id/btn_plus_bet"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/btn_minus_bet"
+        android:layout_alignBottom="@+id/btn_minus_bet"
+        android:layout_toLeftOf="@+id/btn_bet"
+        android:layout_toStartOf="@+id/btn_bet"
+        android:text="+" />
+
+    <TextView
+        android:id="@+id/txt_chip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/txt_current_individual_bet_number"
+        android:layout_alignBottom="@+id/txt_current_individual_bet_number"
+        android:layout_alignEnd="@+id/txt_bet"
+        android:layout_alignRight="@+id/txt_bet"
+        android:layout_toRightOf="@+id/btn_plus_chip"
+        android:paddingLeft="10dp"
+        android:text="50"
+        android:textSize="30sp" />
+
+    <TextView
+        android:id="@+id/txt_bet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/btn_bet"
+        android:layout_alignRight="@+id/btn_bet"
+        android:layout_below="@+id/txt_big"
+        android:layout_toRightOf="@+id/btn_plus_bet"
+        android:paddingLeft="10dp"
+        android:text="1000"
+        android:textSize="30sp" />
+
+    <Button
+        android:id="@+id/btn_all_in"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/txt_current_total_bet_number"
+        android:layout_alignBottom="@+id/txt_current_total_bet_number"
+        android:layout_alignLeft="@+id/btn_minus_chip"
+        android:layout_alignStart="@+id/btn_minus_chip"
+        android:text="ALL-IN" />
+
+    <Button
+        android:id="@+id/button11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/btn_all_in"
+        android:layout_alignBottom="@+id/btn_all_in"
+        android:layout_toEndOf="@+id/txt_own_chips_number"
+        android:layout_toRightOf="@+id/txt_own_chips_number"
+        android:text="PASAR" />
+
+    <TextView
+        android:id="@+id/txt_own_chips"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/btn_all_in"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/btn_all_in"
+        android:text="TUS FICHAS"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/txt_own_chips_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/txt_own_chips"
+        android:layout_alignStart="@+id/txt_own_chips"
+        android:layout_below="@+id/txt_own_chips"
+        android:text="9000"
+        android:textSize="48sp" />
+</android.widget.RelativeLayout>
