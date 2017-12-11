@@ -150,8 +150,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/txt_own_chips"
             android:layout_marginTop="11dp"
-            android:layout_toLeftOf="@+id/button11"
-            android:layout_toStartOf="@+id/button11"
+            android:layout_toLeftOf="@+id/btn_check"
+            android:layout_toStartOf="@+id/btn_check"
             android:text="9000"
             android:textSize="48dp" />
 
@@ -167,7 +167,7 @@
             android:textSize="14dp" />
 
         <Button
-            android:id="@+id/button11"
+            android:id="@+id/btn_check"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="PASAR"
@@ -206,8 +206,8 @@
             android:text="50"
             android:textSize="30dp"
             android:layout_above="@+id/btn_plus_bet"
-            android:layout_alignRight="@+id/button11"
-            android:layout_alignEnd="@+id/button11" />
+            android:layout_alignRight="@+id/btn_check"
+            android:layout_alignEnd="@+id/btn_check" />
 
         <Button
             android:id="@+id/btn_plus_bet"
