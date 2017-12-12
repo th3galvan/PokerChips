@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">PokerChips</string>
+    <string name="totalbet">TOTAL BET</string>
+    <string name="currenttotalbet">CURRENT TOTAL BET</string>
+    <string name="currentindividualbet">CURRENT INDIVIDUAL BET</string>
+    <string name="bigblind">BIG BLIND</string>
+    <string name="yes">yes</string>
+    <string name="confirmation">Confirmation</string>
 </resources>

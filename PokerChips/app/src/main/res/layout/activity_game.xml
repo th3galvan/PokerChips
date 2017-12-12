@@ -32,7 +32,7 @@
             android:layout_alignParentTop="true"
             android:layout_toEndOf="@+id/players_list"
             android:layout_toRightOf="@+id/players_list"
-            android:text="APUESTA TOTAL"
+            android:text="@string/totalbet"
             android:textSize="12dp" />
 
         <TextView
@@ -52,7 +52,7 @@
             android:layout_below="@+id/txt_total_bet_number"
             android:layout_toEndOf="@+id/players_list"
             android:layout_toRightOf="@+id/players_list"
-            android:text="APUESTA ACTUAL TOTAL"
+            android:text="@string/currenttotalbet"
             android:textSize="12dp" />
 
         <TextView
@@ -72,7 +72,7 @@
             android:layout_below="@+id/txt_current_total_bet_number"
             android:layout_toEndOf="@+id/players_list"
             android:layout_toRightOf="@+id/players_list"
-            android:text="APUESTA ACTUAL INDIVIDUAL"
+            android:text="@string/currentindividualbet"
             android:textSize="12dp" />
 
         <TextView
@@ -122,7 +122,7 @@
             android:layout_below="@+id/txt_current_individual_bet_number"
             android:layout_toEndOf="@+id/players_list"
             android:layout_toRightOf="@+id/players_list"
-            android:text="VALOR BIG BLIND"
+            android:text="@string/bigblind"
             android:textSize="12dp" />
 
     </RelativeLayout>
@@ -138,45 +138,45 @@
             android:id="@+id/txt_own_chips"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/btn_all_in"
-            android:layout_alignParentTop="true"
-            android:layout_alignStart="@+id/btn_all_in"
             android:text="TUS FICHAS"
-            android:textSize="12dp" />
+            android:textSize="12dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignLeft="@+id/txt_own_chips_number"
+            android:layout_alignStart="@+id/txt_own_chips_number" />
 
         <TextView
             android:id="@+id/txt_own_chips_number"
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/txt_own_chips"
-            android:layout_marginTop="11dp"
-            android:layout_toLeftOf="@+id/btn_check"
-            android:layout_toStartOf="@+id/btn_check"
             android:text="9000"
-            android:textSize="48dp" />
+            android:textSize="48dp"
+            android:layout_below="@+id/txt_own_chips"
+            android:layout_alignLeft="@+id/btn_all_in"
+            android:layout_alignStart="@+id/btn_all_in" />
 
         <Button
             android:id="@+id/btn_all_in"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/txt_own_chips_number"
-            android:layout_alignStart="@+id/txt_own_chips_number"
-            android:layout_below="@+id/txt_own_chips_number"
-            android:layout_marginTop="14dp"
+            android:layout_marginEnd="26dp"
+            android:layout_marginRight="26dp"
             android:text="ALL-IN"
-            android:textSize="14dp" />
+            android:textSize="14dp"
+            android:layout_below="@+id/txt_own_chips_number"
+            android:layout_toLeftOf="@+id/btn_check"
+            android:layout_toStartOf="@+id/btn_check" />
 
         <Button
             android:id="@+id/btn_check"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:text="PASAR"
-            android:textSize="14dp"
-            android:layout_above="@+id/btn_plus_chip"
-            android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginRight="12dp"
-            android:layout_marginEnd="12dp" />
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/txt_own_chips_number"
+            android:layout_marginEnd="13dp"
+            android:layout_marginRight="13dp"
+            android:text="PASAR"
+            android:textSize="14dp" />
 
         <Button
             android:id="@+id/btn_plus_chip"
@@ -184,7 +184,7 @@
             android:layout_height="wrap_content"
             android:text="+"
             android:textSize="14dp"
-            android:layout_below="@+id/btn_all_in"
+            android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/btn_minus_chip"
             android:layout_toEndOf="@+id/btn_minus_chip" />
 
@@ -192,22 +192,24 @@
             android:id="@+id/btn_minus_chip"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/btn_all_in"
-            android:layout_alignStart="@+id/btn_all_in"
-            android:layout_below="@+id/btn_all_in"
             android:text="-"
-            android:textSize="14dp" />
+            android:textSize="14dp"
+            android:layout_alignBaseline="@+id/btn_plus_chip"
+            android:layout_alignBottom="@+id/btn_plus_chip"
+            android:layout_alignLeft="@+id/btn_all_in"
+            android:layout_alignStart="@+id/btn_all_in" />
 
         <TextView
             android:id="@+id/txt_chip"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
+            android:layout_above="@+id/btn_plus_bet"
+            android:layout_alignEnd="@+id/btn_check"
+            android:layout_alignRight="@+id/btn_check"
             android:paddingLeft="10dp"
             android:text="50"
-            android:textSize="30dp"
-            android:layout_above="@+id/btn_plus_bet"
-            android:layout_alignRight="@+id/btn_check"
-            android:layout_alignEnd="@+id/btn_check" />
+            android:textAlignment="viewEnd"
+            android:textSize="30dp" />
 
         <Button
             android:id="@+id/btn_plus_bet"
@@ -216,49 +218,53 @@
             android:text="+"
             android:textSize="14dp"
             android:layout_below="@+id/btn_plus_chip"
-            android:layout_toRightOf="@+id/btn_minus_chip"
-            android:layout_toEndOf="@+id/btn_minus_chip" />
+            android:layout_toRightOf="@+id/btn_minus_bet"
+            android:layout_toEndOf="@+id/btn_minus_bet" />
 
         <Button
             android:id="@+id/btn_minus_bet"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/btn_minus_chip"
-            android:layout_alignStart="@+id/btn_minus_chip"
-            android:layout_below="@+id/btn_minus_chip"
             android:text="-"
-            android:textSize="14dp" />
+            android:textSize="14dp"
+            android:layout_alignBaseline="@+id/btn_plus_bet"
+            android:layout_alignBottom="@+id/btn_plus_bet"
+            android:layout_alignLeft="@+id/btn_minus_chip"
+            android:layout_alignStart="@+id/btn_minus_chip" />
 
         <TextView
             android:id="@+id/txt_bet"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:text="1000"
+            android:textAlignment="viewEnd"
             android:textSize="30dp"
             android:layout_alignBottom="@+id/btn_plus_bet"
-            android:layout_alignRight="@+id/txt_chip"
-            android:layout_alignEnd="@+id/txt_chip" />
+            android:layout_alignLeft="@+id/txt_chip"
+            android:layout_alignStart="@+id/txt_chip" />
 
         <Button
             android:id="@+id/btn_equalize"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/btn_minus_bet"
-            android:layout_alignParentBottom="true"
-            android:layout_alignStart="@+id/btn_minus_bet"
             android:text="IGUALAR"
-            android:textSize="14dp" />
+            android:textSize="14dp"
+            android:layout_alignBaseline="@+id/btn_bet"
+            android:layout_alignBottom="@+id/btn_bet"
+            android:layout_alignLeft="@+id/btn_minus_bet"
+            android:layout_alignStart="@+id/btn_minus_bet" />
 
         <Button
             android:id="@+id/btn_bet"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
             android:text="APOSTAR"
             android:textSize="14dp"
             android:layout_alignParentBottom="true"
-            android:layout_alignRight="@+id/txt_chip"
-            android:layout_alignEnd="@+id/txt_chip" />
+            android:layout_alignLeft="@+id/txt_bet"
+            android:layout_alignStart="@+id/txt_bet" />
 
     </RelativeLayout>
 
