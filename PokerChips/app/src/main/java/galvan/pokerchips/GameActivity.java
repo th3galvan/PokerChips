@@ -7,8 +7,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.function.ToDoubleBiFunction;
 
 public class GameActivity extends AppCompatActivity {
@@ -26,10 +28,37 @@ public class GameActivity extends AppCompatActivity {
     private TextView txt_bet;
     private TextView txt_current_total_bet;
 
+    private ArrayList<PlayerItems> players;
+    private PlayerItemAdapter adapter;
+    private ListView list;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+
+        //parte de añadir lista de jugadores y adapter
+        list = (ListView)findViewById(R.id.players_list);
+
+        players = new ArrayList<>();
+
+        players.add(new PlayerItems(1, "Fulanito", 200, false, true, false, true));
+
+        players.add(new PlayerItems(2, "Menganito", 400, false, true, false, true));
+
+        players.add(new PlayerItems(3, "Menganito", 400, false, true, false, true));
+
+        players.add(new PlayerItems(4, "Menganito", 400, false, true, false, true));
+
+        adapter = new PlayerItemAdapter(
+                this,
+                R.layout.activity_playeritems,
+                players
+        );
+        list.setAdapter(adapter);
+
+
+
         final int chips[] ={5,10,25,50,100};
 
 
