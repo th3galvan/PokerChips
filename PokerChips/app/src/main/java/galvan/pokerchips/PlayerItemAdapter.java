@@ -36,26 +36,26 @@ public class PlayerItemAdapter extends ArrayAdapter<PlayerItems> {
             LayoutInflater inflater = LayoutInflater.from(getContext());
             result = inflater.inflate(R.layout.activity_playeritems, null);
         }
-
+        TextView state = (TextView) result.findViewById(R.id.txt_state);
+        TextView turn = (TextView) result.findViewById(R.id.txt_isturn);
         TextView name = (TextView) result.findViewById(R.id.txt_name);
         TextView chips = (TextView) result.findViewById(R.id.txt_chips);
-
-        CheckBox dealer = (CheckBox) result.findViewById(R.id.player_dealer);
-        CheckBox big = (CheckBox) result.findViewById(R.id.player_big);
-        CheckBox small = (CheckBox) result.findViewById(R.id.player_small);
+        TextView allin = result.findViewById(R.id.txt_allin);
         CheckBox out = (CheckBox) result.findViewById(R.id.player_out);
-
-
-
 
         PlayerItems item = getItem(position);
         name.setText(item.getName());
-        //chips.setText(item.getChips());
-
-        dealer.setChecked(item.isDealer());
-        big.setChecked(item.isBig());
-        small.setChecked(item.isSmall());
+        chips.setText(Integer.toString(item.getChips()));
         out.setChecked(item.isOut());
+        if(item.isBig()==true){state.setText("B");}
+        if(item.isSmall()==true){state.setText("S");}
+        if(item.isDealer()==true){state.setText("D");}
+        if(item.isBig()==false & item.isDealer()==false & item.isSmall()==false){state.setText("");}
+        if(item.isTurn()==true){turn.setText("Turn");}
+                            else{turn.setText("");}
+
+        if(item.isAllin()== true){allin.setText("ALL IN");}
+                              else{allin.setText("");}
         return result;
     }
 }

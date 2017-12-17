@@ -12,13 +12,19 @@ public class PlayerItems extends AppCompatActivity {
     private boolean small;
     private boolean out;
 
-    public PlayerItems(int i, String name, int chips, boolean dealer, boolean big, boolean small, boolean out) {
-        this.name = "";
-        this.chips = 0;
-        this.dealer = false;
-        this.big = false;
-        this.small = false;
-        this.out = true;
+    private  int bet;
+    private  boolean turn;
+    private  boolean allin;
+
+
+    public PlayerItems(int i,
+                       String name,  int chips,      boolean dealer,
+                       boolean big,         boolean small,  boolean out,
+                       int bet,             boolean turn,   boolean allin   ) {
+
+        this.name = name;   this.chips = chips;     this.dealer = dealer;
+        this.big = big;     this.small = small;     this.out = out;
+        this.bet = bet;     this.turn = turn;       this.allin= allin;
     }
 
     public PlayerItems(long id, String name, int chips, boolean dealer, boolean big, boolean small, boolean out) {
@@ -58,6 +64,14 @@ public class PlayerItems extends AppCompatActivity {
     public boolean isDealer()
     {
         return dealer;
+    }
+    public boolean isTurn()
+    {
+        return turn;
+    }
+    public boolean isAllin()
+    {
+        return allin;
     }
 
     public void setChecked(boolean dealer, boolean big, boolean small, boolean out)
@@ -115,6 +129,9 @@ public class PlayerItems extends AppCompatActivity {
     public void setOut(boolean out) {
         this.out = out;
     }
-
-
+    public void setBet(int bet) {
+        this.bet = bet;
+    }
+    public void setAllin(boolean allin){this.allin=allin;}
+    public void setTurn(boolean turn){this.turn=turn;}
 }
