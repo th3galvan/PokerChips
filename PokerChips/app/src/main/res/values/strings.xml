@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PokerChips</string>
+    <string name="app_name" translatable="false">PokerChips</string>
     <string name="totalbet">TOTAL BET</string>
     <string name="currenttotalbet">CURRENT TOTAL BET</string>
     <string name="currentindividualbet">CURRENT INDIVIDUAL BET</string>
@@ -13,4 +13,9 @@
     <string name="big">B</string>
     <string name="small">S</string>
     <string name="out">O</string>
+    <string name="bet_rising_time">BET RISING TIME</string>
+    <string name="your_chips">YOUR CHIPS</string>
+    <string name="check">CHECK</string>
+    <string name="call" >CALL</string>
+    <string name="bet" >BET</string>
 </resources>

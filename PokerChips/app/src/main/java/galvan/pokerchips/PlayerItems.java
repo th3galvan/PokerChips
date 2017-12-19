@@ -18,8 +18,8 @@ public class PlayerItems extends AppCompatActivity {
 
 
     public PlayerItems(int i,
-                       String name,  int chips,      boolean dealer,
-                       boolean big,         boolean small,  boolean out,
+                       String name,         int chips,      boolean dealer,
+                       boolean small,         boolean big,  boolean out,
                        int bet,             boolean turn,   boolean allin   ) {
 
         this.name = name;   this.chips = chips;     this.dealer = dealer;

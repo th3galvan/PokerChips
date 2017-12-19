@@ -50,7 +50,7 @@ public class PlayerItemAdapter extends ArrayAdapter<PlayerItems> {
         if(item.isBig()==true){state.setText("B");}
         if(item.isSmall()==true){state.setText("S");}
         if(item.isDealer()==true){state.setText("D");}
-        if(item.isBig()==false & item.isDealer()==false & item.isSmall()==false){state.setText("");}
+        if(item.isBig()==false & item.isDealer()==false & item.isSmall()==false){state.setText("x");}
         if(item.isTurn()==true){turn.setText("Turn");}
                             else{turn.setText("");}
 

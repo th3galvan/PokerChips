@@ -102,7 +102,7 @@
             android:layout_above="@+id/txt_time_number"
             android:layout_toEndOf="@+id/players_list"
             android:layout_toRightOf="@+id/players_list"
-            android:text="TIEMPO SUBIDA CIEGAS"
+            android:text="@string/bet_rising_time"
             android:textSize="12dp" />
 
         <TextView
@@ -138,11 +138,11 @@
             android:id="@+id/txt_own_chips"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TUS FICHAS"
-            android:textSize="12dp"
-            android:layout_alignParentTop="true"
             android:layout_alignLeft="@+id/txt_own_chips_number"
-            android:layout_alignStart="@+id/txt_own_chips_number" />
+            android:layout_alignParentTop="true"
+            android:layout_alignStart="@+id/txt_own_chips_number"
+            android:text="@string/your_chips"
+            android:textSize="12dp" />
 
         <TextView
             android:id="@+id/txt_own_chips_number"
@@ -175,7 +175,7 @@
             android:layout_below="@+id/txt_own_chips_number"
             android:layout_marginEnd="13dp"
             android:layout_marginRight="13dp"
-            android:text="PASAR"
+            android:text="@string/check"
             android:textSize="14dp" />
 
         <Button
@@ -248,23 +248,23 @@
             android:id="@+id/btn_equalize"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:text="IGUALAR"
-            android:textSize="14dp"
             android:layout_alignBaseline="@+id/btn_bet"
             android:layout_alignBottom="@+id/btn_bet"
             android:layout_alignLeft="@+id/btn_minus_bet"
-            android:layout_alignStart="@+id/btn_minus_bet" />
+            android:layout_alignStart="@+id/btn_minus_bet"
+            android:text="@string/call"
+            android:textSize="14dp" />
 
         <Button
             android:id="@+id/btn_bet"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:text="APOSTAR"
-            android:textSize="14dp"
-            android:layout_alignParentBottom="true"
             android:layout_alignLeft="@+id/txt_bet"
-            android:layout_alignStart="@+id/txt_bet" />
+            android:layout_alignParentBottom="true"
+            android:layout_alignStart="@+id/txt_bet"
+            android:layout_marginBottom="10dp"
+            android:text="@string/bet"
+            android:textSize="14dp" />
 
     </RelativeLayout>
 
