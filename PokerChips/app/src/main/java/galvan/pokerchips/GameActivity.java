@@ -11,7 +11,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.function.ToDoubleBiFunction;
+import java.util.Locale;
+//todo me da error import java.util.function.ToDoubleBiFunction;
 
 public class GameActivity extends AppCompatActivity {
 
@@ -62,6 +63,12 @@ public class GameActivity extends AppCompatActivity {
             0,           false,  false);
     private PlayerItems PlayerDataBase[]={Fulanito,Menganito,Malaquito,Estalactito};
 
+// Variables cambiadas del Intger
+    //todo revisar
+    private String malaquito_toString = String.format(Locale.ENGLISH,"%d",(Malaquito.getChips()));
+    private String playerdatabase_toString = String.format(Locale.ENGLISH,"%d",(PlayerDataBase[2].getChips()));
+    private String playernumber_toString = String.format(Locale.ENGLISH,"%d",playernumber);
+    private String ownChips_toString = String.format(Locale.ENGLISH,"%d",ownChips);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -144,13 +151,18 @@ public class GameActivity extends AppCompatActivity {
 
 
 //VISUALIZACION VARIABLES DE PRUEBA
+
+        // todo He variado el integer.toString porque me daba problemas al implementar key de Firebase y
+        //todo Android avisaba de posibles bugs
+
         fichasmalaquito = (TextView) findViewById(R.id.fichasmalaquito);
         fichasmalaquitodatabase = (TextView) findViewById(R.id.fichasmalaquitodatabase);
         txt_playernumber = (TextView) findViewById(R.id.txt_playernumber);
 
-        fichasmalaquito.setText(Integer.toString(Malaquito.getChips()));
-        fichasmalaquitodatabase.setText(Integer.toString(PlayerDataBase[2].getChips()));
-        txt_playernumber.setText(Integer.toString(playernumber));
+        fichasmalaquito.setText(malaquito_toString);
+        fichasmalaquitodatabase.setText(playerdatabase_toString);
+        txt_playernumber.setText(playernumber_toString);
+
     //BTN+ Chips
         btn_plus_chip.setOnClickListener(new View.OnClickListener() {
         @Override
@@ -175,6 +187,7 @@ public class GameActivity extends AppCompatActivity {
             }
         });
        //BTN+ Bet
+        //todo else sin accion
         btn_plus_bet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -182,9 +195,11 @@ public class GameActivity extends AppCompatActivity {
                 {bet=bet+chips[pos];
                 String textBetBtn = Integer.toString(bet);
                 txt_bet.setText(textBetBtn);}
-                else{}}
+                else{ }}
         });
+
         //BTN- Bet
+        //todo if con condicion sin accion
         btn_minus_bet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -234,7 +249,9 @@ public class GameActivity extends AppCompatActivity {
             toBet(bet);
 
                 bet=0;
-                txt_bet.setText(Integer.toString(bet));
+
+                String txt_bet2 = String.format(Locale.ENGLISH,"%d",bet);
+                txt_bet.setText(txt_bet2);
 
             }
         });
@@ -258,7 +275,8 @@ public class GameActivity extends AppCompatActivity {
          //CREAMOS DIALOGO
             AlertDialog.Builder builder= new AlertDialog.Builder(this);
             builder.setTitle(R.string.confirmation);
-            builder.setMessage(String.format("Are you sure you want to bet all your chips"));
+            //todo he eliminado el String.format, necesario??
+            builder.setMessage("Are you sure you want to bet all your chips");
         //PULSAMOS YES
             builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
 
@@ -288,11 +306,13 @@ public class GameActivity extends AppCompatActivity {
                         PlayerDataBase[playernumber].setBet(toBetBet);
                         PlayerDataBase[playernumber].setChips(newownChips);
                         PlayerDataBase[playernumber].setAllin(true);
-                        txt_playernumber.setText(Integer.toString(playernumber));
+                    //todo aqui tambien he variado el integer
+                        txt_playernumber.setText(playernumber_toString);
                     //REFRESH
                     list.setAdapter(adapter);
-                    fichasmalaquito.setText(Integer.toString(Malaquito.getChips()));
-                    fichasmalaquitodatabase.setText(Integer.toString(PlayerDataBase[2].getChips()));
+                    //todo y aqui
+                    fichasmalaquito.setText(malaquito_toString);
+                    fichasmalaquitodatabase.setText(playerdatabase_toString);
                     Log.i("Galvan","apuesta confirmada");
                     //CAMBIO DE TURNO
                         PlayerDataBase[playernumber].setTurn(false);
@@ -312,8 +332,10 @@ public class GameActivity extends AppCompatActivity {
 
                     //REFRESH ownChips
                     ownChips= PlayerDataBase[playernumber].getChips();
-                    txt_ownChips.setText(Integer.toString(ownChips));
-                    txt_playernumber.setText(Integer.toString(playernumber));
+
+                    txt_ownChips.setText(ownChips_toString);
+                    txt_playernumber.setText(playernumber_toString);
+
                     Log.i("Galvan","siguiente");
                     Log.i("Galvan",String.format("Player %s",Integer.toString(playernumber)));
                     }
@@ -359,8 +381,10 @@ public class GameActivity extends AppCompatActivity {
 
                     //REFRESH
                     list.setAdapter(adapter);
-                    fichasmalaquito.setText(Integer.toString(Malaquito.getChips()));
-                    fichasmalaquitodatabase.setText(Integer.toString(PlayerDataBase[2].getChips()));
+                    //todo also here
+                    fichasmalaquito.setText(malaquito_toString);
+                    //todo also here
+                    fichasmalaquitodatabase.setText(playerdatabase_toString);
                     //CAMBIO DE TURNO
                     Log.i("Galvan","Inicio Cambio de Turno");
                     PlayerDataBase[playernumber].setTurn(false);
@@ -378,13 +402,15 @@ public class GameActivity extends AppCompatActivity {
                         PlayerDataBase[playernumber].setTurn(true);
                         //REFRESH ownChips
                         ownChips= PlayerDataBase[playernumber].getChips();
-                        txt_ownChips.setText(Integer.toString(ownChips));
+                        //todo also here
+                        txt_ownChips.setText(ownChips_toString);
                         }
 
 
                     //REFRESH ownChips
                     ownChips= PlayerDataBase[playernumber].getChips();
-                    txt_ownChips.setText(Integer.toString(ownChips));
+                    //todo also here
+                    txt_ownChips.setText(ownChips_toString);
                     Log.i("Galvan",String.format("Player %s",Integer.toString(playernumber)));
                 }
             });
