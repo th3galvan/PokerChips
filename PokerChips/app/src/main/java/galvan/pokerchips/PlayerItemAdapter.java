@@ -1,6 +1,5 @@
 package galvan.pokerchips;
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
@@ -9,13 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.jar.Attributes;
 
 /**
  * Created by Alvaro on 13/12/2017.
@@ -41,21 +37,24 @@ public class PlayerItemAdapter extends ArrayAdapter<PlayerItems> {
         TextView name = (TextView) result.findViewById(R.id.txt_name);
         TextView chips = (TextView) result.findViewById(R.id.txt_chips);
         TextView allin = result.findViewById(R.id.txt_allin);
+        TextView call = result.findViewById(R.id.txt_call);
         CheckBox out = (CheckBox) result.findViewById(R.id.player_out);
 
         PlayerItems item = getItem(position);
         name.setText(item.getName());
         chips.setText(Integer.toString(item.getChips()));
-        out.setChecked(item.isOut());
-        if(item.isBig()==true){state.setText("B");}
-        if(item.isSmall()==true){state.setText("S");}
-        if(item.isDealer()==true){state.setText("D");}
+        out.setChecked(item.isIn());
+        if(item.isBig()){state.setText("B");}
+        if(item.isSmall()){state.setText("S");}
+        if(item.isDealer()){state.setText("D");}
         if(item.isBig()==false & item.isDealer()==false & item.isSmall()==false){state.setText("x");}
-        if(item.isTurn()==true){turn.setText("Turn");}
+        if(item.isTurn()){turn.setText("Turn");}
                             else{turn.setText("");}
 
-        if(item.isAllin()== true){allin.setText("ALL IN");}
+        if(item.isAllin()){allin.setText("ALL IN");}
                               else{allin.setText("");}
+        if(item.isCall()){call.setText("Call");}
+        else{call.setText("");}
         return result;
     }
 }

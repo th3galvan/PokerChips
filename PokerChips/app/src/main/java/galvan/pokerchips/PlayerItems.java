@@ -1,7 +1,6 @@
 package galvan.pokerchips;
 
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 
 public class PlayerItems extends AppCompatActivity {
     protected long id;
@@ -10,31 +9,33 @@ public class PlayerItems extends AppCompatActivity {
     private boolean dealer;
     private boolean big;
     private boolean small;
-    private boolean out;
+    private boolean in;
 
     private  int bet;
     private  boolean turn;
     private  boolean allin;
+    private  boolean call;
 
 
     public PlayerItems(int i,
                        String name,         int chips,      boolean dealer,
-                       boolean small,         boolean big,  boolean out,
-                       int bet,             boolean turn,   boolean allin   ) {
+                       boolean small,         boolean big,  boolean in,
+                       int bet,             boolean turn,   boolean allin, boolean call) {
 
         this.name = name;   this.chips = chips;     this.dealer = dealer;
-        this.big = big;     this.small = small;     this.out = out;
+        this.big = big;     this.small = small;     this.in = in;
         this.bet = bet;     this.turn = turn;       this.allin= allin;
+        this.call = call;
     }
 
-    public PlayerItems(long id, String name, int chips, boolean dealer, boolean big, boolean small, boolean out) {
+    public PlayerItems(long id, String name, int chips, boolean dealer, boolean big, boolean small, boolean in) {
         this.id = id;
         this.name = name;
         this.chips = chips;
         this.dealer = dealer;
         this.big = big;
         this.small = small;
-        this.out = out;
+        this.in = in;
     }
 
     public long getId(){
@@ -74,12 +75,12 @@ public class PlayerItems extends AppCompatActivity {
         return allin;
     }
 
-    public void setChecked(boolean dealer, boolean big, boolean small, boolean out)
+    public void setChecked(boolean dealer, boolean big, boolean small, boolean in)
     {
         this.dealer = dealer;
         this.big = big;
         this.small = small;
-        this.out = out;
+        this.in = in;
     }
 
     public boolean getDealer() {
@@ -117,21 +118,21 @@ public class PlayerItems extends AppCompatActivity {
         this.small = small;
     }
 
-    public boolean isOut()
+    public boolean isIn()
     {
-        return out;
+        return in;
     }
 
-    public boolean getOut() {
-        return out;
-    }
 
-    public void setOut(boolean out) {
-        this.out = out;
+
+    public void setIn(boolean in) {
+        this.in = in;
     }
     public void setBet(int bet) {
         this.bet = bet;
     }
-    public void setAllin(boolean allin){this.allin=allin;}
-    public void setTurn(boolean turn){this.turn=turn;}
+    public void setAllin(boolean allin){this.allin = allin;}
+    public void setTurn(boolean turn){this.turn = turn;}
+    public void setCall(boolean call){this.call = call;}
+    public boolean isCall(){return call;}
 }

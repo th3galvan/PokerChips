@@ -3,19 +3,21 @@
     <string name="totalbet">TOTAL BET</string>
     <string name="currenttotalbet">CURRENT TOTAL BET</string>
     <string name="currentindividualbet">CURRENT INDIVIDUAL BET</string>
-    <string name="bigblind">BIG BLIND</string>
+    <string name="bigblind" translatable="false">BIG BLIND</string>
     <string name="yes">yes</string>
     <string name="confirmation">Confirmation</string>
 
     <string name="name">Name</string>
     <string name="chips">Chips</string>
-    <string name="dealer">D</string>
-    <string name="big">B</string>
-    <string name="small">S</string>
-    <string name="out">O</string>
+    <string name="dealer" translatable="false">D</string>
+    <string name="big" translatable="false">B</string>
+    <string name="small" translatable="false">S</string>
+    <string name="in" translatable="false">O</string>
     <string name="bet_rising_time">BET RISING TIME</string>
     <string name="your_chips">YOUR CHIPS</string>
     <string name="check">CHECK</string>
     <string name="call" >CALL</string>
     <string name="bet" >BET</string>
+    <string name="fold">FOLD</string>
+
 </resources>
