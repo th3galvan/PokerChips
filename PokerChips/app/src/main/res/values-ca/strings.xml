@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">PokerChips</string>
+    <string name="bet">APOSTAR</string>
+    <string name="bet_rising_time">TEMPS PUJADA CEGUES</string>
+    <string name="call">IGUALAR</string>
+    <string name="check">PASSAR</string>
+    <string name="chips">Fitxes</string>
+    <string name="confirmation">Confirmació</string>
+    <string name="currentindividualbet">APOSTA INDIVIDUAL ACTUAL</string>
+    <string name="currenttotalbet">APOSTA TOTAL ACTUAL</string>
+    <string name="name">Nom</string>
+    <string name="totalbet">APOSTA TOTAL</string>
+    <string name="yes">Sí</string>
+    <string name="your_chips">LES TEVES FITXES</string>
+    <string name="fold">NO IR</string>
+</resources>
