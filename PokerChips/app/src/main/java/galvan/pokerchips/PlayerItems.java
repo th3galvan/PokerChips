@@ -57,6 +57,10 @@ public class PlayerItems extends AppCompatActivity {
         return chips;
     }
 
+    public int getBet() {
+        return bet;
+    }
+
     public void setChips(int chips) {
         this.chips = chips;
     }

@@ -18,18 +18,23 @@ public class GameActivity extends AppCompatActivity {
     // Añado un comentario para probar el push + update...
 
     private int pos;
-    private int bet;
+    private int bet2;
     private int ownChips;
     private int current_individual_bet;
     private int current_total_bet;
     private int total_bet;
     private int winner=0;
+    private int big;
+
+    private String string_big;
+
     private boolean all_in;
     private TextView txt_current_individual_bet;
     private TextView txt_ownChips;
     private TextView txt_bet;
     private TextView txt_current_total_bet;
     private TextView txt_total_bet;
+    private TextView txt_big_value2;
 
     //VARIABLES DE PRUEBA
     private TextView fichasmalaquito ;
@@ -137,9 +142,8 @@ public class GameActivity extends AppCompatActivity {
         pos=0;
         String textChip = Integer.toString(chips[pos]);
         txt_chip.setText(textChip);
-
-        bet=0;
-        String textBet = Integer.toString(bet);
+        bet2=0;
+        String textBet = Integer.toString(bet2);
         txt_bet.setText(textBet);
 
         //declaramos el view de la apuesta actual total y el boton de apostar y pasar
@@ -159,6 +163,12 @@ public class GameActivity extends AppCompatActivity {
         fichasmalaquito.setText(Integer.toString(Malaquito.getChips()));
         fichasmalaquitodatabase.setText(Integer.toString(PlayerDataBase[2].getChips()));
         txt_playernumber.setText(Integer.toString(playernumber));
+
+        //Cogemos valor Big Blind
+        txt_big_value2 = (TextView)findViewById(R.id.txt_big_value);
+        string_big = txt_big_value2.toString();
+        big = Integer.parseInt(string_big);
+
         //BTN+ Chips
         btn_plus_chip.setOnClickListener(new View.OnClickListener() {
                                              @Override
@@ -186,9 +196,9 @@ public class GameActivity extends AppCompatActivity {
         btn_plus_bet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(bet+chips[pos]<=ownChips)
-                {bet=bet+chips[pos];
-                    String textBetBtn = Integer.toString(bet);
+                if(bet2+chips[pos]<=ownChips)
+                {bet2=bet2+chips[pos];
+                    String textBetBtn = Integer.toString(bet2);
                     txt_bet.setText(textBetBtn);}
                 else{}}
         });
@@ -196,9 +206,9 @@ public class GameActivity extends AppCompatActivity {
         btn_minus_bet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(bet<chips[pos]){}
-                else{bet=bet-chips[pos];
-                    String textBetBtn = Integer.toString(bet);
+                if(bet2<chips[pos]){}
+                else{bet2=bet2-chips[pos];
+                    String textBetBtn = Integer.toString(bet2);
                     txt_bet.setText(textBetBtn);}
             }
         });
@@ -206,8 +216,8 @@ public class GameActivity extends AppCompatActivity {
         btn_all_in.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                bet=ownChips;
-                String textAllBtn = Integer.toString(bet);
+                bet2=ownChips;
+                String textAllBtn = Integer.toString(bet2);
                 txt_bet.setText(textAllBtn);
             }
         });
@@ -216,14 +226,14 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(current_individual_bet>ownChips){
-                    bet=ownChips;
-                    String textCurrentIBtn= Integer.toString(bet);
+                    bet2=ownChips;
+                    String textCurrentIBtn= Integer.toString(bet2);
                     txt_bet.setText(textCurrentIBtn);
                     //Todo: aqui se entraria en all in
                 }
                 else{
-                    bet=current_individual_bet;
-                    String textCurrentIBtn= Integer.toString(bet);
+                    bet2=current_individual_bet;
+                    String textCurrentIBtn= Integer.toString(bet2);
                     txt_bet.setText(textCurrentIBtn);
                 }
             }
@@ -240,7 +250,7 @@ public class GameActivity extends AppCompatActivity {
         btn_bet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                toBet(bet);
+                toBet(bet2);
 
             }
         });
@@ -268,10 +278,24 @@ public class GameActivity extends AppCompatActivity {
     // bet se restará a tus fichas y se actualizará el valor de current_individual_bet si este es menor
     //a la nueva apuesta
     // TODO: 11/12/2017 cuando apostamos un valor superior a ownChips sale un numero negativo hay que hacer algo en plan que te eche
-    // TODO: 12/12/2017 hay que hacer que cuando entras en all in (NewOwnChips<0) te ponga en modo all in
+    // TODO: 12/12/2017 hay que hacer que cuando entras en all in (NewOwnChips<0) te ponga en modo all invale ya est
+
     private void toBet(final int toBetBet) {
         //CALCULAMOS CON CUANTAS FICHAS NOS QUEDAMOS(en teoria es imposible tener un valor negativo en newownChips)
         final int newownChips=ownChips-toBetBet;
+        // Big y Small apuesta obligatoria
+        if(playernumber==0){
+            for (int i=0; i<PlayerDataBase.length-1 ; i++){
+                if(PlayerDataBase[i].getBig()==true){
+                    PlayerDataBase[i].setBet(big);
+                    refresh();
+
+                }
+                if(PlayerDataBase[i].getSmall()==true){
+                    PlayerDataBase[i].setBet(big/2);
+                    refresh();
+                }
+        }
 
         //SI VAMOS ALL IN
         if(newownChips<=0){
@@ -305,8 +329,8 @@ public class GameActivity extends AppCompatActivity {
                     String Scurrent_total_bet= Integer.toString(current_total_bet);
                     txt_current_total_bet.setText(Scurrent_total_bet);
                     //ACTUALIZACION BET
-                    bet=0;
-                    txt_bet.setText(Integer.toString(bet));
+                    bet2=0;
+                    txt_bet.setText(Integer.toString(bet2));
                     //DATABASE
                     PlayerDataBase[playernumber].setBet(toBetBet);
                     PlayerDataBase[playernumber].setChips(newownChips);
@@ -330,12 +354,17 @@ public class GameActivity extends AppCompatActivity {
         }
         //SI HACEMOS UNA APUESTA NORMAL
         else{
+            bet2 = PlayerDataBase[playernumber].getBet();
             Log.i("Galvan","(newownChips<=0)");
-            if(toBetBet<current_individual_bet){}
+            if((toBetBet+bet2<current_individual_bet || toBetBet==0)){}
             else  {
                 //CREAMOS DIALOGO
                 AlertDialog.Builder builder2= new AlertDialog.Builder(this);
-                builder2.setMessage(String.format("Are you sure you want to bet %s chips?",Integer.toString(toBetBet)));
+                if(bet2==0){
+                builder2.setMessage(String.format("Are you sure you want to bet %s chips?",Integer.toString(toBetBet)));}
+                else {
+                    builder2.setMessage(String.format("Are you sure you want to bet %s chips more?\n" +
+                            "You current bet is %s chips",Integer.toString(toBetBet),Integer.toString(bet2)));}
                 //PULSAMOS YES
                 builder2.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
@@ -347,9 +376,9 @@ public class GameActivity extends AppCompatActivity {
                         String SownChips= Integer.toString(ownChips);
                         txt_ownChips.setText(SownChips);
                         //CAMBIO APUESTA ACTUAL INDIVIDUAL
-                        if(toBetBet>current_individual_bet){
+                        if(toBetBet+bet2>current_individual_bet){
                             //se sustituye por la apuesta mas grande
-                            current_individual_bet = toBetBet;
+                            current_individual_bet = toBetBet+bet2;
                             String Scurrent_individual_bet = Integer.toString(current_individual_bet);
                             txt_current_individual_bet.setText(Scurrent_individual_bet);
                             Log.i("Galvan","(current_individual_bet = toBetBet;)");
@@ -360,12 +389,12 @@ public class GameActivity extends AppCompatActivity {
                         txt_current_total_bet.setText(Scurrent_total_bet);
 
                         //DATABASE
-                        PlayerDataBase[playernumber].setBet(toBetBet);
+                        PlayerDataBase[playernumber].setBet(toBetBet+bet2);
                         PlayerDataBase[playernumber].setChips(newownChips);
 
                         //ACTUALIZACION BET
-                        bet=0;
-                        txt_bet.setText(Integer.toString(bet));
+                        bet2=0;
+                        txt_bet.setText(Integer.toString(bet2));
 
                         //CAMBIO DE TURNO
                         Log.i("Galvan","Inicio Cambio de Turno");
@@ -380,9 +409,9 @@ public class GameActivity extends AppCompatActivity {
                 builder2.create().show();
             }}
         String SownChips= Integer.toString(ownChips);
-        txt_ownChips.setText(SownChips);
+        txt_ownChips.setText(SownChips);}}
 
-    }
+
 
     private void refresh() {
         //REFRESH ownChips
