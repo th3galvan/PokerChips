@@ -2,6 +2,12 @@ package galvan.pokerchips;
 
 import android.support.v7.app.AppCompatActivity;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class PlayerItems extends AppCompatActivity {
     protected long id;
     private  String name;
@@ -143,4 +149,21 @@ public class PlayerItems extends AppCompatActivity {
     public void setTurn(boolean turn){this.turn = turn;}
     public void setCall(boolean call){this.call = call;}
     public boolean isCall(){return call;}
+
+    @Override
+    public String toString(){
+        return "Player{" +
+                "id=" + id +
+                "name='" + name + '\'' +
+                "chips=" + chips +
+                "dealer=" + dealer +
+                "big=" + big +
+                "small=" + small +
+                "in=" + in +
+                "bet=" + bet +
+                "turn=" + chips +
+                "allin=" + chips +
+                "call=" + chips +
+                '}';
+    }
 }

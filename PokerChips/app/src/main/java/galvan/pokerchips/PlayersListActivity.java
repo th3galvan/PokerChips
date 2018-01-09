@@ -9,16 +9,16 @@ import android.widget.ListView;
  * Created by Alvaro on 11/12/2017.
  */
 
-public class PlayerListActivity extends AppCompatActivity{
+public class PlayersListActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_playerlist);
 
-        ListView player_list = (ListView)findViewById(R.id.players_list);
+        ListView players_list = (ListView)findViewById(R.id.players_list);
         String[] values = new String[]{"Menganito","Fulanito","Juanito","Estalactito","Teodoro","Pauek","Eustaquio"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, values);
-        player_list.setAdapter(adapter);
+        players_list.setAdapter(adapter);
 
 
     }
