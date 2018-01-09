@@ -6,30 +6,23 @@ android:layout_width="match_parent"
 android:layout_height="match_parent"
 android:padding="24dp">
 
-<RadioButton
-    android:id="@+id/rbRapida"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_alignParentLeft="true"
-    android:layout_alignParentStart="true"
-    android:text="Partida Rápida" />
+    <Button
+        android:id="@+id/btn_fast"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Partida rapida"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="54dp" />
 
-<RadioButton
-    android:id="@+id/rbPersonalizada"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_alignParentEnd="true"
-    android:layout_alignParentRight="true"
-    android:layout_marginEnd="26dp"
-    android:layout_marginRight="26dp"
-    android:text="Modo Personalizado" />
+    <Button
+        android:id="@+id/btn_custom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btn_fast"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="52dp"
+        android:text="Personalizar partida" />
 
-<Button
-    android:id="@+id/btn_continuar"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_alignParentBottom="true"
-    android:layout_centerHorizontal="true"
-    android:text="Continuar" />
 
 </RelativeLayout>
