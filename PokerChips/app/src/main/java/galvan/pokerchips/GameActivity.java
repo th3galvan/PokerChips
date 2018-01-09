@@ -1,7 +1,6 @@
 package galvan.pokerchips;
 
 import android.content.DialogInterface;
-import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,11 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.AdapterView;
 
 import java.util.ArrayList;
-
-import javax.xml.transform.Templates;
 
 
 public class GameActivity extends AppCompatActivity {
@@ -39,7 +35,6 @@ public class GameActivity extends AppCompatActivity {
 
     private boolean all_in;
     private boolean checkout;
-    private boolean final_turn;
 
     private TextView txt_current_individual_bet;
     private TextView txt_ownChips;
@@ -87,8 +82,7 @@ public class GameActivity extends AppCompatActivity {
 
     private PlayerItems PlayerDataBase[]={Fulanito,Menganito,Malaquito,Estalactito};
     private int eq_bet;
-    private int cont_turn=0;
-    private int playaerscall;
+    private int playerscall;
 
 
     @Override
@@ -251,7 +245,6 @@ public class GameActivity extends AppCompatActivity {
                 String textAllBtn = Integer.toString(bet2);
                 txt_bet.setText(textAllBtn);
                 PlayerDataBase[playernumber].setIn(true);
-                final_turn=false;
             }
         });
         //BTN EQUALIZE
@@ -286,18 +279,17 @@ public class GameActivity extends AppCompatActivity {
         btn_bet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 if(bet2 == 0){
                     Message0bet();
                 }
                 else {
                     //Aqui descubro si la apuesta me esta igualando a una subida de otro jugador o esta subiendo la apuesta
                     if(bet2+PlayerDataBase[playernumber].getBet()==current_individual_bet){
-                        //Con esta variable pretendo saber cuando se acaba el turno, ya que si esta llega a true desde el jugador que empezo el turno habra acabado
-                        final_turn=true;
-                        cont_turn++;
+                        //Esto lo usaba antes y ya no me sirve pero lo dejo por si nos sirve en un futuro
+
                     }
-                    else{final_turn=false;
-                        }
+                    else{}
 
                         toBet(bet2);}
             }
@@ -321,8 +313,6 @@ public class GameActivity extends AppCompatActivity {
         if(current_individual_bet==0 || PlayerDataBase[playernumber].getBet()==current_individual_bet){
             PlayerDataBase[playernumber].setCall(true);
             PlayerDataBase[playernumber].setIn(true);
-            final_turn=true;
-            cont_turn++;
             Log.i("Galvan","CHECK");
             //utilizamos el metodo turnState para saber en que parte de la partida nos encontramos
             // blind bet, preflop, flop, turn, river
@@ -333,9 +323,9 @@ public class GameActivity extends AppCompatActivity {
             Log.i("Galvan","FOLD");
             PlayerDataBase[playernumber].setIn(false);
             PlayerDataBase[playernumber].setCall(false);
+            turnState();
             nextTurn();
         }
-
     }
 
     //este metodo se ejecuta cuando pulsamos pasar o apostar, si pulsamos bet el valor de la variable
@@ -347,7 +337,6 @@ public class GameActivity extends AppCompatActivity {
     private void toBet(final int toBetBet) {
         //CALCULAMOS CON CUANTAS FICHAS NOS QUEDAMOS(en teoria es imposible tener un valor negativo en newownChips)
         final int newownChips=ownChips-toBetBet;
-
 
         //SI VAMOS ALL IN
         if(newownChips<=0){
@@ -450,8 +439,14 @@ public class GameActivity extends AppCompatActivity {
                         Log.i("Galvan",String.format("Player %s",Integer.toString(playernumber)));
                     }
                 });
-                builder2.setNegativeButton(android.R.string.cancel,null);
+                builder2.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        bet2=toBetBet;
+                    }
+                });
                 builder2.create().show();
+
             }}
         String SownChips= Integer.toString(ownChips);
         txt_ownChips.setText(SownChips);
@@ -476,7 +471,6 @@ public class GameActivity extends AppCompatActivity {
                         //en el preflop el turno es para el siguiente del Big Blind
                         playernumber=i+1;
                         //inicializo turno
-                        final_turn=true;
                         if(playernumber>=PlayerDataBase.length){
                             playernumber=0;
                             PlayerDataBase[playernumber].setTurn(true);
@@ -504,12 +498,14 @@ public class GameActivity extends AppCompatActivity {
                 for(int i=0;i<PlayerDataBase.length;i++){
                     if(PlayerDataBase[i].isIn()){playersin++;}
                 }
-                if(final_turn & cont_turn<playersin-1){
-                    Log.i("xavi_flux",String.format("%d // %d",playersin, cont_turn));
-                }
-                else if(!final_turn){}
-                else{nState=2;}
-                break;
+                playerscall=0;
+
+                for(int p=0 ;p<PlayerDataBase.length;p++){
+                    if(PlayerDataBase[p].isCall()){playerscall++;}}
+
+                //Log.i("XaviVilaseca",String.format("%d // %d", playersin, playerscall));
+               if (playersin== playerscall){nState=2;}
+                else {break;}
 
             //RESTART
             case 2:
@@ -524,12 +520,14 @@ public class GameActivity extends AppCompatActivity {
                 for(int i=0;i<PlayerDataBase.length;i++){
                     if(PlayerDataBase[i].isIn()){playersin++;}
                 }
-                if(final_turn & cont_turn<playersin-1){
-                    Log.i("xavi_flux",String.format("%d // %d",playersin, cont_turn));
-                }
-                else if(!final_turn){}
-                else{nState=4;}
-                break;
+                playerscall=0;
+                for(int l=0 ;l<PlayerDataBase.length;l++){
+                    if(PlayerDataBase[l].isCall()){playerscall++;}}
+
+                Log.i("Players",String.format("%d // %d", playersin, playerscall));
+                Log.i("XaviVilaseca","3");
+                if (playersin == playerscall){nState=4;}
+                else {break;}
 
             //RESTART
             case 4:
@@ -541,15 +539,19 @@ public class GameActivity extends AppCompatActivity {
             case 5:
 
                 playersin=0;
+               previousTurn();
                 for(int i=0;i<PlayerDataBase.length;i++){
                     if(PlayerDataBase[i].isIn()){playersin++;}
                 }
-                if(final_turn & cont_turn<playersin-1){
-                    Log.i("xavi_flux",String.format("%d // %d",playersin, cont_turn));
-                }
-                else if(!final_turn){}
-                else{nState=6;}
-                break;
+                playerscall=0;
+
+                for(int p=0;p<PlayerDataBase.length;p++){
+                    if(PlayerDataBase[p].isCall()){playerscall++;}}
+
+                //Log.i("XaviVilaseca",String.format("%d // %d", playersin, playerscall));
+                Log.i("XaviVilaseca","5");
+                if (playersin== playerscall){nState=6;}
+                else {break;}
 
             //RESTART
             case 6:
@@ -561,15 +563,18 @@ public class GameActivity extends AppCompatActivity {
             case 7:
 
                 playersin=0;
+                previousTurn();
                 for(int i=0;i<PlayerDataBase.length;i++){
                     if(PlayerDataBase[i].isIn()){playersin++;}
                 }
-                if(final_turn & cont_turn<playersin-1){
-                    Log.i("xavi_flux",String.format("%d // %d",playersin, cont_turn));
-                }
-                else if(!final_turn){}
-                else{nState=8;}
-                break;
+                playerscall=0;
+                for(int p=0;p<PlayerDataBase.length;p++){
+                    if(PlayerDataBase[p].isCall()){playerscall++;}}
+
+                //Log.i("XaviVilaseca",String.format("%d // %d", playersin, playerscall));
+                Log.i("XaviVilaseca","7");
+                if (playersin== playerscall){nState=8;}
+                else {break;}
 
             //WINNER-
             case 8:
@@ -581,7 +586,6 @@ public class GameActivity extends AppCompatActivity {
     private void Restart() {
 
         //Restauramos todos los valores
-        cont_turn=0;
         total_bet=current_total_bet+total_bet;
         String Stotal_bet = Integer.toString(total_bet);
         txt_total_bet.setText(Stotal_bet);
@@ -602,7 +606,6 @@ public class GameActivity extends AppCompatActivity {
             PlayerDataBase[i].setBet(cero);
             PlayerDataBase[i].setCall(false);
         }
-        final_turn=false;
     }
 
     private void higherBet(int toBetBet) {
@@ -670,6 +673,26 @@ public class GameActivity extends AppCompatActivity {
         checkWinner();
 
 
+
+        PlayerDataBase[playernumber].setTurn(true);
+        list.setAdapter(adapter);
+        refresh();
+    }
+
+    private void previousTurn() {
+        //CAMBIO DE TURNO
+
+        PlayerDataBase[playernumber].setTurn(false);
+
+        if((playernumber==PlayerDataBase.length-1)){playernumber=PlayerDataBase.length-2;}
+        else{playernumber--;}
+
+        while(!PlayerDataBase[playernumber].isIn()){
+
+            if((playernumber==PlayerDataBase.length-1)){playernumber=PlayerDataBase.length-2;}
+            else{playernumber--;}
+
+        }
 
         PlayerDataBase[playernumber].setTurn(true);
         list.setAdapter(adapter);
