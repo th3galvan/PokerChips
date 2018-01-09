@@ -1,6 +1,7 @@
 package galvan.pokerchips;
 
 import android.content.DialogInterface;
+import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,8 +10,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.AdapterView;
 
 import java.util.ArrayList;
+
+import javax.xml.transform.Templates;
 
 
 public class GameActivity extends AppCompatActivity {
@@ -24,17 +28,25 @@ public class GameActivity extends AppCompatActivity {
     private int current_total_bet;
     private int total_bet;
     private int winner=0;
-    private int big;
+    private int big=50;
+    private int loot =0;
+    private int playersin=0;
+    private int nState;
+    private int Player_big_blind;
+    private int Player_small_blind;
 
     private String string_big;
 
     private boolean all_in;
+    private boolean checkout;
+    private boolean final_turn;
+
     private TextView txt_current_individual_bet;
     private TextView txt_ownChips;
     private TextView txt_bet;
     private TextView txt_current_total_bet;
     private TextView txt_total_bet;
-    private TextView txt_big_value2;
+    private TextView txt_big;
 
     //VARIABLES DE PRUEBA
     private TextView fichasmalaquito ;
@@ -49,26 +61,35 @@ public class GameActivity extends AppCompatActivity {
     private ListView list;
     //PlayerItems( int i,
     //              String name, int chips,      boolean dealer,
-    //              boolean big, boolean small,  boolean out,
+    //              boolean small, boolean big,  boolean in,
     //              int bet,      boolean turn    boolean allin)
     private PlayerItems Fulanito= new PlayerItems(1,
-            "Fulanito", 200,    true,
-            false,      false,  true,
-            0,          true,   false);
+            "Fulanito", 1000,
+            true,      false,   false,
+            true,
+            0,          false,   false, false);
     private PlayerItems Menganito= new PlayerItems(2,
-            "Menganito", 400,   false,
-            true,        false, true,
-            0,           false, false);
+            "Menganito", 1000,
+            false,        true,  false,
+            true,
+            0,           false,  false, false);
     private PlayerItems Malaquito= new PlayerItems(3,
-            "Malaquito", 800,   false,
-            false,       true,  true,
-            0,           false, false);
+            "Malaquito", 1000,
+            false,      false,    true,
+            true,
+            0,         false,   false, false);
 
     private PlayerItems Estalactito = new PlayerItems(4,
-            "Estalactito", 1000,    false,
-            false,       false,      true,
-            0,           false,     false);
+            "Estalactito", 1000,
+            false,      false,       false,
+            true,
+            0,           false,     false, false);
+
     private PlayerItems PlayerDataBase[]={Fulanito,Menganito,Malaquito,Estalactito};
+    private int eq_bet;
+    private int cont_turn=0;
+    private int playaerscall;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,11 +145,11 @@ public class GameActivity extends AppCompatActivity {
         total_bet=0;
         txt_total_bet = (TextView) findViewById(R.id.txt_total_bet_number);
         //TODO: de momento usamos total bet para hacer display de la gente que esta in
-        checkOut();
+        checkWinner();
         //declaramos el boton de igualar y una variable apuesta individual actual (arriba) y aqui la inicializamos
         final Button btn_equalize=(Button)findViewById(R.id.btn_equalize);
         txt_current_individual_bet = (TextView) findViewById(R.id.txt_current_individual_bet_number);
-        current_individual_bet=0;
+        current_individual_bet=big;
 
         txt_current_individual_bet.setText(Integer.toString(current_individual_bet));
 
@@ -154,6 +175,16 @@ public class GameActivity extends AppCompatActivity {
         String Scurrent_total_bet= Integer.toString(current_total_bet);
         txt_current_total_bet.setText(Scurrent_total_bet);
 
+        //declaramos apuesta total de la mesa
+        txt_total_bet = (TextView)findViewById(R.id.txt_total_bet_number);
+        total_bet=0;
+        String Stotal_bet = Integer.toString(total_bet);
+        txt_total_bet.setText(Stotal_bet);
+
+        //escribimos big blind
+        txt_big = (TextView) findViewById(R.id.txt_big_value);
+        txt_big.setText(Integer.toString(big));
+
 
         //VISUALIZACION VARIABLES DE PRUEBA
         fichasmalaquito = (TextView) findViewById(R.id.fichasmalaquito);
@@ -163,11 +194,11 @@ public class GameActivity extends AppCompatActivity {
         fichasmalaquito.setText(Integer.toString(Malaquito.getChips()));
         fichasmalaquitodatabase.setText(Integer.toString(PlayerDataBase[2].getChips()));
         txt_playernumber.setText(Integer.toString(playernumber));
+        //utilizamos el metodo turnState para saber en que parte de la partida nos encontramos
+        // blind bet, preflop, flop, turn, river
+        turnState();
 
-        //Cogemos valor Big Blind
-        txt_big_value2 = (TextView)findViewById(R.id.txt_big_value);
-        string_big = txt_big_value2.toString();
-        big = Integer.parseInt(string_big);
+
 
         //BTN+ Chips
         btn_plus_chip.setOnClickListener(new View.OnClickListener() {
@@ -219,12 +250,15 @@ public class GameActivity extends AppCompatActivity {
                 bet2=ownChips;
                 String textAllBtn = Integer.toString(bet2);
                 txt_bet.setText(textAllBtn);
+                PlayerDataBase[playernumber].setIn(true);
+                final_turn=false;
             }
         });
         //BTN EQUALIZE
         btn_equalize.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 if(current_individual_bet>ownChips){
                     bet2=ownChips;
                     String textCurrentIBtn= Integer.toString(bet2);
@@ -232,7 +266,9 @@ public class GameActivity extends AppCompatActivity {
                     //Todo: aqui se entraria en all in
                 }
                 else{
-                    bet2=current_individual_bet;
+                    //Cogemos valor de apuesta anterior para que al darle a igualar te ponga las fichas que te quedan para igualar la apuesta según las que tu ya habias apostado
+                    eq_bet = PlayerDataBase[playernumber].getBet();
+                    bet2=current_individual_bet-eq_bet;
                     String textCurrentIBtn= Integer.toString(bet2);
                     txt_bet.setText(textCurrentIBtn);
                 }
@@ -250,25 +286,53 @@ public class GameActivity extends AppCompatActivity {
         btn_bet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                toBet(bet2);
+                if(bet2 == 0){
+                    Message0bet();
+                }
+                else {
+                    //Aqui descubro si la apuesta me esta igualando a una subida de otro jugador o esta subiendo la apuesta
+                    if(bet2+PlayerDataBase[playernumber].getBet()==current_individual_bet){
+                        //Con esta variable pretendo saber cuando se acaba el turno, ya que si esta llega a true desde el jugador que empezo el turno habra acabado
+                        final_turn=true;
+                        cont_turn++;
+                    }
+                    else{final_turn=false;
+                        }
 
+                        toBet(bet2);}
             }
         });
 
 
+    }
 
+    private void Message0bet() {
 
+        //Mensaje que nos indica que estamos dandole a apostar sin seleccionar ficha
+        AlertDialog.Builder builder= new AlertDialog.Builder(this);
+        builder.setTitle(R.string.Error);
+        builder.setMessage("You are trying to bet 0 chips, try to check or to select some chips");
+        builder.create().show();
     }
 
     private void toCheck() {
         //DATABASE
-        if(current_individual_bet==0){
+        //Seguimos en partida si no hay apuesta o si mi apuesta es igual a la minima
+        if(current_individual_bet==0 || PlayerDataBase[playernumber].getBet()==current_individual_bet){
+            PlayerDataBase[playernumber].setCall(true);
+            PlayerDataBase[playernumber].setIn(true);
+            final_turn=true;
+            cont_turn++;
             Log.i("Galvan","CHECK");
+            //utilizamos el metodo turnState para saber en que parte de la partida nos encontramos
+            // blind bet, preflop, flop, turn, river
+            turnState();
             nextTurn();
         }
         else{
             Log.i("Galvan","FOLD");
-            PlayerDataBase[playernumber].setOut(false);
+            PlayerDataBase[playernumber].setIn(false);
+            PlayerDataBase[playernumber].setCall(false);
             nextTurn();
         }
 
@@ -283,19 +347,7 @@ public class GameActivity extends AppCompatActivity {
     private void toBet(final int toBetBet) {
         //CALCULAMOS CON CUANTAS FICHAS NOS QUEDAMOS(en teoria es imposible tener un valor negativo en newownChips)
         final int newownChips=ownChips-toBetBet;
-        // Big y Small apuesta obligatoria
-        if(playernumber==0){
-            for (int i=0; i<PlayerDataBase.length-1 ; i++){
-                if(PlayerDataBase[i].getBig()==true){
-                    PlayerDataBase[i].setBet(big);
-                    refresh();
 
-                }
-                if(PlayerDataBase[i].getSmall()==true){
-                    PlayerDataBase[i].setBet(big/2);
-                    refresh();
-                }
-        }
 
         //SI VAMOS ALL IN
         if(newownChips<=0){
@@ -317,13 +369,7 @@ public class GameActivity extends AppCompatActivity {
                     txt_ownChips.setText(SownChips);
 
                     //CAMBIO APUESTA ACTUAL INDIVIDUAL
-                    if(toBetBet>current_individual_bet){
-                        //se sustituye por la apuesta mas grande
-                        current_individual_bet = toBetBet;
-                        String Scurrent_individual_bet = Integer.toString(current_individual_bet);
-                        txt_current_individual_bet.setText(Scurrent_individual_bet);
-                        Log.i("Galvan","(current_individual_bet = toBetBet;)");
-                    }
+                    higherBet(toBetBet);
                     //ACTUALIZACION CURRENT TOTAL BET
                     current_total_bet=current_total_bet+toBetBet;                               //actualiza el valor de current total bet
                     String Scurrent_total_bet= Integer.toString(current_total_bet);
@@ -335,6 +381,8 @@ public class GameActivity extends AppCompatActivity {
                     PlayerDataBase[playernumber].setBet(toBetBet);
                     PlayerDataBase[playernumber].setChips(newownChips);
                     PlayerDataBase[playernumber].setAllin(true);
+                    PlayerDataBase[playernumber].setCall(true);
+                    PlayerDataBase[playernumber].setIn(true);
                     txt_playernumber.setText(Integer.toString(playernumber));
 
                     Log.i("Galvan","apuesta confirmada");
@@ -376,14 +424,9 @@ public class GameActivity extends AppCompatActivity {
                         String SownChips= Integer.toString(ownChips);
                         txt_ownChips.setText(SownChips);
                         //CAMBIO APUESTA ACTUAL INDIVIDUAL
-                        if(toBetBet+bet2>current_individual_bet){
-                            //se sustituye por la apuesta mas grande
-                            current_individual_bet = toBetBet+bet2;
-                            String Scurrent_individual_bet = Integer.toString(current_individual_bet);
-                            txt_current_individual_bet.setText(Scurrent_individual_bet);
-                            Log.i("Galvan","(current_individual_bet = toBetBet;)");
-
-                        }
+                        Log.i("Galvan","higher bet");
+                        higherBet(toBetBet);
+                        Log.i("Galvan","current_total_bet=current_total_bet+toBetBet");
                         current_total_bet=current_total_bet+toBetBet;                                   //actualiza el valor de current total bet
                         String Scurrent_total_bet= Integer.toString(current_total_bet);
                         txt_current_total_bet.setText(Scurrent_total_bet);
@@ -391,6 +434,8 @@ public class GameActivity extends AppCompatActivity {
                         //DATABASE
                         PlayerDataBase[playernumber].setBet(toBetBet+bet2);
                         PlayerDataBase[playernumber].setChips(newownChips);
+                        PlayerDataBase[playernumber].setCall(true);
+                        PlayerDataBase[playernumber].setIn(true);
 
                         //ACTUALIZACION BET
                         bet2=0;
@@ -409,9 +454,190 @@ public class GameActivity extends AppCompatActivity {
                 builder2.create().show();
             }}
         String SownChips= Integer.toString(ownChips);
-        txt_ownChips.setText(SownChips);}}
+        txt_ownChips.setText(SownChips);
+        //utilizamos el metodo turnState para saber en que parte de la partida nos encontramos
+        // blind bet, preflop, flop, turn, river
+        turnState();}
+
+    private void turnState() {
+
+        switch (nState) {
+            //BIG BLIND SMALL BLIND
+            case 0:
+                for(int i=0; i<PlayerDataBase.length; i++ ){
+                    //busca quien es el big y le resta el valor Big a sus fichas y los suma al bote
+                    if(PlayerDataBase[i].isBig()){
+                        Player_big_blind = i;
+                        PlayerDataBase[i].setChips(PlayerDataBase[i].getChips()-big);
+                        //Creamos una memoria del num de fichas que ha apostado este jugador
+                        PlayerDataBase[i].setBet(big);
+                        current_total_bet= current_total_bet+big;
+                        current_individual_bet=big;
+                        //en el preflop el turno es para el siguiente del Big Blind
+                        playernumber=i+1;
+                        //inicializo turno
+                        final_turn=true;
+                        if(playernumber>=PlayerDataBase.length){
+                            playernumber=0;
+                            PlayerDataBase[playernumber].setTurn(true);
+                            refresh();}
+                        else{PlayerDataBase[playernumber].setTurn(true);
+                            refresh();}
+                    }
+                    //busca al small blind y le resta la apuesta y la suma al bote
+                    if(PlayerDataBase[i].isSmall()){
+                        Player_small_blind = i;
+                        PlayerDataBase[i].setChips(PlayerDataBase[i].getChips()-(big/2));
+                        //Creamos una memoria del num de fichas que ha apostado este jugador
+                        PlayerDataBase[i].setBet(big/2);
+                        current_total_bet= current_total_bet+(big/2);
+                        refresh();
+                    }
+
+                }
+                nState=1;
+                break;
+
+            //PREFLOP
+            case 1:
+                playersin=0;
+                for(int i=0;i<PlayerDataBase.length;i++){
+                    if(PlayerDataBase[i].isIn()){playersin++;}
+                }
+                if(final_turn & cont_turn<playersin-1){
+                    Log.i("xavi_flux",String.format("%d // %d",playersin, cont_turn));
+                }
+                else if(!final_turn){}
+                else{nState=2;}
+                break;
+
+            //RESTART
+            case 2:
+
+                Restart();
+                nState=3;
+
+            //FLOP
+            case 3:
+
+                playersin=0;
+                for(int i=0;i<PlayerDataBase.length;i++){
+                    if(PlayerDataBase[i].isIn()){playersin++;}
+                }
+                if(final_turn & cont_turn<playersin-1){
+                    Log.i("xavi_flux",String.format("%d // %d",playersin, cont_turn));
+                }
+                else if(!final_turn){}
+                else{nState=4;}
+                break;
+
+            //RESTART
+            case 4:
+
+                Restart();
+                nState=5;
+
+            //TURN
+            case 5:
+
+                playersin=0;
+                for(int i=0;i<PlayerDataBase.length;i++){
+                    if(PlayerDataBase[i].isIn()){playersin++;}
+                }
+                if(final_turn & cont_turn<playersin-1){
+                    Log.i("xavi_flux",String.format("%d // %d",playersin, cont_turn));
+                }
+                else if(!final_turn){}
+                else{nState=6;}
+                break;
+
+            //RESTART
+            case 6:
+
+                Restart();
+                nState=7;
+
+            //RIVER
+            case 7:
+
+                playersin=0;
+                for(int i=0;i<PlayerDataBase.length;i++){
+                    if(PlayerDataBase[i].isIn()){playersin++;}
+                }
+                if(final_turn & cont_turn<playersin-1){
+                    Log.i("xavi_flux",String.format("%d // %d",playersin, cont_turn));
+                }
+                else if(!final_turn){}
+                else{nState=8;}
+                break;
+
+            //WINNER-
+            case 8:
+                checkWinner();
 
 
+        }}
+
+    private void Restart() {
+
+        //Restauramos todos los valores
+        cont_turn=0;
+        total_bet=current_total_bet+total_bet;
+        String Stotal_bet = Integer.toString(total_bet);
+        txt_total_bet.setText(Stotal_bet);
+
+        //Reiniciamos to*do
+        current_individual_bet=0;
+        String Scurrent_individual_bet = Integer.toString(current_individual_bet);
+        txt_current_individual_bet.setText(Scurrent_individual_bet);
+
+        current_total_bet=0;
+        String Scurrent_total_bet = Integer.toString(current_total_bet);
+        txt_current_total_bet.setText(Scurrent_total_bet);
+
+        //Reiniciamos apuestas y call
+
+        for(int i=0; i<PlayerDataBase.length;i++){
+            int cero=0;
+            PlayerDataBase[i].setBet(cero);
+            PlayerDataBase[i].setCall(false);
+        }
+        final_turn=false;
+    }
+
+    private void higherBet(int toBetBet) {
+
+        /*Siempre debemos sumar la apuesta que ya habia hecho el jugador a la actual, porque si yo subo 20, ami me tienes que pagar lo que habia +20 no solo 20.
+        Según mi punto de vista se podria poner sin if ni nada, siempre esto :
+        current_individual_bet = PlayerDataBase[playernumber].getBet()+toBetBet;
+        String Scurrent_individual_bet = Integer.toString(current_individual_bet);
+        txt_current_individual_bet.setText(Scurrent_individual_bet);
+        Log.i("Galvan","(current_individual_bet = toBetBet;)");
+        refresh();
+        tu que crees?*/
+
+        if(toBetBet>current_individual_bet){
+
+            for(int i = 0; i<PlayerDataBase.length; i++){
+
+                PlayerDataBase[i].setCall(false);
+
+                list.setAdapter(adapter);
+            }
+
+            //se sustituye por la apuesta mas grande
+            current_individual_bet = PlayerDataBase[playernumber].getBet()+toBetBet;
+            String Scurrent_individual_bet = Integer.toString(current_individual_bet);
+            txt_current_individual_bet.setText(Scurrent_individual_bet);
+            Log.i("Galvan","(current_individual_bet = toBetBet;)");
+            refresh();
+        }
+        else{current_individual_bet = PlayerDataBase[playernumber].getBet()+toBetBet;
+            String Scurrent_individual_bet = Integer.toString(current_individual_bet);
+            txt_current_individual_bet.setText(Scurrent_individual_bet);
+            Log.i("Galvan","(current_individual_bet = toBetBet;)");
+            refresh();}
+    }
 
     private void refresh() {
         //REFRESH ownChips
@@ -421,8 +647,8 @@ public class GameActivity extends AppCompatActivity {
         txt_current_individual_bet.setText(Integer.toString(current_individual_bet));
         txt_current_total_bet.setText(Integer.toString(current_total_bet));
         list.setAdapter(adapter);
-        if(current_total_bet!=0){btn_check.setText("FOLD");}
-        else{btn_check.setText("CHECK");}
+        if(current_total_bet!=0){btn_check.setText(R.string.fold);}
+        else{btn_check.setText(R.string.check);}
 
     }
 
@@ -434,14 +660,15 @@ public class GameActivity extends AppCompatActivity {
         if((playernumber==PlayerDataBase.length-1)){playernumber=0;}
         else{playernumber++;}
 
-        while(!PlayerDataBase[playernumber].isOut()){
+        while(!PlayerDataBase[playernumber].isIn()){
 
             if((playernumber==PlayerDataBase.length-1)){playernumber=0;}
             else{playernumber++;}
 
         }
-        //SE ANALIZA CUANTA gente ESTA IN
-        checkOut();
+        //MIRAMOS SI PUEDE HABER GANADOR
+        checkWinner();
+
 
 
         PlayerDataBase[playernumber].setTurn(true);
@@ -449,52 +676,69 @@ public class GameActivity extends AppCompatActivity {
         refresh();
     }
 
-    private void checkOut() {
+    private void checkWinner() {
         //SE ANALIZA CUANTA ESTA IN
-        boolean checkout;
-        int playersin=0;
-        //contamos cuantas personas isOut
-        for(int i = 0; i<PlayerDataBase.length; i++){
-            checkout = PlayerDataBase[i].isOut();
-            if(checkout==true){playersin++;}
-            txt_total_bet.setText(Integer.toString(playersin));
 
-        }
+        int playerscall=0;
+
+        //contamos cuantas personas isIn y cuantos han igualado (call= igualar apuesta)
+        for(int i = 0; i<PlayerDataBase.length; i++){
+            checkout = PlayerDataBase[i].isIn();
+            if(checkout==true){playersin++;
+                Log.i("Xavi","+1");
+        }}
+
 
         //si solo va uno es que ha ganado, buscamos en PlayerDataBase quien es el que ha ganado
         if(playersin==1){
             //buscamos el indice de jugador del ganador
             for(int i=0; i<PlayerDataBase.length;i++){
-                if(PlayerDataBase[i].isOut()){
+                if(PlayerDataBase[i].isIn()){
                     winner= i;
                 }
             }
             //sumamos la cantidad de current total bet a las fichas del ganador
-            int loot;
             loot= PlayerDataBase[winner].getChips()+current_total_bet;
             PlayerDataBase[winner].setChips(loot);
             AlertDialog.Builder builder3= new AlertDialog.Builder(this);
-            builder3.setMessage(String.format("Player %s won %s chips",PlayerDataBase[winner].getName(),Integer.toString(loot)));
+            builder3.setMessage(String.format("Player %s won %s chips",PlayerDataBase[winner].getName(),Integer.toString(current_total_bet)));
             builder3.create().show();
             winner=0;
             loot=0;
             current_total_bet=0;
             current_individual_bet=0;
             playersin=0;
-            rotarCiega(playersin);
+            rotarCiega(playersin);}
 
 
-        }
+            if(playersin>1 & playernumber == 3){
+               /* list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                    @Override
+                    public boolean onItemLongClick(AdapterView<?> adapterView, View view, int pos, long l) {
+                        loot= PlayerDataBase[pos].getChips()+current_total_bet;
+                        PlayerDataBase[pos].setChips(loot);
+                        current_total_bet=0;
+                        current_individual_bet=0;
+                        playersin=0;
+                        rotarCiega(playersin);
+                        return true;
+                    }
+                });*/
+
+               //todo cuadro de dialogo para elegir al jugador ganador?
+
+            }
     }
 
     private void rotarCiega(int playersin) {
         boolean checkout;//DESPLAZAMIENTO CIEGAS
+        //si el ultimo de la lista no es ni big small ni dealer
         if( !PlayerDataBase[PlayerDataBase.length-1].isBig() &
                 !PlayerDataBase[PlayerDataBase.length-1].isDealer() &
                 !PlayerDataBase[PlayerDataBase.length-1].isSmall()) {
             boolean aux= false;
             for(int i=0; i<PlayerDataBase.length;i++){
-                PlayerDataBase[i].setOut(true);
+                PlayerDataBase[i].setIn(true);
                 PlayerDataBase[i].setAllin(false);
 
 
@@ -533,11 +777,12 @@ public class GameActivity extends AppCompatActivity {
                 list.setAdapter(adapter);
             }
         }
+        //si el ultimo es big
         else if(PlayerDataBase[PlayerDataBase.length-1].isBig()) {
             PlayerDataBase[0].setBig(true);
 
             for (int i = 1; i < PlayerDataBase.length; i++) {
-                PlayerDataBase[i].setOut(true);
+                PlayerDataBase[i].setIn(true);
                 PlayerDataBase[i].setAllin(false);
 
 
@@ -561,13 +806,14 @@ public class GameActivity extends AppCompatActivity {
                 }
             }
         }
+        //si el ultimo es small
         else if(PlayerDataBase[PlayerDataBase.length-1].isSmall()){
             PlayerDataBase[0].setBig(false);
             PlayerDataBase[0].setSmall(true);
             PlayerDataBase[1].setBig(true);
 
             for(int i=1; i<PlayerDataBase.length;i++){
-                PlayerDataBase[i].setOut(true);
+                PlayerDataBase[i].setIn(true);
                 PlayerDataBase[i].setAllin(false);
 
 
@@ -611,9 +857,9 @@ public class GameActivity extends AppCompatActivity {
 
             //RESTAURAR OUT
             for(int i = 0; i<PlayerDataBase.length; i++){
-                checkout = PlayerDataBase[i].isOut();
+                checkout = PlayerDataBase[i].isIn();
                 if(checkout==true){playersin++;}
-                txt_total_bet.setText(Integer.toString(playersin));
+                txt_current_total_bet.setText(Integer.toString(playersin));
             }
             refresh();
 
