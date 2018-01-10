@@ -20,5 +20,7 @@
     <string name="bet" >BET</string>
     <string name="fold">FOLD</string>
     <string name="Error">Error</string>
+    <string name="Name">Name</string>
+    <string name="Code">Code</string>
 
 </resources>

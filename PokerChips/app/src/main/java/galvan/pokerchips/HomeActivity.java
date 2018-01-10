@@ -13,6 +13,8 @@ import android.widget.Button;
 
 public class HomeActivity extends AppCompatActivity {
 
+    private int code = 5687;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +28,7 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 Intent intent_mode_game = new Intent(HomeActivity.this, ModeGameActivity.class);
+                intent_mode_game.putExtra("code",code);
                 startActivity(intent_mode_game);
             }
         });
@@ -34,6 +37,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent_join_game = new Intent (HomeActivity.this, JoinGameActivity.class);
+                intent_join_game.putExtra("code",code);
                 startActivity(intent_join_game);
             }
         });

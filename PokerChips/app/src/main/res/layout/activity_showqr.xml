@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/txt_code"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="85dp"
         android:text="TextView"
-        android:textSize="30sp" />
+        android:textSize="30sp"
+        android:layout_above="@+id/btn_generate_code"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="50dp" />
 
     <Button
         android:id="@+id/btn_generate_code"
@@ -20,4 +21,14 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="67dp"
         android:text="Generate Code" />
+
+    <TextView
+        android:id="@+id/txt_code_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CODE"
+        android:textSize="24sp"
+        android:layout_above="@+id/txt_code"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="13dp" />
 </RelativeLayout>

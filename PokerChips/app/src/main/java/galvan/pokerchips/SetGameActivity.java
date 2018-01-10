@@ -24,12 +24,15 @@ public class SetGameActivity extends AppCompatActivity {
     private String number_players;
     private String big;
 
+    private int code;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setgame);
 
+        Bundle code_receive = getIntent().getExtras();
+        code = code_receive.getInt("code");
 
         edit_initial_chips = (EditText)findViewById(R.id.edit_initial_chips);
         edit_name = (EditText)findViewById(R.id.edit_host_name);
@@ -50,6 +53,7 @@ public class SetGameActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent generateqr = new Intent(getApplicationContext(), ShowCodeActivity.class);
+                generateqr.putExtra("code",code);
                 startActivity(generateqr);
             }
         });

@@ -51,16 +51,15 @@ android:padding="24dp">
     android:layout_toStartOf="@+id/editText_code"
     android:text="Escribe el codigo para unirte a la partida" />
 
-<EditText
-    android:id="@+id/editText_code"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_above="@+id/btn_scanQR"
-    android:layout_alignParentEnd="true"
-    android:layout_alignParentRight="true"
-    android:layout_marginEnd="14dp"
-    android:layout_marginRight="14dp"
-    android:ems="10"
-    android:inputType="textPersonName"
-    android:text="5938" />
+    <EditText
+        android:id="@+id/editText_code"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btn_scanQR"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="14dp"
+        android:layout_marginRight="14dp"
+        android:ems="10"
+        android:inputType="textPersonName" />
 </RelativeLayout>
