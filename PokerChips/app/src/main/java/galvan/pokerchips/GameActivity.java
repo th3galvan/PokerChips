@@ -93,7 +93,8 @@ public class GameActivity extends AppCompatActivity {
     private int winner2=0;
     private int count_winner_pos=0;
     private boolean winner_finish=false;
-    private int[] winner_pos;
+    private int winner_pos[] ={0,0,0,0};
+    private int winner_check;
 
 
     @Override
@@ -102,7 +103,6 @@ public class GameActivity extends AppCompatActivity {
         setContentView(R.layout.activity_game);
 
         Intent intent =getIntent();
-
 
 
         // TODO: 17/12/2017  hay que hacer algo para asignar un mobil con un jugador
@@ -137,6 +137,8 @@ public class GameActivity extends AppCompatActivity {
         final int chips[] ={5,10,25,50,100};
 
 
+
+
         //declaramos botones y views de las fichas
         final Button btn_plus_chip = (Button) findViewById(R.id.btn_plus_chip);
         final Button btn_minus_chip = (Button) findViewById(R.id.btn_minus_chip);
@@ -166,6 +168,7 @@ public class GameActivity extends AppCompatActivity {
 
         ownChips=PlayerDataBase[playernumber].getChips();
         txt_ownChips.setText(Integer.toString(ownChips));
+
 
         //inicializamos los views de la calculadora
         pos=0;
@@ -257,7 +260,7 @@ public class GameActivity extends AppCompatActivity {
         btn_all_in.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(nState==8 || nState==9){AlertDialog.Builder builder= new AlertDialog.Builder(GameActivity.this);
+                if(nState==8){AlertDialog.Builder builder= new AlertDialog.Builder(GameActivity.this);
                     builder.setMessage("You must select the winner");
                     builder.create().show();}
                 else{
@@ -275,7 +278,7 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if(nState==8 || nState==9){AlertDialog.Builder builder= new AlertDialog.Builder(GameActivity.this);
+                if(nState==8){AlertDialog.Builder builder= new AlertDialog.Builder(GameActivity.this);
                     builder.setMessage("You must select the winner");
                     builder.create().show();}
                 else {
@@ -301,7 +304,7 @@ public class GameActivity extends AppCompatActivity {
         btn_check.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(nState==8 || nState==9){AlertDialog.Builder builder= new AlertDialog.Builder(GameActivity.this);
+                if(nState==8){AlertDialog.Builder builder= new AlertDialog.Builder(GameActivity.this);
                     builder.setMessage("You must select the winner");
                     builder.create().show();}
                 else{
@@ -316,7 +319,7 @@ public class GameActivity extends AppCompatActivity {
         btn_bet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(nState==8 || nState==9){AlertDialog.Builder builder= new AlertDialog.Builder(GameActivity.this);
+                if(nState==8){AlertDialog.Builder builder= new AlertDialog.Builder(GameActivity.this);
                     builder.setMessage("You must select the winner");
                     builder.create().show();}
                 else{
@@ -336,15 +339,18 @@ public class GameActivity extends AppCompatActivity {
         });
 
         //Seleccionar ganador
+
         list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> list, View item, int pos, long id) {
-                if(nState==8 || nState==9){
+                if(nState==8 & !winner_finish){
                     //cuando vote se suma uno
                 winner2++;
                 //se guarda la posición que ha votado en un array
                 PlayerDataBase[pos].setWin(true);
-                   ChooseWinner();
+                   ChooseWinner();}
+                if(winner_finish){Log.i("WINS","FINISH");
+                    checkWinner();
                     }
 
                 return true;
@@ -637,52 +643,34 @@ public class GameActivity extends AppCompatActivity {
 
             //WINNER-
             case 8:
-                AlertDialog.Builder builder= new AlertDialog.Builder(this);
-                    builder.setMessage("Turn to bet are finish we must know the winner");
-                    builder.create().show();
-
-                //buscamos cunaod jugadores quedan
+                                //buscamos cunatos jugadores quedan
                 playersin=0;
                 for(int i=0;i<PlayerDataBase.length;i++){
                     if(PlayerDataBase[i].isIn()){playersin++;}
                 }
                 //los jugadores que queden seran los que tengan que votar
 
-                    ChooseWinner();
+                Log.i("WINNERFINISH",String.format("%b",winner_finish));
+                    if (!winner_finish){
+                ChooseWinner();}
 
-                /*
-                if(winner2<playersin){
-                    for (int i =0;i<PlayerDataBase.length;i++){
-                        if(PlayerDataBase[i].isIn()){Winner();}
-                    }
-                }
-                checkWinner();
-
-            case 9:
-
-                playersin=0;
-                for(int i=0;i<PlayerDataBase.length;i++){
-                    if(PlayerDataBase[i].isIn()){playersin++;}
-                }
-                while(winner2<playersin){
-                    for (int i =0;i<PlayerDataBase.length;i++){
-                        if(PlayerDataBase[i].isIn()){Winner();}
-                    }
-                }*/
        }}
 
     private void ChooseWinner() {
+
+
         switch (winner2){
 
             case 0:
                 if(PlayerDataBase[0].isIn()){
+
                     AlertDialog.Builder builder2= new AlertDialog.Builder(this);
-                    builder2.setMessage(String.format("Player %s choose the winner",PlayerDataBase[0].getName()));
+                    builder2.setMessage(String.format("Turn to bet are finish we must know the winner. Player %s choose the winner",PlayerDataBase[0].getName()));
                     builder2.create().show();}
 
-                else {winner2 =1;}
+                else {winner2++;}
                 break;
-            case 1:
+           case 1:
                 if(PlayerDataBase[1].isIn()){
                     AlertDialog.Builder builder3= new AlertDialog.Builder(this);
                     builder3.setMessage(String.format("Player %s choose the winner",PlayerDataBase[1].getName()));
@@ -704,12 +692,7 @@ public class GameActivity extends AppCompatActivity {
                     AlertDialog.Builder builder5= new AlertDialog.Builder(this);
                     builder5.setMessage(String.format("Player %s choose the winner",PlayerDataBase[3].getName()));
                     builder5.create().show();}
-
-                else {
-                        checkWinner();}
                 break;
-
-
 
         }
     }
@@ -717,49 +700,92 @@ public class GameActivity extends AppCompatActivity {
 
 
     private void checkWinner() {
-        //SE ANALIZA CUANTA ESTA IN
 
-        int playerscall=0;
-
-        //contamos cuantas personas isIn y cuantos han igualado (call= igualar apuesta)
-        for(int i = 0; i<PlayerDataBase.length; i++){
-            checkout = PlayerDataBase[i].isIn();
-            if(checkout==true){playersin++;
-                Log.i("Xavi","+1");
-            }}
-
-
-        //si solo va uno es que ha ganado, buscamos en PlayerDataBase quien es el que ha ganado
-        OnePlayerIn();
-
+        Log.i("WINS","CHECKWINNER");
         //condiciones para que el juega haya acabado
         if(playersin>1 & (nState == 8 || nState == 9)){
             //ahora vamos a ver si todos han votado lo mismo para ello cogemos la primera posicion y vamos comparando
-
+            count_winner_pos=0;
             for (int i =0;i<PlayerDataBase.length;i++){
 
-                if(PlayerDataBase[i].isWin()){winner_pos[count_winner_pos]=i; count_winner_pos++;}
+                    if(PlayerDataBase[i].isWin()){winner_pos[count_winner_pos]=i; count_winner_pos++;}
             }
-            count_winner_pos=winner_pos[0];
-            for (int i =0;i<winner_pos.length;i++){
-                if(winner_pos[i]==count_winner_pos){
-                }
+            winner_check=winner_pos[0];
+            for (int i =0;i<=count_winner_pos;i++){
+                Log.i("WINS",String.format("winner_pos %d // winner_check %d", winner_pos[i],winner_check));
+                if(winner_pos[i]==winner_check){}
                 //si es diferente en algun momento ponemos el valor a -1
-                else {count_winner_pos=-1;}
+                else {winner_check=-1;
+                        winner_finish=false;}
             }
             //si ha sido diferente volvemos vamos al step 9 que es volver a hacer el mismo ciclo
-            if(count_winner_pos==-1){
-                nState=9; turnState(); count_winner_pos=0;}
+            if(winner_check==-1){
+
+                AlertDialog.Builder builder5= new AlertDialog.Builder(this);
+                builder5.setMessage("You are choosing differents players, please try it again and select the same winner");
+                builder5.create().show();
+
+                Log.i("WINS","DIFERENTE");
+                nState=8; winner2 = 0; winner_check=0; count_winner_pos=0;
+                for (int i=0;i<PlayerDataBase.length;i++){
+                PlayerDataBase[i].setWin(false); }
+
+                    turnState(); count_winner_pos=0;}
             //si todos son el mismo jugador se le asigna la victoria
 
-            else {loot= PlayerDataBase[count_winner_pos].getChips()+current_total_bet;
-                PlayerDataBase[pos].setChips(loot);
+            else {
+                Log.i("WINS","IGUAL");
+                loot= PlayerDataBase[winner_check].getChips()+total_bet;
+                PlayerDataBase[winner_check].setChips(loot);
+                AlertDialog.Builder builder3= new AlertDialog.Builder(this);
+                builder3.setMessage(String.format("Player %s won %s chips",PlayerDataBase[winner_check].getName(),Integer.toString(total_bet)));
+                builder3.create().show();
                 current_total_bet=0;
                 current_individual_bet=0;
-                playersin=0;
+                total_bet=0;
+                winner_finish=false;
+                winner2=0;
+                //Se pone to*do a 0
+                for(int i =0;i<PlayerDataBase.length;i++){
+                    PlayerDataBase[i].setIn(true);
+                    PlayerDataBase[i].setBet(0);
+                    PlayerDataBase[i].setCall(false);
+                    PlayerDataBase[i].setTurn(false);}
                 rotarCiega(playersin);}
         }}
 
+    private void OnePlayerIn() {
+        playersin=0;
+        for (int i =0; i<PlayerDataBase.length;i++){
+            if(PlayerDataBase[i].isIn()){playersin++;}
+        }
+        Log.i("WIN", String.format("%d",playersin));
+        if(playersin==1){
+            winner_finish=true;
+            //buscamos el indice de jugador del ganador
+            for(int i=0; i<PlayerDataBase.length;i++){
+                if(PlayerDataBase[i].isIn()){
+                    winner= i;
+                }
+            }
+            Log.i("WIN",String.format("%d",winner));
+            //sumamos la cantidad de current total bet a las fichas del ganador
+            loot= PlayerDataBase[winner].getChips()+total_bet;
+            PlayerDataBase[winner].setChips(loot);
+            AlertDialog.Builder builder3= new AlertDialog.Builder(this);
+            builder3.setMessage(String.format("Player %s won %s chips",PlayerDataBase[winner].getName(),Integer.toString(total_bet)));
+            builder3.create().show();
+            current_total_bet=0;
+            current_individual_bet=0;
+            total_bet=0;
+            winner2=0;
+            for(int i =0;i<PlayerDataBase.length;i++){
+                PlayerDataBase[i].setIn(true);
+                PlayerDataBase[i].setBet(0);
+                PlayerDataBase[i].setCall(false);
+                PlayerDataBase[i].setTurn(false);}
+            rotarCiega(playersin);}
+    }
 
     private void Restart() {
 
@@ -879,35 +905,6 @@ public class GameActivity extends AppCompatActivity {
     }
 
 
-
-    private void OnePlayerIn() {
-        playersin=0;
-        for (int i =0; i<PlayerDataBase.length;i++){
-            if(PlayerDataBase[i].isIn()){playersin++;}
-        }
-        Log.i("WIN", String.format("%d",playersin));
-        if(playersin==1){
-            //buscamos el indice de jugador del ganador
-            for(int i=0; i<PlayerDataBase.length;i++){
-                if(PlayerDataBase[i].isIn()){
-                    winner= i;
-                }
-            }
-            Log.i("WIN",String.format("%d",winner));
-            //sumamos la cantidad de current total bet a las fichas del ganador
-            loot= PlayerDataBase[winner].getChips()+current_total_bet;
-            PlayerDataBase[winner].setChips(loot);
-            AlertDialog.Builder builder3= new AlertDialog.Builder(this);
-            builder3.setMessage(String.format("Player %s won %s chips",PlayerDataBase[winner].getName(),Integer.toString(current_total_bet)));
-            builder3.create().show();
-            current_total_bet=0;
-            current_individual_bet=0;
-            total_bet=0;
-            for(int i =0;i<PlayerDataBase.length;i++){
-            PlayerDataBase[i].setIn(true);
-            PlayerDataBase[i].setBet(0);}
-            rotarCiega(playersin);}
-    }
 
     private void rotarCiega(int playersin) {
         boolean checkout;//DESPLAZAMIENTO CIEGAS
@@ -1047,6 +1044,7 @@ public class GameActivity extends AppCompatActivity {
 
         }
         nState=0;
+        winner_finish=false;
         turnState();
     }
 
