@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".HomeActivity"
+            android:name=".PlayersListActivity"
             android:screenOrientation="reverseLandscape">
             // NECESARIO PARA MODO SOLO HORIZONTAL
             <intent-filter>
@@ -22,9 +22,10 @@
         <activity android:name=".GameActivity" />
         <activity android:name=".JoinGameActivity" />
         <activity android:name=".ModeGameActivity" />
-        <activity android:name=".PlayersListActivity" />
+        <activity android:name=".HomeActivity" />
         <activity android:name=".SetGameActivity" />
         <activity android:name=".ShowCodeActivity" />
+        <activity android:name=".WaitActivity"/>
     </application>
 
 </manifest>

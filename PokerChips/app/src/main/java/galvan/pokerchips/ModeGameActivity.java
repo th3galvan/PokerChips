@@ -12,6 +12,7 @@ import android.widget.RadioButton;
 public class ModeGameActivity extends AppCompatActivity {
 
     private int code;
+    private int players;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -20,6 +21,8 @@ public class ModeGameActivity extends AppCompatActivity {
 
         Bundle code_receive = getIntent().getExtras();
         code = code_receive.getInt("code");
+        players = code_receive.getInt("players");
+
 
         custom();
         fast();
@@ -37,6 +40,7 @@ public class ModeGameActivity extends AppCompatActivity {
 
                     Intent customgame = new Intent(getApplicationContext(), SetGameActivity.class);
                     customgame.putExtra("code",code);
+                    customgame.putExtra("players",players);
                     startActivity(customgame);
                 }
             });
@@ -54,6 +58,7 @@ public class ModeGameActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent fastgame = new Intent(getApplicationContext(), ShowCodeActivity.class);
                 fastgame.putExtra("code",code);
+                fastgame.putExtra("players",players);
                 startActivity(fastgame);
             }
         });

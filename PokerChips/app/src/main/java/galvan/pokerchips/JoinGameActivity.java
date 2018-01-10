@@ -28,13 +28,17 @@ public class JoinGameActivity extends AppCompatActivity {
     private boolean empty_code=false;
     private boolean stop;
 
+    private int code_bundle;
+    private int players;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_joingame);
 
         Bundle code_receive = getIntent().getExtras();
-        int code_bundle = code_receive.getInt("code");
+        code_bundle = code_receive.getInt("code");
+        players = code_receive.getInt("players");
 
 
         name = (EditText)findViewById(R.id.editText_nombre);
@@ -76,8 +80,9 @@ public class JoinGameActivity extends AppCompatActivity {
 
                 Log.i("Xavi2",String.format("code %s // bundle %s",string_code,string_code_bundle));
                 if (!empty & !empty_code & string_code.equals(string_code_bundle)){
-                Intent startgame = new Intent(getApplicationContext(), GameActivity.class);
-                startActivity(startgame);}
+                Intent intent_wait = new Intent(getApplicationContext(), WaitActivity.class);
+                    intent_wait.putExtra("players",players);
+                startActivity(intent_wait);}
             }
         });
     }

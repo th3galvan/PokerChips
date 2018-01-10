@@ -38,8 +38,16 @@ public class GameActivity extends AppCompatActivity {
     private int playerscall;
     private int winner2=0;
     private int count_winner_pos=0;
+    private int all_in_value;
+    private int players_allin;
+    private int restart_bet;
+    private int cont_playersin;
+    private int cont_winner_out=0;
+    private int count_loser_pos;
+    private int playernumber;
 
     private String string_big;
+    private String string_bet;
 
     private boolean all_in;
     private boolean checkout;
@@ -58,11 +66,10 @@ public class GameActivity extends AppCompatActivity {
     private TextView txt_playernumber;
 //// TODO: 17/12/2017 hay que hacer algo para asignar un mobil con un jugador
 
-    private int playernumber;
-
     private ArrayList<PlayerItems> players;
     private PlayerItemAdapter adapter;
     private ListView list;
+
     //PlayerItems( int i,
     //              String name, int chips,      boolean dealer,
     //              boolean small, boolean big,  boolean in,
@@ -91,13 +98,7 @@ public class GameActivity extends AppCompatActivity {
             0,           false,     false, false, false);
 
     private PlayerItems PlayerDataBase[]={Fulanito,Menganito,Malaquito,Estalactito};
-    private int all_in_value;
-    private int players_allin;
-    private String string_bet;
-    private int restart_bet;
-    private int cont_playersin;
-    private int cont_winner_out=0;
-    private int count_loser_pos;
+
 
 
     @Override

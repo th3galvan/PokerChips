@@ -16,6 +16,7 @@ public class ShowCodeActivity extends AppCompatActivity {
 
     private TextView txt_code;
     private int code;
+    private int players;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -24,6 +25,7 @@ public class ShowCodeActivity extends AppCompatActivity {
 
         Bundle code_receive = getIntent().getExtras();
         code = code_receive.getInt("code");
+        players =code_receive.getInt("players");
 
         Button btn_code = (Button)findViewById(R.id.btn_generate_code);
         txt_code = (TextView)findViewById(R.id.txt_code);
@@ -34,9 +36,11 @@ public class ShowCodeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-
                 String string_code = Integer.toString(code);
                 txt_code.setText(string_code);
+
+                Intent intent_list = new Intent (ShowCodeActivity.this, PlayersListActivity.class);
+                startActivity(intent_list);
 
             }
         });
