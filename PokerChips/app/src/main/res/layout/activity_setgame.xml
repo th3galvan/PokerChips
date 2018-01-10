@@ -39,11 +39,11 @@
         android:id="@+id/edit_players_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/edit_host_name"
-        android:layout_alignStart="@+id/edit_host_name"
-        android:layout_centerVertical="true"
         android:ems="10"
-        android:inputType="textPersonName" />
+        android:inputType="textPersonName"
+        android:layout_centerVertical="true"
+        android:layout_alignLeft="@+id/edit_host_name"
+        android:layout_alignStart="@+id/edit_host_name" />
 
     <TextView
         android:id="@+id/txt_initial_chips"

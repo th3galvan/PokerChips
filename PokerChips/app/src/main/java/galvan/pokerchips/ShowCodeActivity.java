@@ -24,13 +24,12 @@ public class ShowCodeActivity extends AppCompatActivity {
 
         Button btn_code = (Button)findViewById(R.id.btn_generate_code);
 
-        while(!stop){code++;}
 
         btn_code.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                stop = false;
+                code=1234;
                 String string_code = Integer.toString(code);
                 txt_code.setText(string_code);
 

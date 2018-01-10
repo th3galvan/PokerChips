@@ -13,9 +13,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.StringTokenizer;
-
-import javax.xml.transform.Templates;
 
 
 public class GameActivity extends AppCompatActivity {
@@ -35,12 +32,18 @@ public class GameActivity extends AppCompatActivity {
     private int nState;
     private int Player_big_blind;
     private int Player_small_blind;
-
+    private int winner_pos[] ={0,0,0,0};
+    private int winner_check;
+    private int eq_bet;
+    private int playerscall;
+    private int winner2=0;
+    private int count_winner_pos=0;
 
     private String string_big;
 
     private boolean all_in;
     private boolean checkout;
+    private boolean winner_finish=false;
 
     private TextView txt_current_individual_bet;
     private TextView txt_ownChips;
@@ -88,13 +91,10 @@ public class GameActivity extends AppCompatActivity {
             0,           false,     false, false, false);
 
     private PlayerItems PlayerDataBase[]={Fulanito,Menganito,Malaquito,Estalactito};
-    private int eq_bet;
-    private int playerscall;
-    private int winner2=0;
-    private int count_winner_pos=0;
-    private boolean winner_finish=false;
-    private int winner_pos[] ={0,0,0,0};
-    private int winner_check;
+    private int all_in_value;
+    private int players_allin;
+    private String string_bet;
+    private int restart_bet;
 
 
     @Override
@@ -207,7 +207,7 @@ public class GameActivity extends AppCompatActivity {
         txt_playernumber.setText(Integer.toString(playernumber));
         //utilizamos el metodo turnState para saber en que parte de la partida nos encontramos
         // blind bet, preflop, flop, turn, river
-        turnState();
+        turnALLIN(); turnState();
 
 
 
@@ -238,7 +238,9 @@ public class GameActivity extends AppCompatActivity {
         btn_plus_bet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(bet2+chips[pos]<=ownChips)
+                if(all_in){String textBetBtn = Integer.toString(all_in_value);
+                    txt_bet.setText(textBetBtn);}
+                else if(bet2+chips[pos]<=ownChips)
                 {bet2=bet2+chips[pos];
                     String textBetBtn = Integer.toString(bet2);
                     txt_bet.setText(textBetBtn);}
@@ -248,7 +250,9 @@ public class GameActivity extends AppCompatActivity {
         btn_minus_bet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(bet2<chips[pos]){}
+                if (all_in){String textBetBtn = Integer.toString(all_in_value);
+                    txt_bet.setText(textBetBtn);}
+                else if(bet2<chips[pos]){}
                 else{bet2=bet2-chips[pos];
                     String textBetBtn = Integer.toString(bet2);
                     txt_bet.setText(textBetBtn);}
@@ -263,6 +267,8 @@ public class GameActivity extends AppCompatActivity {
                 if(nState==8){AlertDialog.Builder builder= new AlertDialog.Builder(GameActivity.this);
                     builder.setMessage("You must select the winner");
                     builder.create().show();}
+                else if (all_in){String textBetBtn = Integer.toString(all_in_value);
+                    txt_bet.setText(textBetBtn);}
                 else{
                 bet2=ownChips;
                 String textAllBtn = Integer.toString(bet2);
@@ -273,7 +279,6 @@ public class GameActivity extends AppCompatActivity {
 
 
         //BTN EQUALIZE
-
         btn_equalize.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -281,6 +286,8 @@ public class GameActivity extends AppCompatActivity {
                 if(nState==8){AlertDialog.Builder builder= new AlertDialog.Builder(GameActivity.this);
                     builder.setMessage("You must select the winner");
                     builder.create().show();}
+                else if (all_in){String textBetBtn = Integer.toString(all_in_value);
+                    txt_bet.setText(textBetBtn);}
                 else {
                 if(current_individual_bet>ownChips){
                     bet2=ownChips;
@@ -319,21 +326,18 @@ public class GameActivity extends AppCompatActivity {
         btn_bet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 if(nState==8){AlertDialog.Builder builder= new AlertDialog.Builder(GameActivity.this);
                     builder.setMessage("You must select the winner");
                     builder.create().show();}
                 else{
+
+                    if(all_in){bet2=all_in_value;}
+
                 if(bet2 == 0){
                     Message0bet();
                 }
                 else {
-                    //Aqui descubro si la apuesta me esta igualando a una subida de otro jugador o esta subiendo la apuesta
-                    if(bet2+PlayerDataBase[playernumber].getBet()==current_individual_bet){
-                        //Esto lo usaba antes y ya no me sirve pero lo dejo por si nos sirve en un futuro
-
-                    }
-                    else{}
-
                         toBet(bet2);}
             }}
         });
@@ -348,10 +352,10 @@ public class GameActivity extends AppCompatActivity {
                 winner2++;
                 //se guarda la posición que ha votado en un array
                 PlayerDataBase[pos].setWin(true);
-                   ChooseWinner();}
+                   ChooseWinner();
                 if(winner_finish){Log.i("WINS","FINISH");
                     checkWinner();
-                    }
+                    }}
 
                 return true;
 
@@ -380,14 +384,14 @@ public class GameActivity extends AppCompatActivity {
             Log.i("Galvan","CHECK");
             //utilizamos el metodo turnState para saber en que parte de la partida nos encontramos
             // blind bet, preflop, flop, turn, river
-            turnState();
+            turnALLIN(); turnState();
             nextTurn();
         }
         else{
             Log.i("Galvan","FOLD");
             PlayerDataBase[playernumber].setIn(false);
             PlayerDataBase[playernumber].setCall(false);
-            turnState();
+            turnALLIN(); turnState();
             nextTurn();
         }
     }
@@ -403,7 +407,11 @@ public class GameActivity extends AppCompatActivity {
         final int newownChips=ownChips-toBetBet;
 
         //SI VAMOS ALL IN
-        if(newownChips<=0){
+        if (newownChips<0){AlertDialog.Builder builder= new AlertDialog.Builder(this);
+            builder.setMessage("You do not have chips enought, please FOLD");
+            builder.create().show();}
+
+        else if(newownChips==0){
             Log.i("Galvan","(newownChips<=0)");
             //CREAMOS DIALOGO
             AlertDialog.Builder builder= new AlertDialog.Builder(this);
@@ -437,6 +445,7 @@ public class GameActivity extends AppCompatActivity {
                     PlayerDataBase[playernumber].setCall(true);
                     PlayerDataBase[playernumber].setIn(true);
                     txt_playernumber.setText(Integer.toString(playernumber));
+                    all_in_value=toBetBet;
 
                     Log.i("Galvan","apuesta confirmada");
                     //CAMBIO DE TURNO
@@ -514,9 +523,24 @@ public class GameActivity extends AppCompatActivity {
             }}
         String SownChips= Integer.toString(ownChips);
         txt_ownChips.setText(SownChips);
-        //utilizamos el metodo turnState para saber en que parte de la partida nos encontramos
-        // blind bet, preflop, flop, turn, river
-        turnState();}
+            turnALLIN(); turnState();
+        }
+
+
+
+    private void turnALLIN(){
+
+        players_allin=0;
+        for (int i=0;i<PlayerDataBase.length;i++){
+             if(PlayerDataBase[i].isAllin()){players_allin++;}
+        }
+        playersin=0;
+        for (int i=0;i<PlayerDataBase.length;i++){
+            if(PlayerDataBase[i].isIn()){playersin++;}
+        }
+        if(players_allin==playersin){nState=8;}
+
+    }
 
     private void turnState() {
 
@@ -666,27 +690,31 @@ public class GameActivity extends AppCompatActivity {
 
                     AlertDialog.Builder builder2= new AlertDialog.Builder(this);
                     builder2.setMessage(String.format("Turn to bet are finish we must know the winner. Player %s choose the winner",PlayerDataBase[0].getName()));
-                    builder2.create().show();}
+                    builder2.create().show();
+                    break;}
 
                 else {winner2++;}
-                break;
+
            case 1:
                 if(PlayerDataBase[1].isIn()){
                     AlertDialog.Builder builder3= new AlertDialog.Builder(this);
                     builder3.setMessage(String.format("Player %s choose the winner",PlayerDataBase[1].getName()));
-                    builder3.create().show();}
+                    builder3.create().show();
+                    break;}
 
                 else {winner2 =2;}
-                break;
+
             case 2:
                 if(PlayerDataBase[2].isIn()){
                     AlertDialog.Builder builder4= new AlertDialog.Builder(this);
                     builder4.setMessage(String.format("Player %s choose the winner",PlayerDataBase[2].getName()));
-                    builder4.create().show();}
+                    builder4.create().show();
+                    break;}
 
                 else {winner2 =3;}
-                break;
+
             case 3:
+                //todo winner_finish deberia inspeccionarse en cada caso si es el ultimo player en in
                 winner_finish=true;
                 if(PlayerDataBase[3].isIn()){
                     AlertDialog.Builder builder5= new AlertDialog.Builder(this);
@@ -730,7 +758,7 @@ public class GameActivity extends AppCompatActivity {
                 for (int i=0;i<PlayerDataBase.length;i++){
                 PlayerDataBase[i].setWin(false); }
 
-                    turnState(); count_winner_pos=0;}
+                    turnALLIN(); turnState(); count_winner_pos=0;}
             //si todos son el mismo jugador se le asigna la victoria
 
             else {
@@ -750,7 +778,13 @@ public class GameActivity extends AppCompatActivity {
                     PlayerDataBase[i].setIn(true);
                     PlayerDataBase[i].setBet(0);
                     PlayerDataBase[i].setCall(false);
-                    PlayerDataBase[i].setTurn(false);}
+                    PlayerDataBase[i].setTurn(false);
+                //valores a 0 por allin
+                    all_in=false;
+                    all_in_value=0;
+                    restart_bet=0;
+                    string_bet = Integer.toString(restart_bet);
+                    txt_bet.setText(string_bet);}
                 rotarCiega(playersin);}
         }}
 
@@ -783,7 +817,13 @@ public class GameActivity extends AppCompatActivity {
                 PlayerDataBase[i].setIn(true);
                 PlayerDataBase[i].setBet(0);
                 PlayerDataBase[i].setCall(false);
-                PlayerDataBase[i].setTurn(false);}
+                PlayerDataBase[i].setTurn(false);
+                //valores a 0 por allin
+                all_in=false;
+                all_in_value=0;
+                restart_bet=0;
+                string_bet = Integer.toString(restart_bet);
+                txt_bet.setText(string_bet);}
             rotarCiega(playersin);}
     }
 
@@ -860,6 +900,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void nextTurn() {
+        //si hay allin chequeo si ya han apostado todos
 
         //CAMBIO DE TURNO
         Log.i("Galvan","CAMBIO DE TURNO");
@@ -1045,7 +1086,7 @@ public class GameActivity extends AppCompatActivity {
         }
         nState=0;
         winner_finish=false;
-        turnState();
+        turnALLIN(); turnState();
     }
 
 }
