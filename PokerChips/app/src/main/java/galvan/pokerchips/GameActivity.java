@@ -63,36 +63,37 @@ public class GameActivity extends AppCompatActivity {
     //PlayerItems( int i,
     //              String name, int chips,      boolean dealer,
     //              boolean small, boolean big,  boolean in,
-    //              int bet,      boolean turn    boolean allin)
+    //              int bet,      boolean turn    boolean allin
+    //              boolean win)
     private PlayerItems Fulanito= new PlayerItems(1,
             "Fulanito", 1000,
             true,      false,   false,
             true,
-            0,          false,   false, false);
+            0,          false,   false, false, false);
     private PlayerItems Menganito= new PlayerItems(2,
             "Menganito", 1000,
             false,        true,  false,
             true,
-            0,           false,  false, false);
+            0,           false,  false, false, false);
     private PlayerItems Malaquito= new PlayerItems(3,
             "Malaquito", 1000,
             false,      false,    true,
             true,
-            0,         false,   false, false);
+            0,         false,   false, false, false);
 
     private PlayerItems Estalactito = new PlayerItems(4,
             "Estalactito", 1000,
             false,      false,       false,
             true,
-            0,           false,     false, false);
+            0,           false,     false, false, false);
 
     private PlayerItems PlayerDataBase[]={Fulanito,Menganito,Malaquito,Estalactito};
     private int eq_bet;
     private int playerscall;
     private int winner2=0;
-    private int winner3;
-    private int winner_pos[];
     private int count_winner_pos=0;
+    private boolean winner_finish=false;
+    private int[] winner_pos;
 
 
     @Override
@@ -334,6 +335,23 @@ public class GameActivity extends AppCompatActivity {
             }}
         });
 
+        //Seleccionar ganador
+        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> list, View item, int pos, long id) {
+                if(nState==8 || nState==9){
+                    //cuando vote se suma uno
+                winner2++;
+                //se guarda la posición que ha votado en un array
+                PlayerDataBase[pos].setWin(true);
+                   ChooseWinner();
+                    }
+
+                return true;
+
+            }
+
+        });
 
     }
 
@@ -584,7 +602,7 @@ public class GameActivity extends AppCompatActivity {
                 for(int i=0;i<PlayerDataBase.length;i++){
                     if(PlayerDataBase[i].isIn()){playersin++;}
                 }
-                playerscall=1;
+                playerscall=0;
 
                 for(int p=0;p<PlayerDataBase.length;p++){
                     if(PlayerDataBase[p].isCall()){playerscall++;}}
@@ -608,7 +626,7 @@ public class GameActivity extends AppCompatActivity {
                 for(int i=0;i<PlayerDataBase.length;i++){
                     if(PlayerDataBase[i].isIn()){playersin++;}
                 }
-                playerscall=1;
+                playerscall=0;
                 for(int p=0;p<PlayerDataBase.length;p++){
                     if(PlayerDataBase[p].isCall()){playerscall++;}}
 
@@ -629,7 +647,11 @@ public class GameActivity extends AppCompatActivity {
                     if(PlayerDataBase[i].isIn()){playersin++;}
                 }
                 //los jugadores que queden seran los que tengan que votar
-                while(winner2<playersin){
+
+                    ChooseWinner();
+
+                /*
+                if(winner2<playersin){
                     for (int i =0;i<PlayerDataBase.length;i++){
                         if(PlayerDataBase[i].isIn()){Winner();}
                     }
@@ -646,11 +668,98 @@ public class GameActivity extends AppCompatActivity {
                     for (int i =0;i<PlayerDataBase.length;i++){
                         if(PlayerDataBase[i].isIn()){Winner();}
                     }
+                }*/
+       }}
+
+    private void ChooseWinner() {
+        switch (winner2){
+
+            case 0:
+                if(PlayerDataBase[0].isIn()){
+                    AlertDialog.Builder builder2= new AlertDialog.Builder(this);
+                    builder2.setMessage(String.format("Player %s choose the winner",PlayerDataBase[0].getName()));
+                    builder2.create().show();}
+
+                else {winner2 =1;}
+                break;
+            case 1:
+                if(PlayerDataBase[1].isIn()){
+                    AlertDialog.Builder builder3= new AlertDialog.Builder(this);
+                    builder3.setMessage(String.format("Player %s choose the winner",PlayerDataBase[1].getName()));
+                    builder3.create().show();}
+
+                else {winner2 =2;}
+                break;
+            case 2:
+                if(PlayerDataBase[2].isIn()){
+                    AlertDialog.Builder builder4= new AlertDialog.Builder(this);
+                    builder4.setMessage(String.format("Player %s choose the winner",PlayerDataBase[2].getName()));
+                    builder4.create().show();}
+
+                else {winner2 =3;}
+                break;
+            case 3:
+                winner_finish=true;
+                if(PlayerDataBase[3].isIn()){
+                    AlertDialog.Builder builder5= new AlertDialog.Builder(this);
+                    builder5.setMessage(String.format("Player %s choose the winner",PlayerDataBase[3].getName()));
+                    builder5.create().show();}
+
+                else {
+                        checkWinner();}
+                break;
+
+
+
+        }
+    }
+
+
+
+    private void checkWinner() {
+        //SE ANALIZA CUANTA ESTA IN
+
+        int playerscall=0;
+
+        //contamos cuantas personas isIn y cuantos han igualado (call= igualar apuesta)
+        for(int i = 0; i<PlayerDataBase.length; i++){
+            checkout = PlayerDataBase[i].isIn();
+            if(checkout==true){playersin++;
+                Log.i("Xavi","+1");
+            }}
+
+
+        //si solo va uno es que ha ganado, buscamos en PlayerDataBase quien es el que ha ganado
+        OnePlayerIn();
+
+        //condiciones para que el juega haya acabado
+        if(playersin>1 & (nState == 8 || nState == 9)){
+            //ahora vamos a ver si todos han votado lo mismo para ello cogemos la primera posicion y vamos comparando
+
+            for (int i =0;i<PlayerDataBase.length;i++){
+
+                if(PlayerDataBase[i].isWin()){winner_pos[count_winner_pos]=i; count_winner_pos++;}
+            }
+            count_winner_pos=winner_pos[0];
+            for (int i =0;i<winner_pos.length;i++){
+                if(winner_pos[i]==count_winner_pos){
                 }
-                checkWinner();
+                //si es diferente en algun momento ponemos el valor a -1
+                else {count_winner_pos=-1;}
+            }
+            //si ha sido diferente volvemos vamos al step 9 que es volver a hacer el mismo ciclo
+            if(count_winner_pos==-1){
+                nState=9; turnState(); count_winner_pos=0;}
+            //si todos son el mismo jugador se le asigna la victoria
 
-
+            else {loot= PlayerDataBase[count_winner_pos].getChips()+current_total_bet;
+                PlayerDataBase[pos].setChips(loot);
+                current_total_bet=0;
+                current_individual_bet=0;
+                playersin=0;
+                rotarCiega(playersin);}
         }}
+
 
     private void Restart() {
 
@@ -770,44 +879,6 @@ public class GameActivity extends AppCompatActivity {
     }
 
 
-    private void checkWinner() {
-        //SE ANALIZA CUANTA ESTA IN
-
-        int playerscall=0;
-
-        //contamos cuantas personas isIn y cuantos han igualado (call= igualar apuesta)
-        for(int i = 0; i<PlayerDataBase.length; i++){
-            checkout = PlayerDataBase[i].isIn();
-            if(checkout==true){playersin++;
-                Log.i("Xavi","+1");
-        }}
-
-
-        //si solo va uno es que ha ganado, buscamos en PlayerDataBase quien es el que ha ganado
-        OnePlayerIn();
-
-        //condiciones para que el juega haya acabado
-            if(playersin>1 & nState == 8){
-                //ahora vamos a ver si todos han votado lo mismo para ello cogemos la primera posicion y vamos comparando
-                count_winner_pos=winner_pos[0];
-                for (int i =0;i<winner_pos.length;i++){
-                    if(winner_pos[i]==count_winner_pos){
-                    }
-                    //si es diferente en algun momento ponemos el valor a -1
-                    else {count_winner_pos=-1;}
-                }
-        //si ha sido diferente volvemos vamos al step 9 que es volver a hacer el mismo ciclo
-        if(count_winner_pos==-1){
-            nState=9; turnState(); count_winner_pos=0;}
-        //si todos son el mismo jugador se le asigna la victoria
-
-        else {loot= PlayerDataBase[count_winner_pos].getChips()+current_total_bet;
-            PlayerDataBase[pos].setChips(loot);
-            current_total_bet=0;
-            current_individual_bet=0;
-            playersin=0;
-            rotarCiega(playersin);}
-    }}
 
     private void OnePlayerIn() {
         playersin=0;
@@ -837,28 +908,6 @@ public class GameActivity extends AppCompatActivity {
             PlayerDataBase[i].setBet(0);}
             rotarCiega(playersin);}
     }
-
-
-    //Para saber quien es el campeon
-    private void Winner() {
-        //igualamos el valor de winner anterior, numero de jugadores que han votado
-        winner3=winner2;
-        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-             @Override
-             public boolean onItemLongClick(AdapterView adapterView, View view, int pos, long l) {
-                 //cuando vote se suma uno
-                 winner2++;
-                 //se guarda la posición que ha votado en un array
-                 winner_pos[count_winner_pos]=pos;
-                 return true;
-             }
-         });
-    //miramos si ha votado, si no lo ha hecho volvemos a llamar al metodo
-    while(winner2!=winner3+1){Winner();}
-        //sumamos una posicion en el array
-        count_winner_pos++;
-    }
-
 
     private void rotarCiega(int playersin) {
         boolean checkout;//DESPLAZAMIENTO CIEGAS

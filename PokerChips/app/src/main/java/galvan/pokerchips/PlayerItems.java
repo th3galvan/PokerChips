@@ -10,6 +10,7 @@ public class PlayerItems extends AppCompatActivity {
     private boolean big;
     private boolean small;
     private boolean in;
+    private boolean win;
 
     private  int bet;
     private  boolean turn;
@@ -20,12 +21,13 @@ public class PlayerItems extends AppCompatActivity {
     public PlayerItems(int i,
                        String name,         int chips,      boolean dealer,
                        boolean small,         boolean big,  boolean in,
-                       int bet,             boolean turn,   boolean allin, boolean call) {
+                       int bet,             boolean turn,   boolean allin,
+                       boolean call,        boolean win) {
 
         this.name = name;   this.chips = chips;     this.dealer = dealer;
         this.big = big;     this.small = small;     this.in = in;
         this.bet = bet;     this.turn = turn;       this.allin= allin;
-        this.call = call;
+        this.call = call;   this.win = win;
     }
 
     public PlayerItems(long id, String name, int chips, boolean dealer, boolean big, boolean small, boolean in) {
@@ -57,6 +59,10 @@ public class PlayerItems extends AppCompatActivity {
     public int getChips() {
         return chips;
     }
+
+    public void setWin(boolean win){this.win = win;}
+
+    public boolean isWin(){return win;}
 
     public void setChips(int chips) {
         this.chips = chips;
