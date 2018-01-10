@@ -8,10 +8,12 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        >
         <activity
-            android:name=".PlayersListActivity"
-            android:screenOrientation="reverseLandscape">
+            android:name=".HomeActivity"
+            android:screenOrientation="reverseLandscape"
+            >
             // NECESARIO PARA MODO SOLO HORIZONTAL
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,13 +21,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".GameActivity" />
-        <activity android:name=".JoinGameActivity" />
-        <activity android:name=".ModeGameActivity" />
-        <activity android:name=".HomeActivity" />
-        <activity android:name=".SetGameActivity" />
-        <activity android:name=".ShowCodeActivity" />
-        <activity android:name=".WaitActivity"/>
+        <activity android:name=".GameActivity"
+            android:screenOrientation="reverseLandscape"/>
+        <activity android:name=".JoinGameActivity"
+            android:screenOrientation="reverseLandscape"/>
+        <activity android:name=".ModeGameActivity"
+            android:screenOrientation="reverseLandscape"/>
+        <activity android:name=".PlayersListActivity"
+            android:screenOrientation="reverseLandscape"/>
+        <activity android:name=".SetGameActivity"
+            android:screenOrientation="reverseLandscape"/>
+        <activity android:name=".ShowCodeActivity"
+            android:screenOrientation="reverseLandscape"/>
+        <activity android:name=".WaitActivity"
+            android:screenOrientation="reverseLandscape"/>
     </application>
 
 </manifest>
