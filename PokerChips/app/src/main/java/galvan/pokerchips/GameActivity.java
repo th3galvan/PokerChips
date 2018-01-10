@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 import javax.xml.transform.Templates;
 
@@ -510,6 +511,7 @@ public class GameActivity extends AppCompatActivity {
                         //en el preflop el turno es para el siguiente del Big Blind
                         playernumber=i+1;
                         //inicializo turno
+                        Log.i("WHERE",String.format("%d",playernumber));
                         if(playernumber>=PlayerDataBase.length){
                             playernumber=0;
                             PlayerDataBase[playernumber].setTurn(true);
@@ -572,17 +574,17 @@ public class GameActivity extends AppCompatActivity {
             case 4:
 
                 Restart();
+                AdjustTurn();
                 nState=5;
 
             //TURN
             case 5:
 
                 playersin=0;
-               previousTurn();
                 for(int i=0;i<PlayerDataBase.length;i++){
                     if(PlayerDataBase[i].isIn()){playersin++;}
                 }
-                playerscall=0;
+                playerscall=1;
 
                 for(int p=0;p<PlayerDataBase.length;p++){
                     if(PlayerDataBase[p].isCall()){playerscall++;}}
@@ -596,17 +598,17 @@ public class GameActivity extends AppCompatActivity {
             case 6:
 
                 Restart();
+                AdjustTurn();
                 nState=7;
 
             //RIVER
             case 7:
 
                 playersin=0;
-                previousTurn();
                 for(int i=0;i<PlayerDataBase.length;i++){
                     if(PlayerDataBase[i].isIn()){playersin++;}
                 }
-                playerscall=0;
+                playerscall=1;
                 for(int p=0;p<PlayerDataBase.length;p++){
                     if(PlayerDataBase[p].isCall()){playerscall++;}}
 
@@ -741,6 +743,7 @@ public class GameActivity extends AppCompatActivity {
         for (int i =0; i<PlayerDataBase.length;i++){
             if(PlayerDataBase[i].isIn()){playersin++;}
         }
+        Log.i("WIN","YES");
         OnePlayerIn();
 
         PlayerDataBase[playernumber].setTurn(true);
@@ -748,25 +751,24 @@ public class GameActivity extends AppCompatActivity {
         refresh();
     }
 
-    private void previousTurn() {
-        //CAMBIO DE TURNO
-
+    private void AdjustTurn(){
+        //Ajustamos el turno ya que cuando creaba los turnos se desplazaba una posicion hacia adelante
         PlayerDataBase[playernumber].setTurn(false);
 
-        if((playernumber==PlayerDataBase.length-1)){playernumber=PlayerDataBase.length-2;}
+        if (playernumber==0){playernumber=PlayerDataBase.length-1;}
         else{playernumber--;}
 
         while(!PlayerDataBase[playernumber].isIn()){
 
-            if((playernumber==PlayerDataBase.length-1)){playernumber=PlayerDataBase.length-2;}
-            else{playernumber--;}
-
+            if (playernumber==0){playernumber=PlayerDataBase.length-1;}
+            else {playernumber--;}
         }
 
         PlayerDataBase[playernumber].setTurn(true);
         list.setAdapter(adapter);
-        refresh();
+
     }
+
 
     private void checkWinner() {
         //SE ANALIZA CUANTA ESTA IN
@@ -808,6 +810,11 @@ public class GameActivity extends AppCompatActivity {
     }}
 
     private void OnePlayerIn() {
+        playersin=0;
+        for (int i =0; i<PlayerDataBase.length;i++){
+            if(PlayerDataBase[i].isIn()){playersin++;}
+        }
+        Log.i("WIN", String.format("%d",playersin));
         if(playersin==1){
             //buscamos el indice de jugador del ganador
             for(int i=0; i<PlayerDataBase.length;i++){
@@ -815,17 +822,19 @@ public class GameActivity extends AppCompatActivity {
                     winner= i;
                 }
             }
+            Log.i("WIN",String.format("%d",winner));
             //sumamos la cantidad de current total bet a las fichas del ganador
             loot= PlayerDataBase[winner].getChips()+current_total_bet;
             PlayerDataBase[winner].setChips(loot);
             AlertDialog.Builder builder3= new AlertDialog.Builder(this);
             builder3.setMessage(String.format("Player %s won %s chips",PlayerDataBase[winner].getName(),Integer.toString(current_total_bet)));
             builder3.create().show();
-            winner=0;
-            loot=0;
             current_total_bet=0;
             current_individual_bet=0;
-            playersin=0;
+            total_bet=0;
+            for(int i =0;i<PlayerDataBase.length;i++){
+            PlayerDataBase[i].setIn(true);
+            PlayerDataBase[i].setBet(0);}
             rotarCiega(playersin);}
     }
 
@@ -982,9 +991,14 @@ public class GameActivity extends AppCompatActivity {
                 if(checkout==true){playersin++;}
                 txt_current_total_bet.setText(Integer.toString(playersin));
             }
+
+            //Rotar turno
+
             refresh();
 
         }
+        nState=0;
+        turnState();
     }
 
 }
