@@ -22,5 +22,9 @@
     <string name="Error">Error</string>
     <string name="Name">Name</string>
     <string name="Code">Code</string>
+    <string name="players">Number of players</string>
+    <string name="initial_chips">Initial chips</string>
+    <string name="Frecuency">Frecuency to rise</string>
+    <string name="Rise_value">Rise value</string>
 
 </resources>

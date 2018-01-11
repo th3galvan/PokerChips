@@ -2,17 +2,15 @@ package galvan.pokerchips;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -62,11 +60,6 @@ public class GameActivity extends AppCompatActivity {
     private TextView txt_total_bet;
     private TextView txt_big;
 
-    //parametros cuenta atras contador
-    private TextView txt_time_numbrer;
-    private int time;
-
-
     //VARIABLES DE PRUEBA
     private TextView fichasmalaquito ;
     private TextView fichasmalaquitodatabase ;
@@ -114,7 +107,6 @@ public class GameActivity extends AppCompatActivity {
         setContentView(R.layout.activity_game);
 
         Intent intent =getIntent();
-
 
 
         // TODO: 17/12/2017  hay que hacer algo para asignar un mobil con un jugador
@@ -384,39 +376,7 @@ public class GameActivity extends AppCompatActivity {
 
         });
 
-        //declaramos el view de la cuenta atras y la iniciamos un contador
-        txt_time_numbrer = (TextView) findViewById(R.id.txt_time_number);
-
-        time = 60000;
-
-        new CountDownTimer(time, 1000){
-            public void onTick(long millisUntilFinished){
-                txt_time_numbrer.setText(millisUntilFinished / 1000 + "");
-            }
-            public void onFinish(){
-                //TODO: aqui cuando el contador llega a cero hay que cambiar los valores de los parametros que haga falta
-
-                Toast toastCiega = Toast.makeText(getApplicationContext(),
-                        "Subida de Ciega", Toast.LENGTH_LONG);
-                toastCiega.show();
-
-                if(time<=10000) {
-                    time = time - 10000;
-                }else{
-                        time = 60000;
-                }
-
-
-                start();
-            }
-        }.start();
-
-
-
-
     }
-
-
 
 
     private void Message0bet() {
@@ -1149,6 +1109,5 @@ public class GameActivity extends AppCompatActivity {
         winner_finish=false;
         turnALLIN(); turnState();
     }
-
 
 }

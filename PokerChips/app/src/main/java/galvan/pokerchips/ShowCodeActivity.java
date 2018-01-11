@@ -15,8 +15,17 @@ import android.widget.TextView;
 public class ShowCodeActivity extends AppCompatActivity {
 
     private TextView txt_code;
+
     private int code;
     private int players;
+    private int number_players;
+    private int initial_chips;
+    private int big;
+    private int time_big_up;
+    private int change_value_big;
+
+    private String name;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -26,6 +35,13 @@ public class ShowCodeActivity extends AppCompatActivity {
         Bundle code_receive = getIntent().getExtras();
         code = code_receive.getInt("code");
         players =code_receive.getInt("players");
+        number_players =code_receive.getInt("playersnumber");
+        initial_chips =code_receive.getInt("initial_chips");
+        big =code_receive.getInt("bigblind");
+        time_big_up =code_receive.getInt("frecuency");
+        change_value_big =code_receive.getInt("change");
+        name =code_receive.getString("name");
+
 
         Button btn_code = (Button)findViewById(R.id.btn_generate_code);
         txt_code = (TextView)findViewById(R.id.txt_code);
@@ -40,6 +56,12 @@ public class ShowCodeActivity extends AppCompatActivity {
                 txt_code.setText(string_code);
 
                 Intent intent_list = new Intent (ShowCodeActivity.this, PlayersListActivity.class);
+                intent_list.putExtra("name",name);
+                intent_list.putExtra("playersnumber",number_players);
+                intent_list.putExtra("initial_chips",initial_chips);
+                intent_list.putExtra("bigblind",big);
+                intent_list.putExtra("frecuency",time_big_up);
+                intent_list.putExtra("change",change_value_big);
                 startActivity(intent_list);
 
             }
