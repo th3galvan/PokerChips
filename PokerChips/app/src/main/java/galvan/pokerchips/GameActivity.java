@@ -111,6 +111,7 @@ public class GameActivity extends AppCompatActivity {
     private int min;
     private TextView txt_turn;
     private int number_players;
+    private String Scurrent_total_bet;
 
 
     @Override
@@ -432,7 +433,7 @@ private void Message0bet() {
         //Mensaje que nos indica que estamos dandole a apostar sin seleccionar ficha
         AlertDialog.Builder builder= new AlertDialog.Builder(this);
         builder.setTitle(R.string.Error);
-        builder.setMessage("You are trying to bet 0 chips, try to check or to select some chips");
+        builder.setMessage("You are trying to bet very few chips, press CHECK/FOLD or bet some more chips");
         builder.create().show();
     }
 
@@ -460,23 +461,22 @@ private void Message0bet() {
     //este metodo se ejecuta cuando pulsamos pasar o apostar, si pulsamos bet el valor de la variable
     // bet se restará a tus fichas y se actualizará el valor de current_individual_bet si este es menor
     //a la nueva apuesta
-    // TODO: 11/12/2017 cuando apostamos un valor superior a ownChips sale un numero negativo hay que hacer algo en plan que te eche
-    // TODO: 12/12/2017 hay que hacer que cuando entras en all in (NewOwnChips<0) te ponga en modo all invale ya est
 
     private void toBet(final int toBetBet) {
         //CALCULAMOS CON CUANTAS FICHAS NOS QUEDAMOS(en teoria es imposible tener un valor negativo en newownChips)
-        final int newownChips=ownChips-toBetBet;
+        final int newownChips=ownChips+PlayerDataBase[playernumber].getBet()-toBetBet;
 
         //SI VAMOS ALL IN
         if (newownChips<0){AlertDialog.Builder builder= new AlertDialog.Builder(this);
-            builder.setMessage("You do not have chips enought, please FOLD");
+            builder.setMessage("You do not have enought chips, please FOLD");
             builder.create().show();}
 
-        else if(newownChips==0){
+        else if(newownChips==0 ){
             Log.i("Galvan","(newownChips<=0)");
             //CREAMOS DIALOGO
             AlertDialog.Builder builder= new AlertDialog.Builder(this);
             builder.setTitle(R.string.confirmation);
+            builder.setCancelable(false);
             builder.setMessage("Are you sure you want to bet all your chips");
             //PULSAMOS YES
             builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
@@ -494,7 +494,7 @@ private void Message0bet() {
                     higherBet(toBetBet);
                     //ACTUALIZACION CURRENT TOTAL BET
                     current_total_bet=current_total_bet+toBetBet;                               //actualiza el valor de current total bet
-                    String Scurrent_total_bet= Integer.toString(current_total_bet);
+                    Scurrent_total_bet = Integer.toString(current_total_bet);
                     txt_current_total_bet.setText(Scurrent_total_bet);
                     //ACTUALIZACION BET
                     bet2=0;
@@ -505,15 +505,14 @@ private void Message0bet() {
                     PlayerDataBase[playernumber].setAllin(true);
                     PlayerDataBase[playernumber].setCall(true);
                     PlayerDataBase[playernumber].setIn(true);
-                    txt_playernumber.setText(Integer.toString(playernumber));
                     all_in_value=toBetBet;
 
                     Log.i("Galvan","apuesta confirmada");
-                    //CAMBIO DE TURNO
-                    nextTurn();
+
                     //REFRESH ownChips
                     refresh();
-                    txt_playernumber.setText(Integer.toString(playernumber));
+                    //CAMBIO DE TURNO
+                    nextTurn();
                     Log.i("Galvan","siguiente");
                     Log.i("Galvan",String.format("Player %s",Integer.toString(playernumber)));
                 }
@@ -529,6 +528,7 @@ private void Message0bet() {
             Log.i("Galvan","(newownChips<=0)");
             if((toBetBet+bet2<current_individual_bet || toBetBet==0)){}
             else  {
+                all_in=false;
                 //CREAMOS DIALOGO
                 AlertDialog.Builder builder2= new AlertDialog.Builder(this);
                 if(bet2==0){
@@ -942,36 +942,36 @@ private void Message0bet() {
 
     private void higherBet(int toBetBet) {
 
-        /*Siempre debemos sumar la apuesta que ya habia hecho el jugador a la actual, porque si yo subo 20, ami me tienes que pagar lo que habia +20 no solo 20.
-        Según mi punto de vista se podria poner sin if ni nada, siempre esto :
-        current_individual_bet = PlayerDataBase[playernumber].getBet()+toBetBet;
-        String Scurrent_individual_bet = Integer.toString(current_individual_bet);
-        txt_current_individual_bet.setText(Scurrent_individual_bet);
-        Log.i("Galvan","(current_individual_bet = toBetBet;)");
-        refresh();
-        tu que crees?*/
-
-        if(toBetBet>current_individual_bet){
-
+        if(all_in){
             for(int i = 0; i<PlayerDataBase.length; i++){
 
                 PlayerDataBase[i].setCall(false);
 
                 list.setAdapter(adapter);
-            }
+
+                current_individual_bet = PlayerDataBase[playernumber].getBet();
+                String Scurrent_individual_bet = Integer.toString(current_individual_bet);
+                txt_current_individual_bet.setText(Scurrent_individual_bet);
+                Log.i("Galvan","(current_individual_bet = toBetBet;)");
+                refresh();
+        }}
+
+
+         else if (toBetBet+PlayerDataBase[playernumber].getBet()> current_individual_bet){
+                for(int i = 0; i<PlayerDataBase.length; i++){
+
+                PlayerDataBase[i].setCall(false);
+
+                list.setAdapter(adapter);
+                }
 
             //se sustituye por la apuesta mas grande
             current_individual_bet = PlayerDataBase[playernumber].getBet()+toBetBet;
             String Scurrent_individual_bet = Integer.toString(current_individual_bet);
             txt_current_individual_bet.setText(Scurrent_individual_bet);
             Log.i("Galvan","(current_individual_bet = toBetBet;)");
-            refresh();
-        }
-        else{current_individual_bet = PlayerDataBase[playernumber].getBet()+toBetBet;
-            String Scurrent_individual_bet = Integer.toString(current_individual_bet);
-            txt_current_individual_bet.setText(Scurrent_individual_bet);
-            Log.i("Galvan","(current_individual_bet = toBetBet;)");
             refresh();}
+
     }
 
     private void refresh() {
