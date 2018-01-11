@@ -44,7 +44,7 @@ public class GameActivity extends AppCompatActivity {
     private int players_allin;
     private int restart_bet;
     private int cont_playersin;
-    private int cont_winner_out=0;
+    private int cont_winner_out=1;
     private int count_loser_pos;
     private int playernumber;
     private int time;
@@ -112,6 +112,8 @@ public class GameActivity extends AppCompatActivity {
     private TextView txt_turn;
     private int number_players;
     private String Scurrent_total_bet;
+    private boolean im_allin=false;
+    private boolean first_allin=true;
 
 
     //salvar datos de la aplicacion si esta en segundo plano y hace onDestroy
@@ -234,7 +236,7 @@ public class GameActivity extends AppCompatActivity {
         total_bet=0;
         txt_total_bet = (TextView) findViewById(R.id.txt_total_bet_number);
         //TODO: de momento usamos total bet para hacer display de la gente que esta in
-        checkWinner();
+        //checkWinner();
         //declaramos el boton de igualar y una variable apuesta individual actual (arriba) y aqui la inicializamos
         final Button btn_equalize=(Button)findViewById(R.id.btn_equalize);
         txt_current_individual_bet = (TextView) findViewById(R.id.txt_current_individual_bet_number);
@@ -313,7 +315,7 @@ public class GameActivity extends AppCompatActivity {
         btn_plus_bet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(all_in){String textBetBtn = Integer.toString(all_in_value);
+                if(all_in){String textBetBtn = Integer.toString(all_in_value-PlayerDataBase[playernumber].getBet());
                     txt_bet.setText(textBetBtn);}
                 else if(bet2+chips[pos]<=ownChips)
                 {bet2=bet2+chips[pos];
@@ -325,7 +327,7 @@ public class GameActivity extends AppCompatActivity {
         btn_minus_bet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (all_in){String textBetBtn = Integer.toString(all_in_value);
+                if (all_in){String textBetBtn = Integer.toString(all_in_value-PlayerDataBase[playernumber].getBet());
                     txt_bet.setText(textBetBtn);}
                 else if(bet2<chips[pos]){}
                 else{bet2=bet2-chips[pos];
@@ -342,7 +344,7 @@ public class GameActivity extends AppCompatActivity {
                 if(nState==8){AlertDialog.Builder builder= new AlertDialog.Builder(GameActivity.this);
                     builder.setMessage("You must select the winner");
                     builder.create().show();}
-                else if (all_in){String textBetBtn = Integer.toString(all_in_value);
+                else if (all_in){String textBetBtn = Integer.toString(all_in_value-PlayerDataBase[playernumber].getBet());
                     txt_bet.setText(textBetBtn);}
                 else{
                 bet2=ownChips;
@@ -361,7 +363,7 @@ public class GameActivity extends AppCompatActivity {
                 if(nState==8){AlertDialog.Builder builder= new AlertDialog.Builder(GameActivity.this);
                     builder.setMessage("You must select the winner");
                     builder.create().show();}
-                else if (all_in){String textBetBtn = Integer.toString(all_in_value);
+                else if (all_in){String textBetBtn = Integer.toString(all_in_value-PlayerDataBase[playernumber].getBet());
                     txt_bet.setText(textBetBtn);}
                 else {
                 if(current_individual_bet>ownChips){
@@ -402,18 +404,20 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                if (PlayerDataBase[playernumber].getChips()==bet2){
+                    im_allin=true;
+                }
+
                 if(nState==8){AlertDialog.Builder builder= new AlertDialog.Builder(GameActivity.this);
                     builder.setMessage("You must select the winner");
                     builder.create().show();}
                 else{
-
+                    if(bet2 == 0){
+                        Message0bet();
+                    }
                     if(all_in){bet2=all_in_value;
                     toBet(bet2);}
-
-                if(bet2 == 0){
-                    Message0bet();
-                }
-                else {
+                    else {
                         toBet(bet2);}
             }}
         });
@@ -430,7 +434,6 @@ public class GameActivity extends AppCompatActivity {
                     Log.i("WINNER",String.format("plasyersin%d // cont_winner_out%d", playersin,cont_winner_out));
                     if (cont_winner_out==playersin){
                         PlayerDataBase[pos].setWin(true);
-                        cont_winner_out=0;
                         winner2=4;
                         ChooseWinner();
                     }
@@ -510,19 +513,19 @@ private void Message0bet() {
     }
 
     //este metodo se ejecuta cuando pulsamos pasar o apostar, si pulsamos bet el valor de la variable
-    // bet se restará a tus fichas y se actualizará el valor de current_individual_bet si este es menor
+    //bet se restará a tus fichas y se actualizará el valor de current_individual_bet si este es menor
     //a la nueva apuesta
 
     private void toBet(final int toBetBet) {
         //CALCULAMOS CON CUANTAS FICHAS NOS QUEDAMOS(en teoria es imposible tener un valor negativo en newownChips)
-        final int newownChips=ownChips+PlayerDataBase[playernumber].getBet()-toBetBet;
+        final int newownChips=ownChips+PlayerDataBase[playernumber].getBet()-all_in_value;
 
         //SI VAMOS ALL IN
         if (newownChips<0){AlertDialog.Builder builder= new AlertDialog.Builder(this);
             builder.setMessage("You do not have enought chips, please FOLD");
             builder.create().show();}
 
-        else if(newownChips==0 ){
+        else if(newownChips==0 || im_allin){
             Log.i("Galvan","(newownChips<=0)");
             //CREAMOS DIALOGO
             AlertDialog.Builder builder= new AlertDialog.Builder(this);
@@ -536,27 +539,38 @@ private void Message0bet() {
                 public void onClick(DialogInterface dialogInterface, int i) {
 
                     all_in=true;
+                    if (first_allin){
+                        first_allin=false;
+                        all_in_value=PlayerDataBase[playernumber].getBet()+PlayerDataBase[playernumber].getChips();
+                    }
+                    if (PlayerDataBase[playernumber].getBet()==newownChips){
+                        ownChips=0;
+                        //REFRESCAR TXT_OWNCHIPS EN PANTALLA
+                        String SownChips= Integer.toString(ownChips);
+                        txt_ownChips.setText(SownChips);
+                    }
+                    else{
                     ownChips=newownChips;
                     //REFRESCAR TXT_OWNCHIPS EN PANTALLA
                     String SownChips= Integer.toString(ownChips);
-                    txt_ownChips.setText(SownChips);
+                    txt_ownChips.setText(SownChips);}
+                    //sumo bet tambien
+                    Log.i("Value",String.format("%d",all_in_value));
 
-                    //CAMBIO APUESTA ACTUAL INDIVIDUAL
-                    higherBet(toBetBet);
                     //ACTUALIZACION CURRENT TOTAL BET
-                    current_total_bet=current_total_bet+toBetBet;                               //actualiza el valor de current total bet
+                    current_total_bet=current_total_bet+all_in_value-PlayerDataBase[playernumber].getBet();                               //actualiza el valor de current total bet
                     Scurrent_total_bet = Integer.toString(current_total_bet);
                     txt_current_total_bet.setText(Scurrent_total_bet);
                     //ACTUALIZACION BET
-                    bet2=0;
-                    txt_bet.setText(Integer.toString(bet2));
+                    txt_bet.setText(Integer.toString(0));
                     //DATABASE
-                    PlayerDataBase[playernumber].setBet(toBetBet);
-                    PlayerDataBase[playernumber].setChips(newownChips);
+                    PlayerDataBase[playernumber].setBet(all_in_value);
+                    //CAMBIO APUESTA ACTUAL INDIVIDUAL
+                    higherBet(all_in_value);
+                    PlayerDataBase[playernumber].setChips(0);
                     PlayerDataBase[playernumber].setAllin(true);
                     PlayerDataBase[playernumber].setCall(true);
                     PlayerDataBase[playernumber].setIn(true);
-                    all_in_value=toBetBet;
 
                     Log.i("Galvan","apuesta confirmada");
 
@@ -566,6 +580,7 @@ private void Message0bet() {
                     nextTurn();
                     Log.i("Galvan","siguiente");
                     Log.i("Galvan",String.format("Player %s",Integer.toString(playernumber)));
+                    turnALLIN(); turnState();
                 }
 
             });
@@ -647,7 +662,12 @@ private void Message0bet() {
              if(PlayerDataBase[i].isAllin()){players_allin++;}
         }
         PlayersIn();
-        if(players_allin==playersin){nState=8;}
+        if(players_allin==playersin){nState=8;
+            total_bet=current_total_bet;
+            txt_total_bet.setText(Integer.toString(total_bet));
+            current_total_bet=0;
+            txt_current_total_bet.setText(Integer.toString(current_total_bet));
+        }
 
     }
 
@@ -829,14 +849,17 @@ private void Message0bet() {
                 if(PlayerDataBase[3].isIn() & !(playersin==cont_playersin)){
                     AlertDialog.Builder builder5= new AlertDialog.Builder(this);
                     builder5.setMessage(String.format("Player %s choose the winner",PlayerDataBase[3].getName()));
-                    builder5.create().show();}
+                    builder5.create().show();
+                    }
                 break;
+
 
             case 4:
                 winner_finish=true;
                 cont_playersin=0;
                 Log.i("WINNER","ESTOY?");
                 PlayersIn();
+                Log.i("WINNER",String.format("cont_winner_out %d // playersin %d",cont_winner_out,playersin));
                 if(winner_finish & cont_winner_out==playersin){Log.i("WINS","FINISH");
                     checkWinner();
                 }
@@ -853,6 +876,7 @@ private void Message0bet() {
 
 
     private void checkWinner() {
+
 
         Log.i("WINS","CHECKWINNER");
         //condiciones para que el juega haya acabado
@@ -872,14 +896,14 @@ private void Message0bet() {
                 if (winner_pos[i]==7){winner_pos[i]=winner_check;}
             }
 
-            for (int i =0;i<=count_winner_pos;i++){
+            for (int i =0;i<count_winner_pos;i++){
                 Log.i("WINS",String.format("winner_pos %d // winner_check %d", winner_pos[i],winner_check));
                 if(winner_pos[i]==winner_check){}
                 //si es diferente en algun momento ponemos el valor a -1
                 else {winner_check=-1;
                         winner_finish=false;}
             }
-            //si ha sido diferente volvemos vamos al step 9 que es volver a hacer el mismo ciclo
+            //si ha sido diferente volvemos vamos al step 8 que es volver a hacer el mismo ciclo
             if(winner_check==-1){
 
                 AlertDialog.Builder builder5= new AlertDialog.Builder(this);
@@ -889,18 +913,18 @@ private void Message0bet() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Log.i("WINS","DIFERENTE");
-                        nState=8; winner2=0; cont_winner_out=0;
+                        nState=8; winner2=0; cont_winner_out=1;
                         for (int o=0;o<PlayerDataBase.length;o++){
                             PlayerDataBase[o].setWin(false); }
-
-                        turnALLIN(); turnState(); }
+                        //turnALLIN();
+                        turnState(); }
                 });
                 builder5.create().show();
 
                 }
             //si todos son el mismo jugador se le asigna la victoria
 
-            else {
+            else if (winner_check!=-1){
                 //Log.i("WINS","IGUAL");
                 //todo sumar current total bet siempre?
                 loot= PlayerDataBase[winner_check].getChips()+total_bet+current_total_bet;
@@ -914,7 +938,7 @@ private void Message0bet() {
                 total_bet=0;
                 winner_finish=false;
                 winner2=0;
-                cont_winner_out=0;
+                cont_winner_out=1;
                 //Se pone to*do a 0
                 for(int i =0;i<PlayerDataBase.length;i++){
                     PlayerDataBase[i].setIn(true);
@@ -998,14 +1022,14 @@ private void Message0bet() {
 
                 PlayerDataBase[i].setCall(false);
 
-                list.setAdapter(adapter);
+                list.setAdapter(adapter);}
 
                 current_individual_bet = PlayerDataBase[playernumber].getBet();
                 String Scurrent_individual_bet = Integer.toString(current_individual_bet);
                 txt_current_individual_bet.setText(Scurrent_individual_bet);
                 Log.i("Galvan","(current_individual_bet = toBetBet;)");
                 refresh();
-        }}
+        }
 
 
          else if (toBetBet+PlayerDataBase[playernumber].getBet()> current_individual_bet){
@@ -1228,6 +1252,11 @@ private void Message0bet() {
         nState=0;
         winner2 = 0;
         winner_finish=false;
+        first_allin=true;
+        im_allin=false;
+        total_bet=0;
+        txt_total_bet.setText(Integer.toString(total_bet));
+
         turnALLIN(); turnState();
     }
 
