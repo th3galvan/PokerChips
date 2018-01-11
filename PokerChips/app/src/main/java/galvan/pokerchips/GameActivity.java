@@ -394,7 +394,7 @@ public class GameActivity extends AppCompatActivity {
             public void onFinish(){
                 //TODO: aqui cuando el contador llega a cero hay que cambiar los valores de los parametros que haga falta
                 //Se reduce el tiempo de la proxima cuenta atras si es mayor que 1 minuto
-                if (time >= 60000){
+                if (time <= 60000){
                     time = time - 10000;
                 }   else {                  //sino se vuelve al valor inicial
                     time = 600000;
