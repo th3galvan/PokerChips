@@ -85,7 +85,7 @@ public class SetGameActivity extends AppCompatActivity {
                 }
                 else {empty_name=false;}
 
-                if(string_number_players.equals("")){empty_players=true;
+                if(string_number_players.equals("0")){empty_players=true;
                     if(!empty_name){
                         AlertDialog.Builder builder= new AlertDialog.Builder(SetGameActivity.this);
                         builder.setTitle(R.string.players);
@@ -94,7 +94,7 @@ public class SetGameActivity extends AppCompatActivity {
                 }
                 else {empty_players=false;}
 
-                if(string_initial_chips.equals("")){empty_initial=true;
+                if(string_initial_chips.equals("0")){empty_initial=true;
                     if(!empty_name & !empty_players){
                         AlertDialog.Builder builder= new AlertDialog.Builder(SetGameActivity.this);
                         builder.setTitle(R.string.initial_chips);
@@ -103,7 +103,7 @@ public class SetGameActivity extends AppCompatActivity {
                 }
                 else {empty_initial=false;}
 
-                if(string_big.equals("")){empty_big=true;
+                if(string_big.equals("0")){empty_big=true;
                     if(!empty_initial & !empty_name & !empty_players){
                         AlertDialog.Builder builder= new AlertDialog.Builder(SetGameActivity.this);
                         builder.setTitle(R.string.bigblind);
@@ -112,7 +112,7 @@ public class SetGameActivity extends AppCompatActivity {
                 }
                 else {empty_big=false;}
 
-                if(string_time_big_up.equals("")){empty_time=true;
+                if(string_time_big_up.equals("0")){empty_time=true;
                     if(!empty_big & !empty_initial & !empty_name & !empty_players){
                         AlertDialog.Builder builder= new AlertDialog.Builder(SetGameActivity.this);
                         builder.setTitle(R.string.Frecuency);
@@ -121,7 +121,7 @@ public class SetGameActivity extends AppCompatActivity {
                 }
                 else {empty_time=false;}
 
-                if(string_change_value_big.equals("")){empty_change=true;
+                if(string_change_value_big.equals("0")){empty_change=true;
                     if(!empty_time & !empty_big & !empty_initial & !empty_name & !empty_players){
                         AlertDialog.Builder builder= new AlertDialog.Builder(SetGameActivity.this);
                         builder.setTitle(R.string.Rise_value);
@@ -150,34 +150,44 @@ public class SetGameActivity extends AppCompatActivity {
 
     private void TakeTextEdits() {
 
-        //ParseInt dan problemas, no compila si los pongo
+        //ParseInt dan problemas si no se rellena alguna casilla, para solucionarlo he escrito 0 en las casillas en blanco, asi no falla
         //NAME
         name = edit_name.getText().toString();
 
         //NUMERO DE JUGADORES
         string_number_players = edit_number_players.getText().toString();
         string_number_players.trim();
+        if (string_number_players.equals("")){edit_number_players.setText("0");
+            string_number_players = edit_number_players.getText().toString().trim();}
         number_players= Integer.parseInt(string_number_players);
 
 
         //FICHAS INICIALES
         string_initial_chips = edit_initial_chips.getText().toString();
         string_initial_chips.trim();
+        if (string_initial_chips.equals("")){edit_initial_chips.setText("0");
+            string_initial_chips = edit_initial_chips.getText().toString().trim();}
         initial_chips= Integer.parseInt(string_initial_chips);
 
         //BIG BLIND
         string_big = edit_big.getText().toString();
         string_big.trim();
+        if (string_big.equals("")){edit_big.setText("0");
+            string_big = edit_big.getText().toString().trim();}
         big= Integer.parseInt(string_big);
 
         //FRECUENCIA DE SUBIDA BIG BLIND
         string_time_big_up = edit_time_big_up.getText().toString();
         string_time_big_up.trim();
+        if (string_time_big_up.equals("")){edit_time_big_up.setText("0");
+            string_time_big_up = edit_time_big_up.getText().toString().trim();}
         time_big_up= Integer.parseInt(string_time_big_up);
 
         //VALOR DE SUBIDO BIG BLIND
         string_change_value_big = edit_change_value_big.getText().toString();
         string_change_value_big.trim();
+        if (string_change_value_big.equals("")){edit_change_value_big.setText("0");
+            string_change_value_big = edit_change_value_big.getText().toString().trim();}
         change_value_big= Integer.parseInt(string_change_value_big);
     }
 

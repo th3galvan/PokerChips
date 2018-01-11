@@ -27,4 +27,10 @@
     <string name="Frecuency">Frecuency to rise</string>
     <string name="Rise_value">Rise value</string>
 
+        <string-array name="values">
+            <item>name</item>
+            <item>Player2</item>
+            <item>Player3</item>
+        </string-array>
+
 </resources>

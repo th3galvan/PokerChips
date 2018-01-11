@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.widget.Button;
@@ -85,6 +86,7 @@ public class ModeGameActivity extends AppCompatActivity {
 
             public void onClick(View view) {
 
+
                 if(rb_fast.isChecked()){
 
                     GetEdit();
@@ -96,7 +98,7 @@ public class ModeGameActivity extends AppCompatActivity {
                     }
                     else {empty_name=false;}
 
-                    if(string_players_fast.equals("")){empty_players=true;
+                    if(string_players_fast.equals("0")){empty_players=true;
                         if(!empty_name){
                             AlertDialog.Builder builder= new AlertDialog.Builder(ModeGameActivity.this);
                             builder.setTitle(R.string.players);
@@ -124,7 +126,8 @@ public class ModeGameActivity extends AppCompatActivity {
                     startActivity(fastgame);
 
                 }}
-                else if(rb_custom.isChecked()){
+
+                if(rb_custom.isChecked()){
 
                     Intent customgame = new Intent(getApplicationContext(), SetGameActivity.class);
                     customgame.putExtra("code",code);
@@ -138,9 +141,12 @@ public class ModeGameActivity extends AppCompatActivity {
     }
 
     private void GetEdit() {
+        //ParseInt dan problemas si no se rellena alguna casilla, para solucionarlo he escrito 0 en las casillas en blanco, asi no falla
+
         name = edit_name_fast.getText().toString();
-        string_players_fast = edit_players_fast.getText().toString();
-        string_players_fast.trim();
+        string_players_fast = edit_players_fast.getText().toString().trim();
+        if (string_players_fast.equals("")){edit_players_fast.setText("0");
+            string_players_fast = edit_players_fast.getText().toString().trim();}
         number_players = Integer.parseInt(string_players_fast);
     }
 

@@ -80,9 +80,17 @@ public class JoinGameActivity extends AppCompatActivity {
 
                 Log.i("Xavi2",String.format("code %s // bundle %s",string_code,string_code_bundle));
                 if (!empty & !empty_code & string_code.equals(string_code_bundle)){
-                Intent intent_wait = new Intent(getApplicationContext(), WaitActivity.class);
+                Intent intent_wait = new Intent(getApplicationContext(), GameActivity.class);
                     intent_wait.putExtra("players",players);
                 startActivity(intent_wait);}
+
+                else if (!empty & !empty_code & !string_code.equals(string_code_bundle)){
+                    AlertDialog.Builder builder = new AlertDialog.Builder(JoinGameActivity.this);
+                    builder.setTitle(R.string.Code);
+                    builder.setMessage("The code is not correct");
+                    builder.setPositiveButton(R.string.confirmation,null);
+                    builder.create().show();
+                }
             }
         });
     }
