@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -63,7 +64,7 @@ public class GameActivity extends AppCompatActivity {
 
     //parametros cuenta atras contador
     private TextView txt_time_numbrer;
-    int time = 600000;
+    private int time;
 
 
     //VARIABLES DE PRUEBA
@@ -386,6 +387,7 @@ public class GameActivity extends AppCompatActivity {
         //declaramos el view de la cuenta atras y la iniciamos un contador
         txt_time_numbrer = (TextView) findViewById(R.id.txt_time_number);
 
+        time = 60000;
 
         new CountDownTimer(time, 1000){
             public void onTick(long millisUntilFinished){
@@ -393,13 +395,16 @@ public class GameActivity extends AppCompatActivity {
             }
             public void onFinish(){
                 //TODO: aqui cuando el contador llega a cero hay que cambiar los valores de los parametros que haga falta
-                //Se reduce el tiempo de la proxima cuenta atras si es mayor que 1 minuto
-                if (time <= 60000){
-                    time = time - 10000;
-                }   else {                  //sino se vuelve al valor inicial
-                    time = 600000;
-                }
 
+                Toast toastCiega = Toast.makeText(getApplicationContext(),
+                        "Subida de Ciega", Toast.LENGTH_LONG);
+                toastCiega.show();
+
+                if(time<=10000) {
+                    time = time - 10000;
+                }else{
+                        time = 60000;
+                }
 
 
                 start();
