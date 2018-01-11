@@ -98,7 +98,11 @@ public class GameActivity extends AppCompatActivity {
             0,           false,     false, false, false);
 
     private PlayerItems PlayerDataBase[]={Fulanito,Menganito,Malaquito,Estalactito};
-
+    private int number_players;
+    private int initial_chips;
+    private int time_big_up;
+    private int change_value_big;
+    private String name_host;
 
 
     @Override
@@ -107,6 +111,16 @@ public class GameActivity extends AppCompatActivity {
         setContentView(R.layout.activity_game);
 
         Intent intent =getIntent();
+
+        Bundle code_receive = getIntent().getExtras();
+        number_players =code_receive.getInt("playersnumber");
+        initial_chips =code_receive.getInt("initial_chips");
+        big =code_receive.getInt("bigblind");
+        time_big_up =code_receive.getInt("frecuency");
+        change_value_big =code_receive.getInt("change");
+        name_host =code_receive.getString("name");
+
+        PlayerDataBase[0].setName(name_host);
 
 
         // TODO: 17/12/2017  hay que hacer algo para asignar un mobil con un jugador
