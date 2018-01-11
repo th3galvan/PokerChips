@@ -114,6 +114,56 @@ public class GameActivity extends AppCompatActivity {
     private String Scurrent_total_bet;
 
 
+    //salvar datos de la aplicacion si esta en segundo plano y hace onDestroy
+    /*private TextView txt_current_individual_bet;
+    private TextView txt_ownChips;
+    private TextView txt_bet;
+    private TextView txt_current_total_bet;
+    private TextView txt_total_bet;
+    private TextView txt_big;
+    private TextView txt_time_number;*/
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState){
+        super.onSaveInstanceState(outState);
+        //TODO: añadir veriables que haya que guardar su estado
+        outState.putInt("big", big);
+        outState.putString("current total bet", Scurrent_total_bet);
+        outState.putInt("time big up", time_big_up);
+        outState.putInt("number players", number_players);
+        outState.putInt("pos", pos);
+        String txt_ownchips = txt_ownChips.getText().toString();
+        outState.putString("ownChips", (txt_ownchips));
+        String txt_c_i_b = txt_current_individual_bet.getText().toString();
+        outState.putString("current individual bet", (txt_c_i_b));
+        String txt_c_t_b = txt_current_total_bet.getText().toString();
+        outState.putString("current total bet", (txt_c_t_b));
+        outState.putInt("player big blind", Player_big_blind);
+        outState.putInt("payer small blind", Player_small_blind);
+
+
+    }
+    //Cargar datos salvados despues de un onDestroy
+    @Override
+    protected void onRestoreInstanceState(Bundle recoverState){
+        super.onRestoreInstanceState(recoverState);
+        big = recoverState.getInt("big");
+        Scurrent_total_bet = recoverState.getString("current total bet");
+        time_big_up = recoverState.getInt("time big up");
+        number_players = recoverState.getInt("number players");
+        pos = recoverState.getInt("pos");
+        String txt_ownchips = recoverState.getString("ownChips");
+        txt_ownChips.setText(txt_ownchips);
+        String txt_c_i_b = recoverState.getString("curent individual bet");
+        txt_current_individual_bet.setText(txt_c_i_b);
+        String txt_c_t_b = recoverState.getString("current total bet");
+        txt_current_total_bet.setText(txt_c_t_b);
+        Player_big_blind = recoverState.getInt("player big blind");
+        Player_small_blind = recoverState.getInt("player small blind");
+
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -401,7 +451,7 @@ public class GameActivity extends AppCompatActivity {
 
 
 
-        //declaramos el view de la cuenta atras y la iniciamos un contador
+        //declaramos el view de la cuenta atras y la iniciamos con un contador
         txt_time_number = (TextView) findViewById(R.id.txt_time_number);
 
         time = 60000;
@@ -419,6 +469,7 @@ public class GameActivity extends AppCompatActivity {
                         "Subida de Ciega", Toast.LENGTH_LONG);
                 toastCiega.show();
 
+                start();
             }
     }.start();
 
