@@ -89,7 +89,9 @@ android:orientation="horizontal">
         android:layout_height="wrap_content"
         android:text="WW"
         android:layout_alignBottom="@+id/txt_chips"
-        android:layout_alignLeft="@+id/txt_allin"
-        android:layout_alignStart="@+id/txt_allin" />
+        android:layout_alignRight="@+id/txt_chips"
+        android:layout_alignEnd="@+id/txt_chips"
+        android:layout_marginRight="23dp"
+        android:layout_marginEnd="23dp" />
 
 </RelativeLayout>

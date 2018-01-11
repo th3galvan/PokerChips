@@ -13,6 +13,8 @@ import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+import java.text.Format;
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.jar.Attributes;
@@ -49,7 +51,7 @@ public class PlayerItemAdapter extends ArrayAdapter<PlayerItems> {
         name.setText(item.getName());
         chips.setText(Integer.toString(item.getChips()));
         out.setChecked(item.isIn());
-        bet.setText(Integer.toString(item.getBet()));
+        bet.setText(String.format("Bet: %d",item.getBet()));
         if(item.isBig()){state.setText("B");}
         if(item.isSmall()){state.setText("S");}
         if(item.isDealer()){state.setText("D");}
