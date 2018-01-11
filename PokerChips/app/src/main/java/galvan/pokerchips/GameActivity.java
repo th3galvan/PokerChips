@@ -356,7 +356,8 @@ public class GameActivity extends AppCompatActivity {
                     builder.create().show();}
                 else{
 
-                    if(all_in){bet2=all_in_value;}
+                    if(all_in){bet2=all_in_value;
+                    toBet(bet2);}
 
                 if(bet2 == 0){
                     Message0bet();

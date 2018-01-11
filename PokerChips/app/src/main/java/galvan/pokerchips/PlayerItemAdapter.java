@@ -42,12 +42,14 @@ public class PlayerItemAdapter extends ArrayAdapter<PlayerItems> {
         TextView chips = (TextView) result.findViewById(R.id.txt_chips);
         TextView allin = result.findViewById(R.id.txt_allin);
         TextView call = result.findViewById(R.id.txt_call);
+        TextView bet = (TextView) result.findViewById(R.id.txt_bet_list);
         CheckBox out = (CheckBox) result.findViewById(R.id.player_out);
 
         PlayerItems item = getItem(position);
         name.setText(item.getName());
         chips.setText(Integer.toString(item.getChips()));
         out.setChecked(item.isIn());
+        bet.setText(Integer.toString(item.getBet()));
         if(item.isBig()){state.setText("B");}
         if(item.isSmall()){state.setText("S");}
         if(item.isDealer()){state.setText("D");}
