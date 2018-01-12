@@ -80,17 +80,23 @@ public class GameActivity extends AppCompatActivity {
     //              String name, int chips,      boolean dealer,
     //              boolean small, boolean big,  boolean in,
     //              int bet,      boolean turn    boolean allin
+    //              boolean win)
+    private PlayerItems Player0= new PlayerItems(1,
     //              boolean call, boolean win,   boolean annihilated)
     private PlayerItems Fulanito= new PlayerItems(1,
             "Fulanito", 1000,
             true,      false,   false,
             true,
+            0,          false,   false, false, false);
+    private PlayerItems Player1= new PlayerItems(2,
             0,          false,   false,
             false,      false,   false);
     private PlayerItems Menganito= new PlayerItems(2,
             "Menganito", 1000,
             false,        true,  false,
             true,
+            0,           false,  false, false, false);
+    private PlayerItems Player2= new PlayerItems(3,
             0,           false,  false,
             false,       false,  false);
     private PlayerItems Malaquito= new PlayerItems(3,
@@ -100,14 +106,47 @@ public class GameActivity extends AppCompatActivity {
             0,         false,   false,
             false,     false,   false);
 
-    private PlayerItems Estalactito = new PlayerItems(4,
+    private PlayerItems Player3 = new PlayerItems(4,
             "Estalactito", 1000,
             false,      false,       false,
             true,
+            0,           false,     false, false, false);
+    private PlayerItems Player4= new PlayerItems(1,
+            "Fulanito", 1000,
+            true,      false,   false,
+            true,
+            0,          false,   false, false, false);
+    private PlayerItems Player5= new PlayerItems(2,
+            "Menganito", 1000,
+            false,        true,  false,
+            true,
+            0,           false,  false, false, false);
+    private PlayerItems Player6= new PlayerItems(3,
+            "Malaquito", 1000,
+            false,      false,    true,
+            true,
+            0,         false,   false, false, false);
             0,           false,     false,
             false,       false,     false);
 
-    private PlayerItems PlayerDataBase[]={Fulanito,Menganito,Malaquito,Estalactito};
+    private PlayerItems Player7 = new PlayerItems(4,
+            "Estalactito", 1000,
+            false,      false,       false,
+            true,
+            0,           false,     false, false, false);
+    private PlayerItems Player8= new PlayerItems(1,
+            "Fulanito", 1000,
+            true,      false,   false,
+            true,
+            0,          false,   false, false, false);
+    private PlayerItems Player9= new PlayerItems(2,
+            "Menganito", 1000,
+            false,        true,  false,
+            true,
+            0,           false,  false, false, false);
+
+
+    private PlayerItems PlayerDataBase[]={Player0,Player1,Player2,Player3,Player4,Player5,Player6,Player7,Player8,Player9};
     private int initial_chips;
     private int time_big_up;
     private int change_value_big;
