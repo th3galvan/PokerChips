@@ -107,7 +107,9 @@ public class ModeGameActivity extends AppCompatActivity {
                     }
                     else{empty_players=false;}
 
-                    if (!empty_players & !empty_name){
+                    boolean go =true;
+                    //todo he puesto todo para poder pasar sin rellenar parametros
+                    if (!empty_players & !empty_name || go){
 
                         initial_chips=1500;
                         big=10;
