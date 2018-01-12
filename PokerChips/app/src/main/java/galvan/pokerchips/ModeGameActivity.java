@@ -116,18 +116,18 @@ public class ModeGameActivity extends AppCompatActivity {
                         time_big_up=10;
                         change_value_big=10;
 
-                    Intent fastgame = new Intent(getApplicationContext(), ShowCodeActivity.class);
-                    fastgame.putExtra("code",code);
-                    fastgame.putExtra("players",players);
+                        Intent fastgame = new Intent(getApplicationContext(), ShowCodeActivity.class);
+                        fastgame.putExtra("code",code);
+                        fastgame.putExtra("players",players);
                         fastgame.putExtra("name",name);
                         fastgame.putExtra("playersnumber",number_players);
                         fastgame.putExtra("initial_chips",initial_chips);
                         fastgame.putExtra("bigblind",big);
                         fastgame.putExtra("frecuency",time_big_up);
                         fastgame.putExtra("change",change_value_big);
-                    startActivity(fastgame);
+                        startActivity(fastgame);
 
-                }}
+                    }}
 
                 if(rb_custom.isChecked()){
 
@@ -154,4 +154,3 @@ public class ModeGameActivity extends AppCompatActivity {
 
 
 }
-
