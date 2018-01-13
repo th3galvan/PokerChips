@@ -43,6 +43,7 @@ public class SetGameActivity extends AppCompatActivity {
     private boolean empty_big;
     private boolean empty_time;
     private boolean empty_change;
+    private boolean max_players;
 
 
     @Override
@@ -130,8 +131,17 @@ public class SetGameActivity extends AppCompatActivity {
                 }
                 else {empty_change=false;}
 
+                if (number_players>10){
+                    max_players=true;
+                    AlertDialog.Builder builder= new AlertDialog.Builder(SetGameActivity.this);
+                    builder.setTitle(R.string.players);
+                    builder.setMessage("Maximum number of players is 10");
+                    builder.create().show();}
+
+                else{max_players=false;}
+
             //hasta que todos los campos no esten llenos no podemos cambiar de pantalla
-                if(!empty_time & !empty_big & !empty_initial & !empty_name & !empty_players & !empty_change){
+                if(!empty_time & !empty_big & !empty_initial & !empty_name & !empty_players & !empty_change & !max_players){
                 Intent generateqr = new Intent(getApplicationContext(), ShowCodeActivity.class);
                 generateqr.putExtra("code",code);
                 generateqr.putExtra("players",players);

@@ -32,7 +32,7 @@ public class ModeGameActivity extends AppCompatActivity {
 
     private EditText edit_players_fast;
     private EditText edit_name_fast;
-
+    private boolean max_players;
 
 
     @Override
@@ -107,9 +107,18 @@ public class ModeGameActivity extends AppCompatActivity {
                     }
                     else{empty_players=false;}
 
+                    if (number_players>10){
+                        max_players=true;
+                        AlertDialog.Builder builder= new AlertDialog.Builder(ModeGameActivity.this);
+                        builder.setTitle(R.string.players);
+                        builder.setMessage("Maximum number of players is 10");
+                        builder.create().show();}
+
+                    else{max_players=false;}
+
                     boolean go =true;
                     //todo he puesto todo para poder pasar sin rellenar parametros
-                    if (!empty_players & !empty_name || go){
+                    if (!empty_players & !empty_name  & !max_players|| go){
 
                         initial_chips=1500;
                         big=10;
