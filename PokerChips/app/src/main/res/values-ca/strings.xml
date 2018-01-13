@@ -35,7 +35,6 @@
     <string name="numPlayers">Nº Jugadors</string>
     <string name="players">Nombre de jugadors</string>
     <string name="start">Comença</string>
-    <string name="turn">TORN</string>
     <string name="wait">Si us plau esperi ...</string>
     <string name="writeCode">Escriu el codi per entrar a la partida</string>
     <string name="writeYourName">Escriu el teu nom</string>
@@ -53,7 +52,6 @@
     <!--string name="currentBetXChips">La teva aposta actual és de %s fitxes</string-->
     <string name="initial_chips">Fitxes inicials</string>
     <string name="selectWinner">Has de seleccionar el guanyador</string>
-    <string name="winner">GUANYADOR</string>
     <string name="whoIsWinner">El torn d\'apostes ha acabat, és hora de saber qui és el guanyador</string>
     <string name="enterName">Si us plau posi el seu nom</string>
     <string name="enterCode">Si us plau posi el codi</string>

@@ -49,7 +49,7 @@
     <string name="writeCode">Write the code to join the game:</string>
     <string name="wait">Please wait ...</string>
     <string name="allin" translatable="false">All-In</string>
-    <string name="turn">TURN</string>
+    <string name="turn" translatable="false">TURN</string>
     <string name="selectWinner">You must select the winner</string>
     <string name="betFewChips">You are trying to bet very few chips, press CHECK/FOLD or bet some more chips</string>
     <string name="enoughtChips">You do not have enought chips, please FOLD</string>
@@ -60,7 +60,7 @@
     <string name="preflop" translatable="false">PREFLOP</string>
     <string name="flop" translatable="false">FLOP</string>
     <string name="river" translatable="false">RIVER</string>
-    <string name="winner">WINNER</string>
+    <string name="winner" translatable="false">WINNER</string>
     <string name="whoIsWinner">The turn of bets is over it\'s time to know who is the winner</string>
     <!--string name="chooseWinner">Player %s choose the winner</string-->
     <string name="differentsWinners">You are choosing differents players, please try it again and select the same winner</string>

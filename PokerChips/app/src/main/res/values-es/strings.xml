@@ -32,7 +32,6 @@
     <string name="numPlayers">Nº Jugadores</string>
     <string name="players">Número de jugadores</string>
     <string name="start">Comenzar</string>
-    <string name="turn">TURNO</string>
     <string name="wait">Espera por favor ...</string>
     <string name="writeCode">Escrbe el código para entrar a la partida</string>
     <string name="writeYourName">Escribe tu nombre</string>
@@ -51,7 +50,6 @@
     <!--string name="currentBetXChips">Tu apuesta actual es de %s fichas</string-->
     <string name="initial_chips">Fichas iniciales</string>
     <string name="selectWinner">Debes seleccionar el ganador</string>
-    <string name="winner">GANADOR</string>
     <string name="whoIsWinner">El turno de apuestas ha terminado, es hora de saber quién es el ganador</string>
     <string name="enterName">Porfavor escribe tu nombre</string>
     <string name="enterCode">Porfavor escribe el código</string>

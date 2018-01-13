@@ -166,6 +166,7 @@ public class GameActivity extends AppCompatActivity {
     private boolean pulsado;
     private boolean check_winner_finish=false;
     private int check_players_pressed=0;
+    private boolean first_turn;
 
 
     //salvar datos de la aplicacion si esta en segundo plano y hace onDestroy
