@@ -20,6 +20,7 @@ public class PlayerItems extends AppCompatActivity {
     private boolean annihilated;
     private boolean generated;
 
+
     private  int bet;
     private  boolean turn;
     private  boolean allin;
@@ -31,7 +32,7 @@ public class PlayerItems extends AppCompatActivity {
                        boolean small,         boolean big,  boolean in,
                        int bet,             boolean turn,   boolean allin,
                        boolean call,        boolean win,    boolean annihilated,
-                       boolean generated ){
+                       boolean generated){
 
         this.name = name;   this.chips = chips;     this.dealer = dealer;
         this.big = big;     this.small = small;     this.in = in;
@@ -94,9 +95,9 @@ public class PlayerItems extends AppCompatActivity {
     {
         return allin;
     }
-    public boolean isAnnihilated( ){ return annihilated; }
-    public boolean isGenerated( ){ return generated; }
 
+    public boolean isGenerated( ){ return generated; }
+    public boolean isAnnihilated( ){ return annihilated; }
     public void setChecked(boolean dealer, boolean big, boolean small, boolean in)
     {
         this.dealer = dealer;

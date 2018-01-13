@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 public class GameActivity extends AppCompatActivity {
 
-    // AÃ±ado un comentario para probar el push + update...
+    // Añado un comentario para probar el push + update...
 
     private int pos;
     private int bet2;
@@ -180,7 +180,7 @@ public class GameActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState){
         super.onSaveInstanceState(outState);
-        //TODO: aÃ±adir veriables que haya que guardar su estado
+        //TODO: añadir veriables que haya que guardar su estado
         outState.putInt("big", big);
         outState.putString("current total bet", Scurrent_total_bet);
         outState.putInt("time big up", time_big_up);
@@ -259,14 +259,14 @@ public class GameActivity extends AppCompatActivity {
 
         PlayerDataBase[0].setName(name_host);
         for (int i=0; i<number_players;i++){
-            PlayerDataBase[i].setChips(initial_chips);}
+        PlayerDataBase[i].setChips(initial_chips);}
 
 
         // TODO: 17/12/2017  hay que hacer algo para asignar un mobil con un jugador
         //Todo: hay que hacer que playernuber se obtenga de PlayerDataBase
         playernumber=0;
 
-        //parte de aÃ±adir lista de jugadores y adapter
+        //parte de añadir lista de jugadores y adapter
         list = (ListView)findViewById(R.id.players_list);
 
         players = new ArrayList<>();
@@ -276,8 +276,9 @@ public class GameActivity extends AppCompatActivity {
         // int bet,      boolean turn    boolean allin)
 
         for (int i=0;i<number_players;i++){
-            players.add(PlayerDataBase[i]);
-            PlayerDataBase[i].setGenerated(true);}
+        players.add(PlayerDataBase[i]);
+        PlayerDataBase[i].setGenerated(true);
+            Log.i("Check",String.format("i %d // isGenerated %b",i, PlayerDataBase[i].isGenerated()));}
 
 
         adapter = new PlayerItemAdapter(
@@ -424,7 +425,7 @@ public class GameActivity extends AppCompatActivity {
                     bet2=ownChips;
                     String textAllBtn = Integer.toString(bet2);
                     txt_bet.setText(textAllBtn);
-                    PlayerDataBase[playernumber].setIn(true);
+                    //PlayerDataBase[playernumber].setIn(true);
                 }}
         });
 
@@ -447,7 +448,7 @@ public class GameActivity extends AppCompatActivity {
                         //Todo: aqui se entraria en all in
                     }
                     else{
-                        //Cogemos valor de apuesta anterior para que al darle a igualar te ponga las fichas que te quedan para igualar la apuesta segÃºn las que tu ya habias apostado
+                        //Cogemos valor de apuesta anterior para que al darle a igualar te ponga las fichas que te quedan para igualar la apuesta según las que tu ya habias apostado
                         eq_bet = PlayerDataBase[playernumber].getBet();
                         bet2=current_individual_bet-eq_bet;
                         String textCurrentIBtn= Integer.toString(bet2);
@@ -513,7 +514,7 @@ public class GameActivity extends AppCompatActivity {
                         else{
                             //cuando vote se suma uno
                             winner2++;
-                            //se guarda la posiciÃ³n que ha votado en un array
+                            //se guarda la posición que ha votado en un array
                             PlayerDataBase[pos].setWin(true);
                             cont_winner_out++;
                             ChooseWinner();}
@@ -546,7 +547,7 @@ public class GameActivity extends AppCompatActivity {
                         else{
                             //cuando vote se suma uno-
                             check_players_pressed++;
-                            //se guarda la posiciÃ³n que ha votado en un array
+                            //se guarda la posición que ha votado en un array
                             PlayerDataBase[pos].setWin(true);
                             cont_winner_out++;
                             ChooseWinner();}
@@ -577,7 +578,7 @@ public class GameActivity extends AppCompatActivity {
 
                 }
                 else{
-                    txt_time_number.setText(String.valueOf( min + ":" + millisUntilFinished/1000));}
+                txt_time_number.setText(String.valueOf( min + ":" + millisUntilFinished/1000));}
             }
             public void onFinish(){
 
@@ -629,7 +630,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     //este metodo se ejecuta cuando pulsamos pasar o apostar, si pulsamos bet el valor de la variable
-    //bet se restarÃ¡ a tus fichas y se actualizarÃ¡ el valor de current_individual_bet si este es menor
+    //bet se restará a tus fichas y se actualizará el valor de current_individual_bet si este es menor
     //a la nueva apuesta
 
     private void toBet(final int toBetBet) {
@@ -795,24 +796,11 @@ public class GameActivity extends AppCompatActivity {
             case 0:
                 txt_turn.setText(getString(R.string.preflop));  //añadido recurso
                 PlayersAnnihilateds();
-                if (playersalive==3){
-
-                    for (int i=0;i<playersalive; i++){
-
-                        if (PlayerDataBase[i].isDealer()){
-                            playernumber=i;
-                        }
-                    }
-                }
-                if (playersalive==2){
-
-                    for (int i=0;i<playersalive; i++){
-
-                        if (PlayerDataBase[i].isSmall()){
-                            playernumber=i;
-                        }
-                    }
-
+                txt_turn.setText("PREFLOP");
+                if (playersalive<=3){
+                first_turn=true;}
+                else{
+                    first_turn=false;
                 }
 
                 for(int i = 0; i< playersalive; i++ ){
@@ -854,6 +842,7 @@ public class GameActivity extends AppCompatActivity {
             //PREFLOP
             case 1:
                 txt_turn.setText(getString(R.string.preflop));  //añadido recurso
+                first_turn=false;
                 PlayersIn();
                 playerscall=0;
 
@@ -960,7 +949,9 @@ public class GameActivity extends AppCompatActivity {
                     builder2.create().show();
                     cont_playersin++;
                     break;}
-                else {winner2++;}
+                else {PlayerDataBase[winner2].setIn(false);
+
+                    winner2++;}
 
             case 1:
                 if(PlayerDataBase[1].isIn() & !(playersin==cont_playersin)){
@@ -969,9 +960,11 @@ public class GameActivity extends AppCompatActivity {
                     builder3.setMessage(String.format("Player %s choose the winner",PlayerDataBase[1].getName()));
                     builder3.create().show();
                     cont_playersin++;
+
                     break;}
 
-                else {winner2++;}
+                else {PlayerDataBase[winner2].setIn(false);
+                    winner2++;}
 
             case 2:
                 if(PlayerDataBase[2].isIn() & !(playersin==cont_playersin)){
@@ -979,80 +972,97 @@ public class GameActivity extends AppCompatActivity {
                     builder4.setMessage(String.format("Player %s choose the winner",PlayerDataBase[2].getName()));
                     builder4.create().show();
                     cont_playersin++;
+
                     break;}
 
-                else {winner2++;}
+                else {PlayerDataBase[winner2].setIn(false);
+                    winner2++;}
 
             case 3:
 
                 if(PlayerDataBase[3].isIn() & !(playersin==cont_playersin)){
                     AlertDialog.Builder builder4= new AlertDialog.Builder(this);
-                    builder4.setMessage(String.format("Player %s choose the winner",PlayerDataBase[2].getName()));
+                    builder4.setMessage(String.format("Player %s choose the winner",PlayerDataBase[3].getName()));
                     builder4.create().show();
                     cont_playersin++;
+
                     break;}
 
-                else {winner2 =3;}
+                else {PlayerDataBase[winner2].setIn(false);
+                    winner2++;}
 
             case 4:
                 if(PlayerDataBase[4].isIn() & !(playersin==cont_playersin)){
 
                     AlertDialog.Builder builder2= new AlertDialog.Builder(this);
-                    builder2.setMessage(String.format("Player %s choose the winner",PlayerDataBase[0].getName()));
+                    builder2.setMessage(String.format("Player %s choose the winner",PlayerDataBase[4].getName()));
                     builder2.create().show();
                     cont_playersin++;
+
                     break;}
-                else {winner2++;}
+                else {PlayerDataBase[winner2].setIn(false);
+                    winner2++;}
 
             case 5:
                 if(PlayerDataBase[5].isIn() & !(playersin==cont_playersin)){
                     AlertDialog.Builder builder4= new AlertDialog.Builder(this);
-                    builder4.setMessage(String.format("Player %s choose the winner",PlayerDataBase[2].getName()));
+                    builder4.setMessage(String.format("Player %s choose the winner",PlayerDataBase[5].getName()));
                     builder4.create().show();
                     cont_playersin++;
+
                     break;}
 
-                else {winner2++;}
+                else {PlayerDataBase[winner2].setIn(false);
+                    winner2++;}
 
             case 6:
                 if(PlayerDataBase[6].isIn() & !(playersin==cont_playersin)){
                     AlertDialog.Builder builder4= new AlertDialog.Builder(this);
-                    builder4.setMessage(String.format("Player %s choose the winner",PlayerDataBase[2].getName()));
+                    builder4.setMessage(String.format("Player %s choose the winner",PlayerDataBase[6].getName()));
                     builder4.create().show();
                     cont_playersin++;
+
                     break;}
 
-                else {winner2++;}
+                else {PlayerDataBase[winner2].setIn(false);
+                    winner2++;}
 
             case 7:
 
                 if(PlayerDataBase[7].isIn() & !(playersin==cont_playersin)){
                     AlertDialog.Builder builder4= new AlertDialog.Builder(this);
-                    builder4.setMessage(String.format("Player %s choose the winner",PlayerDataBase[2].getName()));
+                    builder4.setMessage(String.format("Player %s choose the winner",PlayerDataBase[7].getName()));
                     builder4.create().show();
                     cont_playersin++;
+
                     break;}
 
-                else {winner2++;}
+                else {PlayerDataBase[winner2].setIn(false);
+                    winner2++;}
 
 
             case 8:
                 if(PlayerDataBase[8].isIn() & !(playersin==cont_playersin)){
                     AlertDialog.Builder builder4= new AlertDialog.Builder(this);
-                    builder4.setMessage(String.format("Player %s choose the winner",PlayerDataBase[2].getName()));
+                    builder4.setMessage(String.format("Player %s choose the winner",PlayerDataBase[8].getName()));
                     builder4.create().show();
                     cont_playersin++;
+
                     break;}
 
-                else {winner2++;}
+                else {PlayerDataBase[winner2].setIn(false);
+                    winner2++;}
 
             case 9:
 
                 if(PlayerDataBase[9].isIn() & !(playersin==cont_playersin)){
                     AlertDialog.Builder builder5= new AlertDialog.Builder(this);
-                    builder5.setMessage(String.format("Player %s choose the winner",PlayerDataBase[3].getName()));
+                    builder5.setMessage(String.format("Player %s choose the winner",PlayerDataBase[9].getName()));
                     builder5.create().show();
+
                 }
+                else{PlayerDataBase[winner2].setIn(false);}
+
                 break;
 
             case 10:
@@ -1149,9 +1159,16 @@ public class GameActivity extends AppCompatActivity {
                 builder5.create().show();
 
             }
-            //si todos son el mismo jugador se le asigna la victoria
 
             else if (winner_check!=-1){
+
+                for (int i=0; i<playersalive; i++){
+                    if (i==winner_check){}
+                    else {
+                        PlayerDataBase[i].setWin(false);
+                    }
+
+                }
                 if (all_in){
                     for (int i=0; i<PlayerDataBase.length;i++){
                         if (PlayerDataBase[i].isIn() & !PlayerDataBase[i].isWin()){
@@ -1171,14 +1188,17 @@ public class GameActivity extends AppCompatActivity {
                 current_individual_bet=0;
                 total_bet=0;
                 winner2=0;
+                nState=0;
                 winner_finish=false;
                 cont_winner_out=1;
                 //Se pone to*do a 0
                 for(int i = 0; i< playersalive; i++){
-                    PlayerDataBase[i].setIn(true);
+                    //PlayerDataBase[i].setIn(true);
                     PlayerDataBase[i].setBet(0);
                     PlayerDataBase[i].setCall(false);
                     PlayerDataBase[i].setTurn(false);
+                    PlayerDataBase[i].setAllin(false);
+
                     //valores a 0 por allin
                     all_in=false;
                     all_in_value=0;
@@ -1213,14 +1233,15 @@ public class GameActivity extends AppCompatActivity {
             winner2=0;
             for(int i = 0; i< playersalive; i++){
                 if (!PlayerDataBase[i].isAnnihilated()){
-                    PlayerDataBase[i].setIn(true);
-                    PlayerDataBase[i].setBet(0);
-                    PlayerDataBase[i].setCall(false);
-                    PlayerDataBase[i].setTurn(false);}
+               // PlayerDataBase[i].setIn(true);
+                PlayerDataBase[i].setBet(0);
+                PlayerDataBase[i].setCall(false);
+                PlayerDataBase[i].setTurn(false);}
                 //valores a 0 por allin
                 all_in=false;
                 all_in_value=0;
                 restart_bet=0;
+                nState=0;
                 string_bet = Integer.toString(restart_bet);
                 txt_bet.setText(string_bet);}
             RotateBlind(playersin);}
@@ -1310,6 +1331,26 @@ public class GameActivity extends AppCompatActivity {
         Log.i("Galvan","CAMBIO DE TURNO");
         PlayerDataBase[playernumber].setTurn(false);
 
+        if (playersalive==3 & first_turn){
+
+            for (int i=0;i<playersalive; i++){
+
+                if (PlayerDataBase[i].isDealer()){
+                    playernumber=i;
+                }
+            }
+        }
+        else if (playersalive==2 & first_turn){
+
+            for (int i=0;i<playersalive; i++){
+
+                if (PlayerDataBase[i].isSmall()){
+                    playernumber=i;
+                }
+            }
+
+        }
+         if(!first_turn){
         if((playernumber== playersalive -1)){playernumber=0;}
         else{playernumber++;}
 
@@ -1318,7 +1359,7 @@ public class GameActivity extends AppCompatActivity {
             if((playernumber== playersalive -1)){playernumber=0;}
             else{playernumber++;}
 
-        }
+        }}
        /*for (int i=0;i<playersout.length;i++){
             if (playernumber==playersout[i]){playernumber++;}}*/
 
@@ -1373,178 +1414,179 @@ public class GameActivity extends AppCompatActivity {
         }
         //contamos cuantos jugadores estan fuera
         PlayersAnnihilateds();
-        Log.i("Turn",String.format("playersalive %d",playersalive));
+            Log.i("Turn",String.format("playersalive %d",playersalive));
 
-        if (playersalive>3){
-            //DESPLAZAMIENTO CIEGAS
-            //si el ultimo de la lista no es ni big small ni dealer
-            if( !PlayerDataBase[playersalive -1].isBig() &
-                    !PlayerDataBase[playersalive -1].isDealer() &
-                    !PlayerDataBase[playersalive -1].isSmall()) {
-                boolean aux= false;
-                for(int i = 0; i< playersalive; i++){
-                    PlayerDataBase[i].setIn(true);
-                    PlayerDataBase[i].setAllin(false);
+            if (playersalive>3){
+                //DESPLAZAMIENTO CIEGAS
+                //si el ultimo de la lista no es ni big small ni dealer
+                if( !PlayerDataBase[playersalive -1].isBig() &
+                        !PlayerDataBase[playersalive -1].isDealer() &
+                        !PlayerDataBase[playersalive -1].isSmall()) {
+                    boolean aux= false;
+                    for(int i = 0; i< playersalive; i++){
 
-
-
-                    //DEALER->nA
-                    if(PlayerDataBase[i].isDealer()){
-                        PlayerDataBase[i].setDealer(false);
-                        Log.i("GALVAN","Dealer-na");
-                    }
-                    //SMALL->DEALER
-                    if(PlayerDataBase[i].isSmall()){
-                        PlayerDataBase[i].setDealer(true);
-                        PlayerDataBase[i].setSmall(false);
-                        Log.i("GALVAN","Small-Big");
-                    }
-                    //BIG->SMALL
-                    if(PlayerDataBase[i].isBig()){
-                        PlayerDataBase[i].setSmall(true);
-                        PlayerDataBase[i].setBig(false);
-                        Log.i("GALVAN","Big-Small");
-                        aux=true;
-                        Log.i("GALVAN","aux true");
-                    }
-                    //nA->BIG
-                    if( aux==true&&
-                            !PlayerDataBase[i].isBig() &
-                                    !PlayerDataBase[i].isDealer() &
-                                    !PlayerDataBase[i].isSmall()) {
-
-                        PlayerDataBase[i].setBig(true);
-                        Log.i("GALVAN",String.format("Player %s is Big",Integer.toString(i)));
-                        aux=false;
-
-                    }
-                    Log.i("GALVAN",String.format("i= %s",Integer.toString(i)));
-                    list.setAdapter(adapter);
-                }
-            }
-            //si el ultimo es big
-            else if(PlayerDataBase[playersalive -1].isBig()) {
-                PlayerDataBase[0].setBig(true);
-
-                for (int i = 1; i < playersalive; i++) {
-                    PlayerDataBase[i].setIn(true);
-                    PlayerDataBase[i].setAllin(false);
+                        PlayerDataBase[i].setIn(true);
+                        PlayerDataBase[i].setAllin(false);
 
 
-                    //DEALER->nA
-                    if (PlayerDataBase[i].isDealer()) {
-                        PlayerDataBase[i].setDealer(false);
-                        Log.i("GALVAN", "Dealer-na");
-                    }
-                    //SMALL->DEALER
-                    if (PlayerDataBase[i].isSmall()) {
-                        PlayerDataBase[i].setDealer(true);
-                        PlayerDataBase[i].setSmall(false);
-                        Log.i("GALVAN", "Small-Big");
-                    }
-                    //BIG->SMALL
-                    if (PlayerDataBase[i].isBig()) {
-                        PlayerDataBase[i].setSmall(true);
-                        PlayerDataBase[i].setBig(false);
 
+                        //DEALER->nA
+                        if(PlayerDataBase[i].isDealer()){
+                            PlayerDataBase[i].setDealer(false);
+                            Log.i("GALVAN","Dealer-na");
+                        }
+                        //SMALL->DEALER
+                        if(PlayerDataBase[i].isSmall()){
+                            PlayerDataBase[i].setDealer(true);
+                            PlayerDataBase[i].setSmall(false);
+                            Log.i("GALVAN","Small-Big");
+                        }
+                        //BIG->SMALL
+                        if(PlayerDataBase[i].isBig()){
+                            PlayerDataBase[i].setSmall(true);
+                            PlayerDataBase[i].setBig(false);
+                            Log.i("GALVAN","Big-Small");
+                            aux=true;
+                            Log.i("GALVAN","aux true");
+                        }
+                        //nA->BIG
+                        if( aux==true&&
+                                !PlayerDataBase[i].isBig() &
+                                        !PlayerDataBase[i].isDealer() &
+                                        !PlayerDataBase[i].isSmall()) {
+
+                            PlayerDataBase[i].setBig(true);
+                            Log.i("GALVAN",String.format("Player %s is Big",Integer.toString(i)));
+                            aux=false;
+
+                        }
+                        Log.i("GALVAN",String.format("i= %s",Integer.toString(i)));
                         list.setAdapter(adapter);
                     }
                 }
-            }
-            //si el ultimo es small
-            else if(PlayerDataBase[playersalive -1].isSmall()){
-                PlayerDataBase[0].setBig(false);
-                PlayerDataBase[0].setSmall(true);
-                PlayerDataBase[1].setBig(true);
+                //si el ultimo es big
+                else if(PlayerDataBase[playersalive -1].isBig()) {
+                    PlayerDataBase[0].setBig(true);
 
-                for(int i = 1; i< playersalive; i++){
-                    PlayerDataBase[i].setIn(true);
-                    PlayerDataBase[i].setAllin(false);
+                    for (int i = 1; i < playersalive; i++) {
+                        PlayerDataBase[i].setIn(true);
+                        PlayerDataBase[i].setAllin(false);
 
 
+                        //DEALER->nA
+                        if (PlayerDataBase[i].isDealer()) {
+                            PlayerDataBase[i].setDealer(false);
+                            Log.i("GALVAN", "Dealer-na");
+                        }
+                        //SMALL->DEALER
+                        if (PlayerDataBase[i].isSmall()) {
+                            PlayerDataBase[i].setDealer(true);
+                            PlayerDataBase[i].setSmall(false);
+                            Log.i("GALVAN", "Small-Big");
+                        }
+                        //BIG->SMALL
+                        if (PlayerDataBase[i].isBig()) {
+                            PlayerDataBase[i].setSmall(true);
+                            PlayerDataBase[i].setBig(false);
 
-                    //DEALER->nA
-                    if(PlayerDataBase[i].isDealer()){
-                        PlayerDataBase[i].setDealer(false);
-                        Log.i("GALVAN","Dealer-na");
+                            list.setAdapter(adapter);
+                        }
                     }
-                    //SMALL->DEALER
-                    if(PlayerDataBase[i].isSmall()){
-                        PlayerDataBase[i].setDealer(true);
-                        PlayerDataBase[i].setSmall(false);
-                        Log.i("GALVAN","Small-Big");
-                    }
-
-                    if( PlayerDataBase[i-1].isSmall()) {
-
-                        PlayerDataBase[i].setBig(true);
-                        Log.i("GALVAN",String.format("Player %s is Big",Integer.toString(i)));
-
-
-                    }
-                    list.setAdapter(adapter);
                 }
-            }
-            else if(PlayerDataBase[playersalive -1].isDealer()){
-                PlayerDataBase[0].setSmall(false);
-                PlayerDataBase[0].setDealer(true);
-                PlayerDataBase[1].setBig(false);
-                PlayerDataBase[1].setSmall(true);
-                PlayerDataBase[2].setBig(true);
-                //DEALER->nA
-                for(int i = 3; i< playersalive; i++){
-                    if(PlayerDataBase[i].isDealer()){
-                        PlayerDataBase[i].setDealer(false);
-                        Log.i("GALVAN","Dealer-na");
+                //si el ultimo es small
+                else if(PlayerDataBase[playersalive -1].isSmall()){
+                    PlayerDataBase[0].setBig(false);
+                    PlayerDataBase[0].setSmall(true);
+                    PlayerDataBase[1].setBig(true);
+
+                    for(int i = 1; i< playersalive; i++){
+                        PlayerDataBase[i].setIn(true);
+                        PlayerDataBase[i].setAllin(false);
+
+
+
+                        //DEALER->nA
+                        if(PlayerDataBase[i].isDealer()){
+                            PlayerDataBase[i].setDealer(false);
+                            Log.i("GALVAN","Dealer-na");
+                        }
+                        //SMALL->DEALER
+                        if(PlayerDataBase[i].isSmall()){
+                            PlayerDataBase[i].setDealer(true);
+                            PlayerDataBase[i].setSmall(false);
+                            Log.i("GALVAN","Small-Big");
+                        }
+
+                        if( PlayerDataBase[i-1].isSmall()) {
+
+                            PlayerDataBase[i].setBig(true);
+                            Log.i("GALVAN",String.format("Player %s is Big",Integer.toString(i)));
+
+
+                        }
+                        list.setAdapter(adapter);
                     }
-                }}
+                }
+                else if(PlayerDataBase[playersalive -1].isDealer()){
+                    PlayerDataBase[0].setSmall(false);
+                    PlayerDataBase[0].setDealer(true);
+                    PlayerDataBase[1].setBig(false);
+                    PlayerDataBase[1].setSmall(true);
+                    PlayerDataBase[2].setBig(true);
+                    //DEALER->nA
+                    for(int i = 3; i< playersalive; i++){
+                        if(PlayerDataBase[i].isDealer()){
+                            PlayerDataBase[i].setDealer(false);
+                            Log.i("GALVAN","Dealer-na");
+                        }
+                    }}
 
 
-            //RESTAURAR OUT
-            for(int i = 0; i< playersalive; i++){
-                checkout = PlayerDataBase[i].isIn();
-                if(checkout==true){playersin++;}
-                txt_current_total_bet.setText(Integer.toString(playersin));
-            }
+                    //RESTAURAR OUT
+                    for(int i = 0; i< playersalive; i++){
+                        checkout = PlayerDataBase[i].isIn();
+                        if(checkout==true){playersin++;}
+                        txt_current_total_bet.setText(Integer.toString(playersin));
+                    }
 
-            //Rotar turno
+                    //Rotar turno
 
-            refresh();}
+                    refresh();}
 
 
         else if(playersalive==3){
 
-            for (int i=0;i<playersalive; i++){
+                for (int i=0;i<playersalive; i++){
 
-                PlayerDataBase[i].setIn(true);
-                PlayerDataBase[i].setAllin(false);
+                    PlayerDataBase[i].setIn(true);
+                    PlayerDataBase[i].setAllin(false);
 
-                if (PlayerDataBase[i].isDealer()){
-                    PlayerDataBase[i].setDealer(false);
-                    PlayerDataBase[i].setBig(true);
-                    i++;
+                    if (PlayerDataBase[i].isDealer()){
+                        PlayerDataBase[i].setDealer(false);
+                        PlayerDataBase[i].setBig(true);
+                        i++;
+                    }
+                    if (PlayerDataBase[i].isSmall()){
+                        PlayerDataBase[i].setSmall(false);
+                        PlayerDataBase[i].setDealer(true);
+                        i++;
+                    }
+                    if (PlayerDataBase[i].isBig()){
+                        PlayerDataBase[i].setBig(false);
+                        PlayerDataBase[i].setSmall(true);
+                    }
+
                 }
-                if (PlayerDataBase[i].isSmall()){
-                    PlayerDataBase[i].setSmall(false);
-                    PlayerDataBase[i].setDealer(true);
-                    i++;
-                }
-                if (PlayerDataBase[i].isBig()){
-                    PlayerDataBase[i].setBig(false);
-                    PlayerDataBase[i].setSmall(true);
+
+                for(int i = 0; i< playersalive; i++){
+                    checkout = PlayerDataBase[i].isIn();
+                    if(checkout){playersin++;}
+                    txt_current_total_bet.setText(Integer.toString(playersin));
                 }
 
-            }
+                //Rotar turno
 
-            for(int i = 0; i< playersalive; i++){
-                checkout = PlayerDataBase[i].isIn();
-                if(checkout){playersin++;}
-                txt_current_total_bet.setText(Integer.toString(playersin));
-            }
-
-            //Rotar turno
-
-            refresh();}
+                refresh();}
 /*
             //D/ESPLAZAMIENTO CIEGAS
             //si el ultimo de la lista no es ni big small ni dealer
@@ -1670,44 +1712,44 @@ public class GameActivity extends AppCompatActivity {
                 }}*/
 
 
-        //RESTAURAR OUT
-
-
-        else if(playersalive==2){
-
-
-            for (int i=0;i<PlayerDataBase.length; i++){
-
-                PlayerDataBase[i].setDealer(false);}
-
-            for (int i=0;i<playersalive; i++){
-
-                PlayerDataBase[i].setIn(true);
-                PlayerDataBase[i].setAllin(false);
-
-
-                if (PlayerDataBase[i].isSmall()){
-                    PlayerDataBase[i].setSmall(false);
-                    PlayerDataBase[i].setBig(true);
-                    i++;
-                }
-                if (PlayerDataBase[i].isBig()){
-                    PlayerDataBase[i].setBig(false);
-                    PlayerDataBase[i].setSmall(true);
-                }
-
-            }
             //RESTAURAR OUT
-            for(int i = 0; i< playersalive; i++){
-                checkout = PlayerDataBase[i].isIn();
-                if(checkout){playersin++;}
-                txt_current_total_bet.setText(Integer.toString(playersin));
+
+
+            else if(playersalive==2){
+
+
+                for (int i=0;i<PlayerDataBase.length; i++){
+
+                    PlayerDataBase[i].setDealer(false);}
+
+                for (int i=0;i<playersalive; i++){
+
+                    PlayerDataBase[i].setIn(true);
+                    PlayerDataBase[i].setAllin(false);
+
+
+                    if (PlayerDataBase[i].isSmall()){
+                        PlayerDataBase[i].setSmall(false);
+                        PlayerDataBase[i].setBig(true);
+                        i++;
+                    }
+                    if (PlayerDataBase[i].isBig()){
+                        PlayerDataBase[i].setBig(false);
+                        PlayerDataBase[i].setSmall(true);
+                    }
+
+                }
+            //RESTAURAR OUT
+                for(int i = 0; i< playersalive; i++){
+                    checkout = PlayerDataBase[i].isIn();
+                    if(checkout){playersin++;}
+                    txt_current_total_bet.setText(Integer.toString(playersin));
+                }
+
+                //Rotar turno
+
+                refresh();
             }
-
-            //Rotar turno
-
-            refresh();
-        }
 
 
         for (int i=0; i<winner_pos.length;i++){
@@ -1720,19 +1762,29 @@ public class GameActivity extends AppCompatActivity {
         total_bet=0;
         txt_total_bet.setText(Integer.toString(total_bet));
 
-        turnALLIN(); turnState();
+        turnState();
     }
 
     private void PlayersAnnihilateds() {
 
         number_playersout=0;
         for (int l = 0; l< PlayerDataBase.length; l++){
-            if (PlayerDataBase[l].isAnnihilated()){number_playersout++;
-                Log.i("Xavi",String.format("Number_playersout%d",number_playersout));}}
+        if (PlayerDataBase[l].isAnnihilated()){number_playersout++;
+            Log.i("Xavi",String.format("Number_playersout%d",number_playersout));}}
 
-        for (int i = 0; i< playersalive; i++){
+        //todo no elimina bien a los jugadores
+        for (int i = 0; i < playersalive; i++){
+
             if(PlayerDataBase[i].isAnnihilated() & PlayerDataBase[i].isGenerated()){
                 players.remove(i);
+            }
+        }
+
+
+        for (int i = 0; i< playersalive; i++){
+            Log.i("Check",String.format("i %d isAnnihilated %b // %b isGenerated",i, PlayerDataBase[i].isAnnihilated(),PlayerDataBase[i].isGenerated()));
+            if(PlayerDataBase[i].isAnnihilated() & PlayerDataBase[i].isGenerated()){
+
                 PlayerItems auxPlayer = PlayerDataBase[i];
 
                 for(int l=i; l<9;l++){
@@ -1747,6 +1799,10 @@ public class GameActivity extends AppCompatActivity {
 
             }
         }
+
+        //Log.i("Check3",String.format("Plaersalive %d // i %d",playersalive,i));
+        //Log.i("Check2",String.format("i %d isAnnihilated %b // %b isGenerated",i, PlayerDataBase[i].isAnnihilated(),PlayerDataBase[i].isGenerated()));7
+
         playersalive =10-number_playersout;
     }
 
