@@ -53,4 +53,9 @@
     <string name="selectWinner">Debes seleccionar el ganador</string>
     <string name="winner">GANADOR</string>
     <string name="whoIsWinner">El turno de apuestas ha terminado, es hora de saber quién es el ganador</string>
+    <string name="enterName">Porfavor escribe tu nombre</string>
+    <string name="enterCode">Porfavor escribe el código</string>
+    <string name="codeIncorrect">El código no es correcto</string>
+    <string name="enterPlayers">Porfavor escribe el número de jugadores</string>
+    <string name="maximPlayers">El máximo número de jugadores es 10</string>
 </resources>

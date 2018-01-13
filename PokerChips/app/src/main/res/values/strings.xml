@@ -64,12 +64,11 @@
     <string name="whoIsWinner">The turn of bets is over it\'s time to know who is the winner</string>
     <!--string name="chooseWinner">Player %s choose the winner</string-->
     <string name="differentsWinners">You are choosing differents players, please try it again and select the same winner</string>
+    <string name="enterName">Please enter your name</string>
+    <string name="enterCode">Please enter code</string>
+    <string name="codeIncorrect">The code is not correct</string>
+    <string name="enterPlayers">Please enter number of players</string>
+    <string name="maximPlayers">Maximum number of players is 10</string>
     <!--string name="PlayerWonChips">Player %s won %s chips</string-->
-
-    <string-array name="values">
-            <item>name</item>
-            <item>Player2</item>
-            <item>Player3</item>
-        </string-array>
 
 </resources>

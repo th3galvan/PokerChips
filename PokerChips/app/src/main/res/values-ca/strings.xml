@@ -55,4 +55,9 @@
     <string name="selectWinner">Has de seleccionar el guanyador</string>
     <string name="winner">GUANYADOR</string>
     <string name="whoIsWinner">El torn d\'apostes ha acabat, és hora de saber qui és el guanyador</string>
+    <string name="enterName">Si us plau posi el seu nom</string>
+    <string name="enterCode">Si us plau posi el codi</string>
+    <string name="codeIncorrect">El codi no es correcte</string>
+    <string name="enterPlayers">Si us plau posi el nombre de jugadors</string>
+    <string name="maximPlayers">El nombre màxim de jugadors es 10</string>
 </resources>

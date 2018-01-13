@@ -793,7 +793,7 @@ public class GameActivity extends AppCompatActivity {
         switch (nState) {
             //BIG BLIND SMALL BLIND
             case 0:
-                txt_turn.setText("PREFLOP");
+                txt_turn.setText(getString(R.string.preflop));  //añadido recurso
                 PlayersAnnihilateds();
                 if (playersalive==3){
 
@@ -853,7 +853,7 @@ public class GameActivity extends AppCompatActivity {
 
             //PREFLOP
             case 1:
-                txt_turn.setText("PREFLOP");
+                txt_turn.setText(getString(R.string.preflop));  //añadido recurso
                 PlayersIn();
                 playerscall=0;
 
@@ -872,7 +872,7 @@ public class GameActivity extends AppCompatActivity {
 
                 //FLOP
             case 3:
-                txt_turn.setText("FLOP");
+                txt_turn.setText(getString(R.string.flop)); //añadido recurso
                 PlayersIn();
                 playerscall=0;
                 for(int l = 0; l< playersalive; l++){
@@ -892,7 +892,7 @@ public class GameActivity extends AppCompatActivity {
 
                 //TURN
             case 5:
-                txt_turn.setText("TURN");
+                txt_turn.setText(getString(R.string.turn)); //añadido recurso
                 PlayersIn();
                 playerscall=0;
 
@@ -913,7 +913,7 @@ public class GameActivity extends AppCompatActivity {
 
                 //RIVER
             case 7:
-                txt_turn.setText("RIVER");
+                txt_turn.setText(getString(R.string.river));    //añadido recurso
                 PlayersIn();
                 playerscall=0;
                 for(int p = 0; p< playersalive; p++){
@@ -926,7 +926,7 @@ public class GameActivity extends AppCompatActivity {
 
                 //WINNER-
             case 8:
-                txt_turn.setText("WINNER");
+                txt_turn.setText(getString(R.string.winner));   //añadido recurso
                 AlertDialog.Builder builder2= new AlertDialog.Builder(this);
                 builder2.setMessage(getString(R.string.whoIsWinner));       //añadido recurso para traducir el texto
                 builder2.setCancelable(false);

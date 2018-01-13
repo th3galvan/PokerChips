@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.Display;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -93,7 +91,7 @@ public class ModeGameActivity extends AppCompatActivity {
                     if(name.equals("")){empty_name=true;
                         AlertDialog.Builder builder= new AlertDialog.Builder(ModeGameActivity.this);
                         builder.setTitle(R.string.Name);
-                        builder.setMessage("Please enter your name");
+                        builder.setMessage(getString(R.string.enterName));  //añadido recurso
                         builder.create().show();
                     }
                     else {empty_name=false;}
@@ -102,7 +100,7 @@ public class ModeGameActivity extends AppCompatActivity {
                         if(!empty_name){
                             AlertDialog.Builder builder= new AlertDialog.Builder(ModeGameActivity.this);
                             builder.setTitle(R.string.players);
-                            builder.setMessage("Please enter number of players");
+                            builder.setMessage(R.string.enterPlayers);  //añadido recurso
                             builder.create().show();}
                     }
                     else{empty_players=false;}
@@ -111,7 +109,7 @@ public class ModeGameActivity extends AppCompatActivity {
                         max_players=true;
                         AlertDialog.Builder builder= new AlertDialog.Builder(ModeGameActivity.this);
                         builder.setTitle(R.string.players);
-                        builder.setMessage("Maximum number of players is 10");
+                        builder.setMessage(R.string.maximPlayers);  //añadido recurso
                         builder.create().show();}
 
                     else{max_players=false;}

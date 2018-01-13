@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 /**
  * Created by xvilaseca on 09/01/2018.
@@ -65,7 +64,7 @@ public class JoinGameActivity extends AppCompatActivity {
                 if(string_name.equals("")){empty=true;
                     AlertDialog.Builder builder= new AlertDialog.Builder(JoinGameActivity.this);
                     builder.setTitle(R.string.Name);
-                    builder.setMessage("Please enter your name");
+                    builder.setMessage(R.string.enterName);
                     builder.create().show();
                 }
                 else {empty=false;}
@@ -73,7 +72,7 @@ public class JoinGameActivity extends AppCompatActivity {
                     if(!empty){
                     AlertDialog.Builder builder= new AlertDialog.Builder(JoinGameActivity.this);
                     builder.setTitle(R.string.Code);
-                    builder.setMessage("Please enter code");
+                    builder.setMessage(R.string.enterCode);
                     builder.create().show();}
                 }
                 else {empty_code=false;}
@@ -87,7 +86,7 @@ public class JoinGameActivity extends AppCompatActivity {
                 else if (!empty & !empty_code & !string_code.equals(string_code_bundle)){
                     AlertDialog.Builder builder = new AlertDialog.Builder(JoinGameActivity.this);
                     builder.setTitle(R.string.Code);
-                    builder.setMessage("The code is not correct");
+                    builder.setMessage(R.string.codeIncorrect);
                     builder.setPositiveButton(R.string.confirmation,null);
                     builder.create().show();
                 }
