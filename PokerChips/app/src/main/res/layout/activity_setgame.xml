@@ -12,7 +12,7 @@
         android:layout_marginEnd="44dp"
         android:layout_marginRight="44dp"
         android:layout_marginTop="22dp"
-        android:text="ESCRIBE TU NOMBRE" />
+        android:text="@string/writeYourName" />
 
     <EditText
         android:id="@+id/edit_host_name"
@@ -31,12 +31,12 @@
         android:id="@+id/txt_players_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Nº JUGADORES"
         android:layout_above="@+id/edit_players_number"
-        android:layout_alignRight="@+id/txt_host_name"
         android:layout_alignEnd="@+id/txt_host_name"
+        android:layout_alignRight="@+id/txt_host_name"
+        android:layout_marginEnd="15dp"
         android:layout_marginRight="15dp"
-        android:layout_marginEnd="15dp" />
+        android:text="@string/numPlayers" />
 
     <EditText
         android:id="@+id/edit_players_number"
@@ -53,12 +53,12 @@
         android:id="@+id/txt_initial_chips"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Nº FICHAS POR JUGADOR"
         android:layout_above="@+id/edit_initial_chips"
-        android:layout_alignRight="@+id/edit_initial_chips"
         android:layout_alignEnd="@+id/edit_initial_chips"
+        android:layout_alignRight="@+id/edit_initial_chips"
+        android:layout_marginEnd="24dp"
         android:layout_marginRight="24dp"
-        android:layout_marginEnd="24dp" />
+        android:text="@string/numChipsPlayer" />
 
     <EditText
         android:id="@+id/edit_initial_chips"
@@ -75,12 +75,12 @@
         android:id="@+id/txt_first_big_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/edit_host_name"
+        android:layout_alignEnd="@+id/edit_first_big_value"
+        android:layout_alignRight="@+id/edit_first_big_value"
         android:layout_marginEnd="26dp"
         android:layout_marginRight="26dp"
-        android:text="VALOR INICIAL BIG BLIND"
-        android:layout_above="@+id/edit_host_name"
-        android:layout_alignRight="@+id/edit_first_big_value"
-        android:layout_alignEnd="@+id/edit_first_big_value" />
+        android:text="@string/iniBigValue" />
 
     <EditText
         android:id="@+id/edit_first_big_value"
@@ -103,7 +103,7 @@
         android:layout_alignLeft="@+id/edit_big_freq"
         android:layout_alignStart="@+id/edit_big_freq"
         android:paddingLeft="8dp"
-        android:text="FRECUENCIA SUBIDA BIG BLIND" />
+        android:text="@string/freqRiseBig" />
 
     <EditText
         android:id="@+id/edit_big_freq"
@@ -122,10 +122,10 @@
         android:id="@+id/txt_big_change_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="VALOR SUBIDA BIG BLIND"
         android:layout_above="@+id/edit_initial_chips"
+        android:layout_alignEnd="@+id/txt_first_big_value"
         android:layout_alignRight="@+id/txt_first_big_value"
-        android:layout_alignEnd="@+id/txt_first_big_value" />
+        android:text="@string/ValueRiseBig" />
 
     <EditText
         android:id="@+id/edit_big_change_value"
@@ -144,16 +144,16 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:text="HECHO" />
+        android:text="@string/nextAcction" />
 
     <TextView
         android:id="@+id/txt_unity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="min"
-        android:textSize="14sp"
         android:layout_alignBaseline="@+id/edit_big_freq"
         android:layout_alignBottom="@+id/edit_big_freq"
+        android:layout_toEndOf="@+id/txt_big_change_value"
         android:layout_toRightOf="@+id/txt_big_change_value"
-        android:layout_toEndOf="@+id/txt_big_change_value" />
+        android:text="@string/minutes"
+        android:textSize="14sp" />
 </RelativeLayout>

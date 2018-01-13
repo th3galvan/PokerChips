@@ -19,15 +19,15 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="67dp"
-        android:text="Generate Code" />
+        android:text="@string/GenerateCode" />
 
     <TextView
         android:id="@+id/txt_code_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="CODE"
-        android:textSize="24sp"
         android:layout_above="@+id/txt_code"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="13dp" />
+        android:layout_marginBottom="13dp"
+        android:text="@string/code"
+        android:textSize="24sp" />
 </RelativeLayout>

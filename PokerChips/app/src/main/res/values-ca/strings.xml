@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">PokerChips</string>
     <string name="bet">APOSTAR</string>
     <string name="bet_rising_time">TEMPS PUJADA CEGUES</string>
     <string name="call">IGUALAR</string>
@@ -13,5 +12,32 @@
     <string name="totalbet">APOSTA TOTAL</string>
     <string name="yes">Sí</string>
     <string name="your_chips">LES TEVES FITXES</string>
-    <string name="fold">NO IR</string>
+    <string name="fold">NO ANAR</string>
+    <string name="CustomGame">Partida Personalitzada</string>
+    <string name="EnterGame">Entrar a partida</string>
+    <string name="Error"></string>
+    <string name="GenerateCode">Generar Codi</string>
+    <string name="JoinGame">Unir-te a una Partida</string>
+    <string name="Name">Nom</string>
+    <string name="NewGame">Nova Partida</string>
+    <string name="NumberPlayers">Nº Jugadors</string>
+    <string name="QuickGame">Partida Ràpida</string>
+    <string name="Rise_value"></string>
+    <string name="ValueRiseBig">Valor pujada BID BLIND</string>
+    <string name="WriteName">Escriu el teu nom</string>
+    <string name="allin"></string>
+    <string name="code">CODI</string>
+    <string name="freqRiseBig">Freqüència pujada BIG BLING</string>
+    <string name="iniBigValue">Valor inicial BIG BLIND</string>
+    <string name="next">Següent</string>
+    <string name="nextAcction">Següent</string>
+    <string name="numChipsPlayer">Nº Fitxes per jugador</string>
+    <string name="numPlayers">Nº Jugadors</string>
+    <string name="players">Nombre de jugadors</string>
+    <string name="start">Comença</string>
+    <string name="turn">TORN</string>
+    <string name="wait">Si us plau esperi ...</string>
+    <string name="writeCode">Escriu el codi per entrar a la partida</string>
+    <string name="writeYourName">Escriu el teu nom</string>
+    <string name="wrtName">Escriu el teu nom</string>
 </resources>

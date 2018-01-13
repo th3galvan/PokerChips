@@ -19,13 +19,42 @@
     <string name="call" >CALL</string>
     <string name="bet" >BET</string>
     <string name="fold">FOLD</string>
-    <string name="Error">Error</string>
+    <string name="Error" translatable="false">Error</string>
     <string name="Name">Name</string>
     <string name="Code">Code</string>
     <string name="players">Number of players</string>
     <string name="initial_chips">Initial chips</string>
     <string name="Frecuency">Frecuency to rise</string>
     <string name="Rise_value">Rise value</string>
+    <string name="NewGame">New Game</string>
+    <string name="JoinGame">Join a Game</string>
+    <string name="QuickGame">Quick Game</string>
+    <string name="CustomGame">Custom Game</string>
+    <string name="WriteName">Write your name</string>
+    <string name="NumberPlayers">Nº Players</string>
+    <string name="next">Next</string>
+    <string name="GenerateCode">Generate Code</string>
+    <string name="code">CODE</string>
+    <string name="start">Start</string>
+    <string name="writeYourName">Write your name</string>
+    <string name="numPlayers">Nº Players</string>
+    <string name="numChipsPlayer">Nº Chips by player</string>
+    <string name="iniBigValue">Initial value of BIG BLIND</string>
+    <string name="freqRiseBig">BIG BLIND rise frequency</string>
+    <string name="ValueRiseBig">BIG BLIND rise value</string>
+    <string name="minutes" translatable="false">min</string>
+    <string name="nextAcction">Next</string>
+    <string name="wrtName">Write your name</string>
+    <string name="EnterGame">Enter a game</string>
+    <string name="writeCode">Write the code to join the game:</string>
+    <string name="wait">Please wait ...</string>
+    <string name="allin" translatable="false">All-In</string>
+    <string name="turn">TURN</string>
 
+    <string-array name="values">
+            <item>name</item>
+            <item>Player2</item>
+            <item>Player3</item>
+        </string-array>
 
 </resources>

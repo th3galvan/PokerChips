@@ -12,7 +12,7 @@ android:padding="24dp">
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:text="finish" />
+        android:text="@string/next" />
 
     <RadioButton
         android:id="@+id/rb_fast"
@@ -24,7 +24,7 @@ android:padding="24dp">
         android:layout_marginLeft="53dp"
         android:layout_marginStart="53dp"
         android:layout_marginTop="32dp"
-        android:text="Partida Rápida" />
+        android:text="@string/QuickGame" />
 
     <RadioButton
         android:id="@+id/rb_custom"
@@ -36,7 +36,7 @@ android:padding="24dp">
         android:layout_alignParentRight="true"
         android:layout_marginEnd="34dp"
         android:layout_marginRight="34dp"
-        android:text="Partida Personalizada" />
+        android:text="@string/CustomGame" />
 
     <TextView
         android:id="@+id/txt_title_name"
@@ -46,7 +46,7 @@ android:padding="24dp">
         android:layout_alignStart="@+id/rb_fast"
         android:layout_below="@+id/rb_fast"
         android:layout_marginTop="27dp"
-        android:text="ESCRIBE TU NOMBRE"
+        android:text="@string/WriteName"
         android:textSize="14sp" />
 
     <EditText
@@ -67,7 +67,7 @@ android:padding="24dp">
         android:layout_alignLeft="@+id/edit_name_fast"
         android:layout_alignStart="@+id/edit_name_fast"
         android:layout_below="@+id/edit_name_fast"
-        android:text="Nº JUGADORES" />
+        android:text="@string/NumberPlayers" />
 
     <EditText
         android:id="@+id/edit_players_fast"
