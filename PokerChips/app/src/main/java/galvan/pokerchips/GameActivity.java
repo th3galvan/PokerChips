@@ -36,8 +36,8 @@ public class GameActivity extends AppCompatActivity {
     private int winner_pos[] ={7,7,7,7};
     private int winner_check;
     private int eq_bet;
-    private int playerscall;
     private int winner2=0;
+    private int playerscall;
     private int count_winner_pos=0;
     private int all_in_value;
     private int players_allin;
@@ -82,71 +82,71 @@ public class GameActivity extends AppCompatActivity {
                        boolean call,        boolean win,    boolean annihilated)*/
 
     private PlayerItems Player0= new PlayerItems(1,
-            "Fulanito", 0,
+            "1", 0,
             true,      false,   false,
             true,
             0,          false,   false,
-            false,      false,   false);
+            false,      false,   false, false);
 
     private PlayerItems Player1= new PlayerItems(1,
-            "Fulanito", 0,
+            "2", 0,
             false,      true,   false,
             true,
             0,          false,   false,
-            false,      false,   false);
+            false,      false,   false, false);
 
     private PlayerItems Player2= new PlayerItems(1,
-            "Fulanito", 0,
+            "3", 0,
             false,      false,   true,
             true,
             0,          false,   false,
-            false,      false,   false);
+            false,      false,   false, false);
 
     private PlayerItems Player3 = new PlayerItems(1,
-            "Fulanito", 0,
+            "4", 0,
             false,      false,   false,
             true,
             0,          false,   false,
-            false,      false,   false);
+            false,      false,   false, false);
 
     private PlayerItems Player4= new PlayerItems(1,
-            "Fulanito", 0,
+            "5", 0,
             false,      false,   false,
             true,
             0,          false,   false,
-            false,      false,   false);
+            false,      false,   false, false);
 
     private PlayerItems Player5= new PlayerItems(1,
-            "Fulanito", 0,
+            "6", 0,
             false,      false,   false,
             true,
             0,          false,   false,
-            false,      false,   false);
+            false,      false,   false, false);
     private PlayerItems Player6= new PlayerItems(1,
-            "Fulanito", 0,
+            "7", 0,
             false,      false,   false,
             true,
             0,          false,   false,
-            false,      false,   false);
+            false,      false,   false, false);
 
     private PlayerItems Player7 = new PlayerItems(1,
-            "Fulanito", 0,
+            "8", 0,
             false,      false,   false,
             true,
             0,          false,   false,
-            false,      false,   false);
+            false,      false,   false, false);
     private PlayerItems Player8= new PlayerItems(1,
-            "Fulanito", 0,
+            "9", 0,
             false,      false,   false,
             true,
             0,          false,   false,
-            false,      false,   false);
+            false,      false,   false, false);
     private PlayerItems Player9= new PlayerItems(1,
-            "Fulanito", 0,
+            "10", 0,
             false,      false,   false,
             true,
             0,          false,   false,
-            false,      false,   false);
+            false,      false,   false, false);
 
     private PlayerItems PlayerDataBase[]={Player0,Player1,Player2,Player3,Player4,Player5,Player6,Player7,Player8,Player9};
     private int initial_chips;
@@ -163,6 +163,9 @@ public class GameActivity extends AppCompatActivity {
     private int cont_playersout;
     private int number_playersout;
     private int playersalive;
+    private boolean pulsado;
+    private boolean check_winner_finish=false;
+    private int check_players_pressed=0;
 
 
     //salvar datos de la aplicacion si esta en segundo plano y hace onDestroy
@@ -273,7 +276,8 @@ public class GameActivity extends AppCompatActivity {
         // int bet,      boolean turn    boolean allin)
 
         for (int i=0;i<number_players;i++){
-        players.add(PlayerDataBase[i]);}
+        players.add(PlayerDataBase[i]);
+        PlayerDataBase[i].setGenerated(true);}
 
 
         adapter = new PlayerItemAdapter(
@@ -491,9 +495,6 @@ public class GameActivity extends AppCompatActivity {
                         toBet(bet2);}
                 }}
         });
-
-        //Seleccionar ganador
-
         list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> list, View item, int pos, long id) {
@@ -521,6 +522,42 @@ public class GameActivity extends AppCompatActivity {
             }
 
         });
+
+/*
+        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> list, View item, int pos, long id) {
+                PlayersAnnihilateds();
+
+                if(nState==8 & !winner_finish){
+                    if(PlayerDataBase[pos].isIn()){
+                        PlayersIn();
+                        Log.i("WINNER",String.format("plasyersin%d // cont_winner_out%d", playersin,cont_winner_out));
+                        if (cont_winner_out==playersin){
+                            PlayerDataBase[pos].setWin(true);
+                            check_winner_finish=true;
+                            pulsado=true;
+                            check_players_pressed=playersalive;
+                            ChooseWinner();
+
+                        }
+                        else{
+                            //cuando vote se suma uno-
+                            check_players_pressed++;
+                            //se guarda la posición que ha votado en un array
+                            PlayerDataBase[pos].setWin(true);
+                            cont_winner_out++;
+                            ChooseWinner();}
+
+                    }}
+
+                return true;
+
+            }
+
+        });*/
+
+
 
 
         //declaramos el view de la cuenta atras y la iniciamos con un contador
@@ -943,6 +980,29 @@ public class GameActivity extends AppCompatActivity {
                 }
 
         }
+
+/*
+        PlayersIn();
+
+        for(int i = check_players_pressed;i<playersin;i++){
+            if(PlayerDataBase[i].isIn() & !check_winner_finish){
+                AlertDialog.Builder builder2= new AlertDialog.Builder(this);
+                builder2.setMessage(String.format("Player %s choose the winner",PlayerDataBase[i].getName()));
+                builder2.create().show();
+                i=playersin ;
+                }
+                else{check_players_pressed++;}
+            }
+
+            if (pulsado){
+
+        winner_finish=true;
+        Log.i("WINNER","ESTOY?");
+        PlayersIn();
+        Log.i("WINNER",String.format("cont_winner_out %d // playersin %d",cont_winner_out,playersin));
+        if(winner_finish & cont_winner_out==playersin){Log.i("WINS","FINISH");
+            checkWinner();}}*/
+
     }
 
     private void PlayersIn() {
@@ -955,7 +1015,9 @@ public class GameActivity extends AppCompatActivity {
 
     private void checkWinner() {
 
-
+        pulsado=false;
+        check_players_pressed=0;
+        check_winner_finish=false;
         Log.i("WINS","CHECKWINNER");
         //condiciones para que el juega haya acabado
         if(playersin>1 & (nState == 8)){
@@ -1014,8 +1076,8 @@ public class GameActivity extends AppCompatActivity {
                 current_total_bet=0;
                 current_individual_bet=0;
                 total_bet=0;
-                winner_finish=false;
                 winner2=0;
+                winner_finish=false;
                 cont_winner_out=1;
                 //Se pone to*do a 0
                 for(int i = 0; i< playersalive; i++){
@@ -1217,6 +1279,7 @@ public class GameActivity extends AppCompatActivity {
                 PlayerDataBase[i].setAllin(false);
                 PlayerDataBase[i].setCall(false);
                 PlayerDataBase[i].setWin(false);
+
             }
         }
         //contamos cuantos jugadores estan fuera
@@ -1360,8 +1423,8 @@ public class GameActivity extends AppCompatActivity {
 
         for (int i=0; i<winner_pos.length;i++){
             winner_pos[i]=7;}
+        winner2=0;
         nState=0;
-        winner2 = 0;
         winner_finish=false;
         first_allin=true;
         im_allin=false;
@@ -1373,10 +1436,22 @@ public class GameActivity extends AppCompatActivity {
 
     private void PlayersAnnihilateds() {
         for (int i = 0; i< playersalive; i++){
-            if(PlayerDataBase[i].isAnnihilated()){number_playersout++;}
+            if (PlayerDataBase[i].isAnnihilated()){number_playersout++;};
+            if(PlayerDataBase[i].isAnnihilated() & PlayerDataBase[i].isGenerated()){
+                players.remove(i);
+                PlayerItems auxPlayer = PlayerDataBase[i];
+
+                for(int l=i; l<9;l++){
+                    PlayerDataBase[l]=PlayerDataBase[l+1];
+
+                }
+                PlayerDataBase[9]=auxPlayer;
+
+                Log.i("Xavi",String.format("Player name %s",PlayerDataBase[9].getName()));
+
+            }
         }
         playersalive =10-number_playersout;
-
     }
 
 }

@@ -18,6 +18,7 @@ public class PlayerItems extends AppCompatActivity {
     private boolean in;
     private boolean win;
     private boolean annihilated;
+    private boolean generated;
 
     private  int bet;
     private  boolean turn;
@@ -29,14 +30,16 @@ public class PlayerItems extends AppCompatActivity {
                        String name,         int chips,      boolean dealer,
                        boolean small,         boolean big,  boolean in,
                        int bet,             boolean turn,   boolean allin,
-                       boolean call,        boolean win,    boolean annihilated){
+                       boolean call,        boolean win,    boolean annihilated,
+                       boolean generated ){
 
         this.name = name;   this.chips = chips;     this.dealer = dealer;
         this.big = big;     this.small = small;     this.in = in;
         this.bet = bet;     this.turn = turn;       this.allin= allin;
         this.call = call;   this.win = win;         this.annihilated = annihilated;
+        this.generated = generated;
     }
-
+/*
     public PlayerItems(long id, String name, int chips, boolean dealer, boolean big, boolean small, boolean in) {
         this.id = id;
         this.name = name;
@@ -45,7 +48,7 @@ public class PlayerItems extends AppCompatActivity {
         this.big = big;
         this.small = small;
         this.in = in;
-    }
+    }*/
 
     public long getId(){
         return id;
@@ -71,6 +74,8 @@ public class PlayerItems extends AppCompatActivity {
 
     public void setAnnihilated (boolean annihilated){this.annihilated = annihilated;}
 
+    public void setGenerated (boolean generated){this.generated = generated;}
+
     public boolean isWin(){return win;}
 
     public void setChips(int chips) {
@@ -90,6 +95,7 @@ public class PlayerItems extends AppCompatActivity {
         return allin;
     }
     public boolean isAnnihilated( ){ return annihilated; }
+    public boolean isGenerated( ){ return generated; }
 
     public void setChecked(boolean dealer, boolean big, boolean small, boolean in)
     {
