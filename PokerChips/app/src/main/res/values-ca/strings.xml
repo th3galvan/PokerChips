@@ -22,7 +22,7 @@
     <string name="NewGame">Nova Partida</string>
     <string name="NumberPlayers">Nº Jugadors</string>
     <string name="QuickGame">Partida Ràpida</string>
-    <string name="Rise_value"></string>
+    <string name="Rise_value">Valor de pujada</string>
     <string name="ValueRiseBig">Valor pujada BID BLIND</string>
     <string name="WriteName">Escriu el teu nom</string>
     <string name="allin"></string>
@@ -40,4 +40,19 @@
     <string name="writeCode">Escriu el codi per entrar a la partida</string>
     <string name="writeYourName">Escriu el teu nom</string>
     <string name="wrtName">Escriu el teu nom</string>
+    <string name="Code">Codi</string>
+    <string name="Frecuency">Freqüència de pujada</string>
+    <string name="PlayerWonChips">El jugador %s a guanyat %s fitxes</string>
+    <string name="betAllChips">Estàs segur que vols apostar totes les teves fitxes?</string>
+    <string name="betFewChips">Intentes apostar molt poques fitxes, pressiona PASSAR/NO ANAR o aposta algunes fitxes més</string>
+    <string name="betXChips">Estàs segur que vols apostar %s fitxes?</string>
+    <string name="betXChipsMore">Estàs segur que vols apostar %s fitxes més?</string>
+    <string name="chooseWinner">Jugador %s tria el guanyador</string>
+    <string name="differentsWinners">Estàs triant jugadors diferents, si us plau prova-ho de nou i selecciona el mateix guanyador</string>
+    <string name="enoughtChips">No tens prou fitxes, si us plau retira\'t</string>
+    <string name="currentBetXChips">La teva aposta actual és de %s fitxes</string>
+    <string name="initial_chips">Fitxes inicials</string>
+    <string name="selectWinner">Has de seleccionar el guanyador</string>
+    <string name="winner">GUANYADOR</string>
+    <string name="whoIsWinner">El torn d\'apostes ha acabat, és hora de saber qui és el guanyador</string>
 </resources>
