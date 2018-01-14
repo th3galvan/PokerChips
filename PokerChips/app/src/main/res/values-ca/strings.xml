@@ -41,15 +41,15 @@
     <string name="wrtName">Escriu el teu nom</string>
     <string name="Code">Codi</string>
     <string name="Frecuency">Freqüència de pujada</string>
-    <!--string name="PlayerWonChips">El jugador %s a guanyat %s fitxes</string-->
+    <string name="PlayerWonChips">El jugador %1$s a guanyat %2$s fitxes</string>
     <string name="betAllChips">Estàs segur que vols apostar totes les teves fitxes?</string>
     <string name="betFewChips">Intentes apostar molt poques fitxes, pressiona PASSAR/NO ANAR o aposta algunes fitxes més</string>
-    <!--string name="betXChips">Estàs segur que vols apostar %s fitxes?</string>
-    <string name="betXChipsMore">Estàs segur que vols apostar %s fitxes més?</string>
-    <string name="chooseWinner">Jugador %s tria el guanyador</string-->
+    <string name="betXChips">Estàs segur que vols apostar %1$s fitxes?</string>
+    <string name="betXChipsMore">Estàs segur que vols apostar %1$s fitxes més?</string>
+    <string name="chooseWinner">Jugador %1$s tria el guanyador</string>
     <string name="differentsWinners">Estàs triant jugadors diferents, si us plau prova-ho de nou i selecciona el mateix guanyador</string>
     <string name="enoughtChips">No tens prou fitxes, si us plau retira\'t</string>
-    <!--string name="currentBetXChips">La teva aposta actual és de %s fitxes</string-->
+    <string name="currentBetXChips">La teva aposta actual és de %1$s fitxes</string>
     <string name="initial_chips">Fitxes inicials</string>
     <string name="selectWinner">Has de seleccionar el guanyador</string>
     <string name="whoIsWinner">El torn d\'apostes ha acabat, és hora de saber qui és el guanyador</string>
@@ -58,4 +58,9 @@
     <string name="codeIncorrect">El codi no es correcte</string>
     <string name="enterPlayers">Si us plau posi el nombre de jugadors</string>
     <string name="maximPlayers">El nombre màxim de jugadors es 10</string>
+    <string name="enterBigRiseValue">Si us plau posi el valor de pujada de BIG BLIND</string>
+    <string name="enterFreqRiseBig">Si us plau posi la freqüència de pujada del valor de BIG BLIND</string>
+    <string name="enterBig">Si us plau posi el valor de BIG BLIND</string>
+    <string name="enterInitialChips">Si us plau posi les fitxes inicials</string>
+    <string name="scanQR">Escanejar QR</string>
 </resources>

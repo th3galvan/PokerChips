@@ -718,10 +718,10 @@ public class GameActivity extends AppCompatActivity {
                 AlertDialog.Builder builder2= new AlertDialog.Builder(this);
                 builder2.setCancelable(false);
                 if(bet2==0){
-                    builder2.setMessage(String.format("Are you sure you want to bet %s chips?",Integer.toString(toBetBet)));}
+                    builder2.setMessage(String.format(getString(R.string.betXChips),Integer.toString(toBetBet)));}
                 else {                                                                              //TODO: textos traducible, recursos betXChips, betXChipsMore y currenBetXChips
-                    builder2.setMessage(String.format("Are you sure you want to bet %s chips more?\n" +
-                            "Your current bet is %s chips",Integer.toString(toBetBet),Integer.toString(bet2)));}
+                    builder2.setMessage(String.format(getString(R.string.betXChipsMore) +
+                            getString(R.string.currentBetXChips),Integer.toString(toBetBet),Integer.toString(bet2)));}
                 //PULSAMOS YES
                 builder2.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
@@ -949,7 +949,7 @@ public class GameActivity extends AppCompatActivity {
                 if(PlayerDataBase[0].isIn() & !(playersin==cont_playersin)){
 
                     AlertDialog.Builder builder2= new AlertDialog.Builder(this);
-                    builder2.setMessage(String.format("Player %s choose the winner",PlayerDataBase[0].getName()));  //TODO: texto traducible, recurso chooseWinner del case 0 al 9
+                    builder2.setMessage(String.format(getString(R.string.chooseWinner),PlayerDataBase[0].getName()));
                     builder2.create().show();
                     cont_playersin++;
                     break;}
@@ -961,7 +961,7 @@ public class GameActivity extends AppCompatActivity {
                 if(PlayerDataBase[1].isIn() & !(playersin==cont_playersin)){
 
                     AlertDialog.Builder builder3= new AlertDialog.Builder(this);
-                    builder3.setMessage(String.format("Player %s please choose the winner",PlayerDataBase[1].getName()));
+                    builder3.setMessage(String.format(getString(R.string.chooseWinner),PlayerDataBase[1].getName()));
                     builder3.create().show();
                     cont_playersin++;
 
@@ -973,7 +973,7 @@ public class GameActivity extends AppCompatActivity {
             case 2:
                 if(PlayerDataBase[2].isIn() & !(playersin==cont_playersin)){
                     AlertDialog.Builder builder4= new AlertDialog.Builder(this);
-                    builder4.setMessage(String.format("Player %s choose the winner",PlayerDataBase[2].getName()));
+                    builder4.setMessage(String.format(getString(R.string.chooseWinner),PlayerDataBase[2].getName()));
                     builder4.create().show();
                     cont_playersin++;
 
@@ -986,7 +986,7 @@ public class GameActivity extends AppCompatActivity {
 
                 if(PlayerDataBase[3].isIn() & !(playersin==cont_playersin)){
                     AlertDialog.Builder builder4= new AlertDialog.Builder(this);
-                    builder4.setMessage(String.format("Player %s please choose the winner",PlayerDataBase[3].getName()));
+                    builder4.setMessage(String.format(getString(R.string.chooseWinner),PlayerDataBase[3].getName()));
                     builder4.create().show();
                     cont_playersin++;
 
@@ -999,7 +999,7 @@ public class GameActivity extends AppCompatActivity {
                 if(PlayerDataBase[4].isIn() & !(playersin==cont_playersin)){
 
                     AlertDialog.Builder builder2= new AlertDialog.Builder(this);
-                    builder2.setMessage(String.format("Player %s please choose the winner",PlayerDataBase[4].getName()));
+                    builder2.setMessage(String.format(getString(R.string.chooseWinner),PlayerDataBase[4].getName()));
                     builder2.create().show();
                     cont_playersin++;
                     break;}
@@ -1009,7 +1009,7 @@ public class GameActivity extends AppCompatActivity {
             case 5:
                 if(PlayerDataBase[5].isIn() & !(playersin==cont_playersin)){
                     AlertDialog.Builder builder4= new AlertDialog.Builder(this);
-                    builder4.setMessage(String.format("Player %s please choose the winner",PlayerDataBase[5].getName()));
+                    builder4.setMessage(String.format(getString(R.string.chooseWinner),PlayerDataBase[5].getName()));
                     builder4.create().show();
                     cont_playersin++;
 
@@ -1021,7 +1021,7 @@ public class GameActivity extends AppCompatActivity {
             case 6:
                 if(PlayerDataBase[6].isIn() & !(playersin==cont_playersin)){
                     AlertDialog.Builder builder4= new AlertDialog.Builder(this);
-                    builder4.setMessage(String.format("Player %s please choose the winner",PlayerDataBase[6].getName()));
+                    builder4.setMessage(String.format(getString(R.string.chooseWinner),PlayerDataBase[6].getName()));
                     builder4.create().show();
                     cont_playersin++;
 
@@ -1034,7 +1034,7 @@ public class GameActivity extends AppCompatActivity {
 
                 if(PlayerDataBase[7].isIn() & !(playersin==cont_playersin)){
                     AlertDialog.Builder builder4= new AlertDialog.Builder(this);
-                    builder4.setMessage(String.format("Player please %s choose the winner",PlayerDataBase[7].getName()));
+                    builder4.setMessage(String.format(getString(R.string.chooseWinner),PlayerDataBase[7].getName()));
                     builder4.create().show();
                     cont_playersin++;
                     break;}
@@ -1046,7 +1046,7 @@ public class GameActivity extends AppCompatActivity {
             case 8:
                 if(PlayerDataBase[8].isIn() & !(playersin==cont_playersin)){
                     AlertDialog.Builder builder4= new AlertDialog.Builder(this);
-                    builder4.setMessage(String.format("Player %s please choose the winner",PlayerDataBase[8].getName()));
+                    builder4.setMessage(String.format(getString(R.string.chooseWinner),PlayerDataBase[8].getName()));
                     builder4.create().show();
                     cont_playersin++;
 
@@ -1059,7 +1059,7 @@ public class GameActivity extends AppCompatActivity {
 
                 if(PlayerDataBase[9].isIn() & !(playersin==cont_playersin)){
                     AlertDialog.Builder builder5= new AlertDialog.Builder(this);
-                    builder5.setMessage(String.format("Player %s please choose the winner",PlayerDataBase[9].getName()));
+                    builder5.setMessage(String.format(getString(R.string.chooseWinner),PlayerDataBase[9].getName()));
                     builder5.create().show();
 
                 }
@@ -1184,7 +1184,7 @@ public class GameActivity extends AppCompatActivity {
                 //Log.i("LOOT",String.format("loot %d // chips %d",loot,PlayerDataBase[winner_check].getChips()));
                 PlayerDataBase[winner_check].setChips(loot);
                 AlertDialog.Builder builder3= new AlertDialog.Builder(this);
-                builder3.setMessage(String.format("Player %s won %s chips",PlayerDataBase[winner_check].getName(),Integer.toString(total_bet)));    //TODO: texto traducible, recurso playerWonChips
+                builder3.setMessage(String.format(getString(R.string.PlayerWonChips),PlayerDataBase[winner_check].getName(),Integer.toString(total_bet)));
                 builder3.create().show();
                 current_total_bet=0;
                 current_individual_bet=0;
@@ -1227,7 +1227,7 @@ public class GameActivity extends AppCompatActivity {
             PlayerDataBase[winner].setChips(loot);
             AlertDialog.Builder builder3= new AlertDialog.Builder(this);
             Log.i("WIN","HE GANADO");
-            builder3.setMessage(String.format("Player %s won %s chips",PlayerDataBase[winner].getName(),Integer.toString(total_bet+current_total_bet)));//TODO: texto traducible, recurso playerWonChips
+            builder3.setMessage(String.format(getString(R.string.PlayerWonChips),PlayerDataBase[winner].getName(),Integer.toString(total_bet+current_total_bet)));
             builder3.create().show();
             current_total_bet=0;
             current_individual_bet=0;

@@ -81,7 +81,7 @@ public class SetGameActivity extends AppCompatActivity {
                 if(name.equals("")){empty_name=true;
                     AlertDialog.Builder builder= new AlertDialog.Builder(SetGameActivity.this);
                     builder.setTitle(R.string.Name);
-                    builder.setMessage("Please enter your name");
+                    builder.setMessage(getString(R.string.enterName));      //añadido recurso
                     builder.create().show();
                 }
                 else {empty_name=false;}
@@ -90,7 +90,7 @@ public class SetGameActivity extends AppCompatActivity {
                     if(!empty_name){
                         AlertDialog.Builder builder= new AlertDialog.Builder(SetGameActivity.this);
                         builder.setTitle(R.string.players);
-                        builder.setMessage("Please enter number of players");
+                        builder.setMessage(getString(R.string.enterPlayers));   //añadido recurso
                         builder.create().show();}
                 }
                 else {empty_players=false;}
@@ -99,7 +99,7 @@ public class SetGameActivity extends AppCompatActivity {
                     if(!empty_name & !empty_players){
                         AlertDialog.Builder builder= new AlertDialog.Builder(SetGameActivity.this);
                         builder.setTitle(R.string.initial_chips);
-                        builder.setMessage("Please enter initial chips");
+                        builder.setMessage(R.string.enterInitialChips);     //añadido recurso
                         builder.create().show();}
                 }
                 else {empty_initial=false;}
@@ -108,7 +108,7 @@ public class SetGameActivity extends AppCompatActivity {
                     if(!empty_initial & !empty_name & !empty_players){
                         AlertDialog.Builder builder= new AlertDialog.Builder(SetGameActivity.this);
                         builder.setTitle(R.string.bigblind);
-                        builder.setMessage("Please enter Big Blind value");
+                        builder.setMessage(R.string.enterBig);      //añadido recurso
                         builder.create().show();}
                 }
                 else {empty_big=false;}
@@ -117,7 +117,7 @@ public class SetGameActivity extends AppCompatActivity {
                     if(!empty_big & !empty_initial & !empty_name & !empty_players){
                         AlertDialog.Builder builder= new AlertDialog.Builder(SetGameActivity.this);
                         builder.setTitle(R.string.Frecuency);
-                        builder.setMessage("Please enter frequency to rise the Big Blind value");
+                        builder.setMessage(R.string.enterFreqRiseBig);      //añadido recurso
                         builder.create().show();}
                 }
                 else {empty_time=false;}
@@ -126,7 +126,7 @@ public class SetGameActivity extends AppCompatActivity {
                     if(!empty_time & !empty_big & !empty_initial & !empty_name & !empty_players){
                         AlertDialog.Builder builder= new AlertDialog.Builder(SetGameActivity.this);
                         builder.setTitle(R.string.Rise_value);
-                        builder.setMessage("Please enter Big Blind rise value");
+                        builder.setMessage(R.string.enterBigRiseValue);     //añadido recurso
                         builder.create().show();}
                 }
                 else {empty_change=false;}
@@ -135,7 +135,7 @@ public class SetGameActivity extends AppCompatActivity {
                     max_players=true;
                     AlertDialog.Builder builder= new AlertDialog.Builder(SetGameActivity.this);
                     builder.setTitle(R.string.players);
-                    builder.setMessage("Maximum number of players is 10");
+                    builder.setMessage(getString(R.string.maximPlayers));   //añadido recurso
                     builder.create().show();}
 
                 else{max_players=false;}

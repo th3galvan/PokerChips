@@ -38,16 +38,16 @@
     <string name="wrtName">Escribe tu nombre</string>
     <string name="Code">Código</string>
     <string name="Frecuency">Frecuencia de subida</string>
-    <!--string name="PlayerWonChips">El jugador %s a ganado %s fichas</string-->
+    <string name="PlayerWonChips">El jugador %1$s a ganado %2$s fichas</string>
     <string name="Rise_value">Valor de subida</string>
     <string name="betAllChips">Estás seguro que quieres apostar todas tus fichas?</string>
     <string name="betFewChips">Estás intentando apostar muy pocas fichas, presiona PASAR/NO IR o apuesta algunas fichas más</string>
-    <!--string name="betXChips">Estás seguro que quieres apostar %s fichas?</string>
-    <string name="betXChipsMore">Estás seguro que quieres apostar %s fichas más?</string>
-    <string name="chooseWinner">Jugador %s elige el ganador</string-->
+    <string name="betXChips">Estás seguro que quieres apostar %1$s fichas?</string>
+    <string name="betXChipsMore">Estás seguro que quieres apostar %1$s fichas más?</string>
+    <string name="chooseWinner">Jugador %1$s elige el ganador</string>
     <string name="differentsWinners">Estás eligiendo jugadores diferentes, porfavor pruébalo de nuevo y selecciona el mismo ganador</string>
     <string name="enoughtChips">No tienes suficientes fichas, porfavor retírate</string>
-    <!--string name="currentBetXChips">Tu apuesta actual es de %s fichas</string-->
+    <string name="currentBetXChips">Tu apuesta actual es de %1$s fichas</string>
     <string name="initial_chips">Fichas iniciales</string>
     <string name="selectWinner">Debes seleccionar el ganador</string>
     <string name="whoIsWinner">El turno de apuestas ha terminado, es hora de saber quién es el ganador</string>
@@ -56,4 +56,9 @@
     <string name="codeIncorrect">El código no es correcto</string>
     <string name="enterPlayers">Porfavor escribe el número de jugadores</string>
     <string name="maximPlayers">El máximo número de jugadores es 10</string>
+    <string name="enterBigRiseValue">Porfavor escribe el valor de subida de BIG BLIND</string>
+    <string name="enterFreqRiseBig">Porfavor escribe la frecuencia de subida del valor de BIG BLIND</string>
+    <string name="enterBig">Porfavor escribe el valor de BIG BLIND</string>
+    <string name="enterInitialChips">Porfavor escribe las fichas iniciales</string>
+    <string name="scanQR">Escanear QR</string>
 </resources>

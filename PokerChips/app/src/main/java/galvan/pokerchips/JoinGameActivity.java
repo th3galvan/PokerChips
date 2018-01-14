@@ -1,9 +1,9 @@
 package galvan.pokerchips;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -51,6 +51,8 @@ public class JoinGameActivity extends AppCompatActivity {
     public void start() {
 
         Button btn_scanQR = (Button) findViewById(R.id.btn_scanQR);
+        Button btn_scan = (Button) findViewById(R.id.btn_scan);
+
 
         btn_scanQR.setOnClickListener(new View.OnClickListener() {
 
@@ -90,6 +92,29 @@ public class JoinGameActivity extends AppCompatActivity {
                     builder.setPositiveButton(R.string.confirmation,null);
                     builder.create().show();
                 }
+
+            }
+        });
+
+        btn_scan.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                string_name = name.getText().toString();
+
+                if(string_name.equals("")){
+                    AlertDialog.Builder builder= new AlertDialog.Builder(JoinGameActivity.this);
+                    builder.setTitle(R.string.Name);
+                    builder.setMessage(R.string.enterName);
+                    builder.create().show();
+                }
+                else {
+                    Intent intent_scanqr = new Intent(getApplicationContext(), ScanQRActivity.class);
+                    startActivity(intent_scanqr);
+                }
+
+
             }
         });
     }

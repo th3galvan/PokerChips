@@ -16,8 +16,8 @@
     <string name="bet_rising_time">BET RISING TIME</string>
     <string name="your_chips">YOUR CHIPS</string>
     <string name="check">CHECK</string>
-    <string name="call" >CALL</string>
-    <string name="bet" >BET</string>
+    <string name="call">CALL</string>
+    <string name="bet">BET</string>
     <string name="fold">FOLD</string>
     <string name="Error" translatable="false">Error</string>
     <string name="Name">Name</string>
@@ -54,21 +54,26 @@
     <string name="betFewChips">You are trying to bet very few chips, press CHECK/FOLD or bet some more chips</string>
     <string name="enoughtChips">You do not have enought chips, please FOLD</string>
     <string name="betAllChips">Are you sure you want to bet all your chips?</string>
-    <!--string name="betXChips">Are you sure you want to bet %s chips?</string>
-    <string name="betXChipsMore">Are you sure you want to bet %s chips more?</string>
-    <string name="currentBetXChips">You current bet is %s chips</string-->
+    <string name="betXChips">Are you sure you want to bet %1$s chips?</string>
+    <string name="betXChipsMore">Are you sure you want to bet %1$s chips more?</string>
+    <string name="currentBetXChips">You current bet is %1$s chips</string>
     <string name="preflop" translatable="false">PREFLOP</string>
     <string name="flop" translatable="false">FLOP</string>
     <string name="river" translatable="false">RIVER</string>
     <string name="winner" translatable="false">WINNER</string>
     <string name="whoIsWinner">The turn of bets is over it\'s time to know who is the winner</string>
-    <!--string name="chooseWinner">Player %s choose the winner</string-->
+    <string name="chooseWinner">Player %1$s choose the winner</string>
     <string name="differentsWinners">You are choosing differents players, please try it again and select the same winner</string>
     <string name="enterName">Please enter your name</string>
     <string name="enterCode">Please enter code</string>
     <string name="codeIncorrect">The code is not correct</string>
     <string name="enterPlayers">Please enter number of players</string>
     <string name="maximPlayers">Maximum number of players is 10</string>
-    <!--string name="PlayerWonChips">Player %s won %s chips</string-->
+    <string name="enterBigRiseValue">Please enter Big Blind rise value</string>
+    <string name="enterFreqRiseBig">Please enter frequency to rise the Big Blind value</string>
+    <string name="enterBig">Please enter Big Blind value</string>
+    <string name="enterInitialChips">Please enter initial chips</string>
+    <string name="scanQR">Scan QR</string>
+    <string name="PlayerWonChips">Player %1$s won %2$s chips</string>
 
 </resources>
