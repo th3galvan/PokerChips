@@ -204,6 +204,17 @@ public class GameActivity extends AppCompatActivity {
     private DatabaseReference string_betref;
 
     private FirebaseDatabase database;
+    private DatabaseReference PlayerItemRef;
+    private DatabaseReference PlayerItemRef1;
+    private DatabaseReference PlayerItemRef2;
+    private DatabaseReference PlayerItemRef3;
+    private DatabaseReference PlayerItemRef4;
+    private DatabaseReference PlayerItemRef5;
+    private DatabaseReference PlayerItemRef6;
+    private DatabaseReference PlayerItemRef7;
+    private DatabaseReference PlayerItemRef8;
+    private DatabaseReference PlayerItemRef9;
+
 
 
     //salvar datos de la aplicacion si esta en segundo plano y hace onDestroy
@@ -849,6 +860,9 @@ public class GameActivity extends AppCompatActivity {
             }
         });
 
+
+
+
         posref.setValue(pos);
         bet2ref.setValue(bet2);
         ownChipsref.setValue(ownChips);
@@ -882,17 +896,170 @@ public class GameActivity extends AppCompatActivity {
         string_bigref.setValue(string_big);
         string_betref.setValue(string_bet);
 
-       /* final PlayerItemRef = database.getReference(FirebaseReferences.PLAYERS_REFERENCE)
-        PlayerItemRef.child(FirebaseReferences.PLAYER_ITEM_REFERENCE).setValue(Player0);
-        PlayerItemRef.child(FirebaseReferences.PLAYER_ITEM_REFERENCE).setValue(Player1);
-        PlayerItemRef.child(FirebaseReferences.PLAYER_ITEM_REFERENCE).setValue(Player2);
-        PlayerItemRef.child(FirebaseReferences.PLAYER_ITEM_REFERENCE).setValue(Player3);
-        PlayerItemRef.child(FirebaseReferences.PLAYER_ITEM_REFERENCE).setValue(Player4);
-        PlayerItemRef.child(FirebaseReferences.PLAYER_ITEM_REFERENCE).setValue(Player5);
-        PlayerItemRef.child(FirebaseReferences.PLAYER_ITEM_REFERENCE).setValue(Player6);
-        PlayerItemRef.child(FirebaseReferences.PLAYER_ITEM_REFERENCE).setValue(Player7);
-        PlayerItemRef.child(FirebaseReferences.PLAYER_ITEM_REFERENCE).setValue(Player8);
-        PlayerItemRef.child(FirebaseReferences.PLAYER_ITEM_REFERENCE).setValue(Player9);*/
+
+        //Players
+        PlayerItemRef = database.getReference(FirebaseReferences.PLAYER_ITEM_REFERENCE);
+        PlayerItemRef.push().setValue(Player0);
+
+        PlayerItemRef1 = database.getReference(FirebaseReferences.PLAYER_ITEM_REFERENCE1);
+        PlayerItemRef1.push().setValue(Player1);
+
+        PlayerItemRef2 = database.getReference(FirebaseReferences.PLAYER_ITEM_REFERENCE2);
+        PlayerItemRef2.push().setValue(Player2);
+
+        PlayerItemRef3 = database.getReference(FirebaseReferences.PLAYER_ITEM_REFERENCE3);
+        PlayerItemRef3.push().setValue(Player3);
+
+        PlayerItemRef4 = database.getReference(FirebaseReferences.PLAYER_ITEM_REFERENCE4);
+        PlayerItemRef4.push().setValue(Player4);
+
+        PlayerItemRef5 = database.getReference(FirebaseReferences.PLAYER_ITEM_REFERENCE5);
+        PlayerItemRef5.push().setValue(Player5);
+
+        PlayerItemRef6 = database.getReference(FirebaseReferences.PLAYER_ITEM_REFERENCE6);
+        PlayerItemRef6.push().setValue(Player6);
+
+        PlayerItemRef7 = database.getReference(FirebaseReferences.PLAYER_ITEM_REFERENCE7);
+        PlayerItemRef7.push().setValue(Player7);
+
+        PlayerItemRef8 = database.getReference(FirebaseReferences.PLAYER_ITEM_REFERENCE8);
+        PlayerItemRef8.push().setValue(Player8);
+
+        PlayerItemRef9 = database.getReference(FirebaseReferences.PLAYER_ITEM_REFERENCE9);
+        PlayerItemRef9.push().setValue(Player9);
+
+
+        PlayerItemRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Player0 = dataSnapshot.getValue(PlayerItems.class);
+                refresh();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        PlayerItemRef1.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Player1 = dataSnapshot.getValue(PlayerItems.class);
+                refresh();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        PlayerItemRef2.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Player2 = dataSnapshot.getValue(PlayerItems.class);
+                refresh();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        PlayerItemRef3.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Player3 = dataSnapshot.getValue(PlayerItems.class);
+                refresh();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        PlayerItemRef4.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Player4 = dataSnapshot.getValue(PlayerItems.class);
+                refresh();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        PlayerItemRef5.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Player5 = dataSnapshot.getValue(PlayerItems.class);
+                refresh();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        PlayerItemRef6.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Player6 = dataSnapshot.getValue(PlayerItems.class);
+                refresh();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        PlayerItemRef7.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Player7 = dataSnapshot.getValue(PlayerItems.class);
+                refresh();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        PlayerItemRef8.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Player8 = dataSnapshot.getValue(PlayerItems.class);
+                refresh();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        PlayerItemRef9.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Player9 = dataSnapshot.getValue(PlayerItems.class);
+                refresh();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
 
         //BTN+ Chips
         btn_plus_chip.setOnClickListener(new View.OnClickListener() {
@@ -1905,7 +2072,7 @@ private void Message0bet() {
         list.setAdapter(adapter);
         refresh();
 
-
+        //ints
         posref.setValue(pos);
         bet2ref.setValue(bet2);
         ownChipsref.setValue(ownChips);
@@ -1936,8 +2103,22 @@ private void Message0bet() {
         playersaliveref.setValue(playersalive);
         dealerposref.setValue(dealerpos);
 
+        //strings
         string_bigref.setValue(string_big);
         string_betref.setValue(string_bet);
+
+        //playersitems
+        PlayerItemRef.setValue(Player0);
+        PlayerItemRef1.setValue(Player1);
+        PlayerItemRef2.setValue(Player2);
+        PlayerItemRef3.setValue(Player3);
+        PlayerItemRef4.setValue(Player4);
+        PlayerItemRef5.setValue(Player5);
+        PlayerItemRef6.setValue(Player6);
+        PlayerItemRef7.setValue(Player7);
+        PlayerItemRef8.setValue(Player8);
+        PlayerItemRef9.setValue(Player9);
+
 
     }
 

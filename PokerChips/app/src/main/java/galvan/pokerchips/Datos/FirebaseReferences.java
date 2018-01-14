@@ -13,8 +13,18 @@ public class FirebaseReferences {
     final public static String CHANGE_VALUE_BIG_REFERENCE = "code";
     final public static String NAME_REFERENCE = "code";
 
-    final public static String PLAYERS_REFERENCE = "Players";
+
     final public static String PLAYER_ITEM_REFERENCE = "PlayerItem";
+    final public static String PLAYER_ITEM_REFERENCE1 = "PlayerItem1";
+    final public static String PLAYER_ITEM_REFERENCE2 = "PlayerItem2";
+    final public static String PLAYER_ITEM_REFERENCE3 = "PlayerItem3";
+    final public static String PLAYER_ITEM_REFERENCE4 = "PlayerItem4";
+    final public static String PLAYER_ITEM_REFERENCE5 = "PlayerItem5";
+    final public static String PLAYER_ITEM_REFERENCE6 = "PlayerItem6";
+    final public static String PLAYER_ITEM_REFERENCE7 = "PlayerItem7";
+    final public static String PLAYER_ITEM_REFERENCE8 = "PlayerItem8";
+    final public static String PLAYER_ITEM_REFERENCE9 = "PlayerItem9";
+
 
 
     //referencias game activity

@@ -46,6 +46,8 @@ public class PlayerItems {
         this.in = in;
     }*/
 
+public PlayerItems(){}
+
     public long getId(){
         return id;
     }
@@ -99,10 +101,6 @@ public class PlayerItems {
         this.big = big;
         this.small = small;
         this.in = in;
-    }
-
-    public boolean getDealer() {
-        return dealer;
     }
 
     public void setDealer(boolean dealer) {
