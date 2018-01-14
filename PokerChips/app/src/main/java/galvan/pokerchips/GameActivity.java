@@ -203,6 +203,8 @@ public class GameActivity extends AppCompatActivity {
     private DatabaseReference string_bigref;
     private DatabaseReference string_betref;
 
+    private FirebaseDatabase database;
+
 
     //salvar datos de la aplicacion si esta en segundo plano y hace onDestroy
     /*private TextView txt_current_individual_bet;
@@ -398,7 +400,8 @@ public class GameActivity extends AppCompatActivity {
         turnState();
 
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        database = FirebaseDatabase.getInstance();
+
 
         //ints
         posref = database.getReference(FirebaseReferences.POS_REFERENCE);
@@ -406,7 +409,7 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                     pos = dataSnapshot.getValue(Integer.class);
-
+                    refresh();
             }
 
             @Override
@@ -419,6 +422,7 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                     bet2 = dataSnapshot.getValue(Integer.class);
+                    refresh();
             }
 
             @Override
@@ -432,6 +436,7 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                     ownChips = dataSnapshot.getValue(Integer.class);
+                refresh();
             }
 
             @Override
@@ -444,6 +449,7 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 current_individual_bet = dataSnapshot.getValue(Integer.class);
+                refresh();
             }
 
             @Override
@@ -457,6 +463,7 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                     current_total_bet = dataSnapshot.getValue(Integer.class);
+                refresh();
             }
 
             @Override
@@ -469,6 +476,7 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 total_bet = dataSnapshot.getValue(Integer.class);
+                refresh();
             }
 
             @Override
@@ -482,6 +490,7 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 winner = dataSnapshot.getValue(Integer.class);
+                refresh();
             }
 
             @Override
@@ -494,6 +503,7 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                     loot = dataSnapshot.getValue(Integer.class);
+                refresh();
             }
 
             @Override
@@ -507,6 +517,7 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 playersin = dataSnapshot.getValue(Integer.class);
+                refresh();
             }
 
             @Override
@@ -519,6 +530,7 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                     nState = dataSnapshot.getValue(Integer.class);
+                refresh();
             }
 
             @Override
@@ -532,6 +544,7 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                     Player_big_blind = dataSnapshot.getValue(Integer.class);
+                refresh();
             }
 
             @Override
@@ -544,6 +557,7 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                     Player_small_blind = dataSnapshot.getValue(Integer.class);
+                refresh();
             }
 
             @Override
@@ -569,6 +583,7 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 winner_check = dataSnapshot.getValue(Integer.class);
+                refresh();
             }
 
             @Override
@@ -581,6 +596,7 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 eq_bet = dataSnapshot.getValue(Integer.class);
+                refresh();
             }
 
             @Override
@@ -594,6 +610,7 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                     winner2 = dataSnapshot.getValue(Integer.class);
+                refresh();
             }
 
             @Override
@@ -606,6 +623,7 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 playerscall = dataSnapshot.getValue(Integer.class);
+                refresh();
             }
 
             @Override
@@ -619,6 +637,7 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                     count_winner_pos = dataSnapshot.getValue(Integer.class);
+                refresh();
             }
 
             @Override
@@ -631,6 +650,7 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                     all_in_value = dataSnapshot.getValue(Integer.class);
+                refresh();
             }
 
             @Override
@@ -644,6 +664,7 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                     players_allin = dataSnapshot.getValue(Integer.class);
+                refresh();
             }
 
             @Override
@@ -656,6 +677,7 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                     restart_bet = dataSnapshot.getValue(Integer.class);
+                refresh();
             }
 
             @Override
@@ -669,6 +691,7 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 cont_playersin = dataSnapshot.getValue(Integer.class);
+                refresh();
             }
 
             @Override
@@ -681,6 +704,7 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                     cont_winner_out = dataSnapshot.getValue(Integer.class);
+                refresh();
             }
 
             @Override
@@ -694,6 +718,7 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                     count_loser_pos = dataSnapshot.getValue(Integer.class);
+                refresh();
             }
 
             @Override
@@ -706,6 +731,7 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                     playernumber = dataSnapshot.getValue(Integer.class);
+                refresh();
             }
 
             @Override
@@ -719,6 +745,7 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                     time = dataSnapshot.getValue(Integer.class);
+                refresh();
             }
 
             @Override
@@ -743,6 +770,7 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                     cont_playersout = dataSnapshot.getValue(Integer.class);
+                refresh();
             }
 
             @Override
@@ -756,6 +784,7 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 number_playersout = dataSnapshot.getValue(Integer.class);
+                refresh();
             }
 
             @Override
@@ -768,6 +797,7 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 playersalive = dataSnapshot.getValue(Integer.class);
+                refresh();
             }
 
             @Override
@@ -781,6 +811,7 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                     dealerpos = dataSnapshot.getValue(Integer.class);
+                refresh();
             }
 
             @Override
@@ -795,6 +826,7 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                     string_big = dataSnapshot.getValue(String.class);
+                refresh();
             }
 
             @Override
@@ -808,6 +840,7 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 string_bet = dataSnapshot.getValue(String.class);
+                refresh();
             }
 
             @Override
