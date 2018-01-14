@@ -1291,7 +1291,10 @@ public class GameActivity extends AppCompatActivity {
                     Toast big_notify = Toast.makeText(getApplicationContext(),
                                                   R.string.BigChangeMessage,
                                                                Toast.LENGTH_LONG);
-                    big_notify.show();}
+
+                    big_notify.show();
+                    txt_big.setText(Integer.toString(big));
+                }
 
 
 
