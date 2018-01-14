@@ -621,7 +621,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
 
-    private void Message0bet() {
+private void Message0bet() {
 
         //Mensaje que nos indica que estamos dandole a apostar sin seleccionar ficha
         AlertDialog.Builder builder= new AlertDialog.Builder(this);

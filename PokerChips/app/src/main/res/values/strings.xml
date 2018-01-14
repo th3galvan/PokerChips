@@ -6,7 +6,6 @@
     <string name="bigblind" translatable="false">BIG BLIND</string>
     <string name="yes">yes</string>
     <string name="confirmation">Confirmation</string>
-
     <string name="name">Name</string>
     <string name="chips">Chips</string>
     <string name="dealer" translatable="false">D</string>

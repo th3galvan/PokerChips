@@ -122,7 +122,7 @@ public class ModeGameActivity extends AppCompatActivity {
                         big=10;
                         time_big_up=10;
                         change_value_big=10;
-
+                        
                         Intent fastgame = new Intent(getApplicationContext(), ShowCodeActivity.class);
                         fastgame.putExtra("code",code);
                         fastgame.putExtra("name",name);

@@ -1,35 +1,27 @@
 {
   "project_info": {
-    "project_number": "954202987536",
-    "firebase_url": "https://pokerchips2017.firebaseio.com",
-    "project_id": "pokerchips2017",
-    "storage_bucket": "pokerchips2017.appspot.com"
+    "project_number": "651887987857",
+    "firebase_url": "https://galvan-pokerchips.firebaseio.com",
+    "project_id": "galvan-pokerchips",
+    "storage_bucket": "galvan-pokerchips.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:954202987536:android:d30f31d99795b006",
+        "mobilesdk_app_id": "1:651887987857:android:d30f31d99795b006",
         "android_client_info": {
           "package_name": "galvan.pokerchips"
         }
       },
       "oauth_client": [
         {
-          "client_id": "954202987536-voq4ct8mupevjkbm5g3cj6jde8phg7om.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "galvan.pokerchips",
-            "certificate_hash": "11d4d011c04409925998b9c7fba30ab4b191d112"
-          }
-        },
-        {
-          "client_id": "954202987536-iufeoa67vdl1kjsjtu5tmv7ssj50cprt.apps.googleusercontent.com",
+          "client_id": "651887987857-i72edmim8t6is4omq26buuldojq25s3t.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCLBUbGZjEZCqE5IWHa93Ih6Z2G2X5ck6Q"
+          "current_key": "AIzaSyCkLFY3tieRaIUKgjj78en5hcS_Hq2WqEY"
         }
       ],
       "services": {
@@ -37,13 +29,8 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "954202987536-iufeoa67vdl1kjsjtu5tmv7ssj50cprt.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "status": 1,
+          "other_platform_oauth_client": []
         },
         "ads_service": {
           "status": 2
