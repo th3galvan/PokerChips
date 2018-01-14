@@ -125,7 +125,6 @@ public class ModeGameActivity extends AppCompatActivity {
 
                         Intent fastgame = new Intent(getApplicationContext(), ShowCodeActivity.class);
                         fastgame.putExtra("code",code);
-                        fastgame.putExtra("players",players);
                         fastgame.putExtra("name",name);
                         fastgame.putExtra("playersnumber",number_players);
                         fastgame.putExtra("initial_chips",initial_chips);
@@ -140,7 +139,6 @@ public class ModeGameActivity extends AppCompatActivity {
 
                     Intent customgame = new Intent(getApplicationContext(), SetGameActivity.class);
                     customgame.putExtra("code",code);
-                    customgame.putExtra("players",players);
                     startActivity(customgame);
                 }
             }

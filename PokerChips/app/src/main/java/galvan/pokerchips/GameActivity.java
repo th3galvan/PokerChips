@@ -12,8 +12,14 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+
+import galvan.pokerchips.Datos.FirebaseReferences;
 
 
 public class GameActivity extends AppCompatActivity {
@@ -33,7 +39,8 @@ public class GameActivity extends AppCompatActivity {
     private int nState;
     private int Player_big_blind;
     private int Player_small_blind;
-    private int winner_pos[] ={7,7,7,7};
+    //todo se podria rellenar en funcion del numero de jugadores
+    private int winner_pos[] ={7,7,7,7,7,7,7,7,7,7};
     private int winner_check;
     private int eq_bet;
     private int winner2=0;
@@ -163,11 +170,7 @@ public class GameActivity extends AppCompatActivity {
     private int cont_playersout;
     private int number_playersout;
     private int playersalive;
-    private boolean pulsado;
-    private boolean check_winner_finish=false;
-    private int check_players_pressed=0;
-
-
+    private int dealerpos;
 
 
     //salvar datos de la aplicacion si esta en segundo plano y hace onDestroy
@@ -235,18 +238,32 @@ public class GameActivity extends AppCompatActivity {
         change_value_big =code_receive.getInt("change");
         name_host =code_receive.getString("name");
 
+        /*
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference PlayerItemRef = database.getReference(FirebaseReferences.PLAYER_ITEM_REFERENCE);
+        PlayerItemRef.child(FirebaseReferences.PLAYER_ITEM_REFERENCE).push().setValue(Player0);
+        PlayerItemRef.child(FirebaseReferences.PLAYER_ITEM_REFERENCE).push().setValue(Player1);
+        PlayerItemRef.child(FirebaseReferences.PLAYER_ITEM_REFERENCE).push().setValue(Player2);
+        PlayerItemRef.child(FirebaseReferences.PLAYER_ITEM_REFERENCE).push().setValue(Player3);
+        PlayerItemRef.child(FirebaseReferences.PLAYER_ITEM_REFERENCE).push().setValue(Player4);
+        PlayerItemRef.child(FirebaseReferences.PLAYER_ITEM_REFERENCE).push().setValue(Player5);
+        PlayerItemRef.child(FirebaseReferences.PLAYER_ITEM_REFERENCE).push().setValue(Player6);
+        PlayerItemRef.child(FirebaseReferences.PLAYER_ITEM_REFERENCE).push().setValue(Player7);
+        PlayerItemRef.child(FirebaseReferences.PLAYER_ITEM_REFERENCE).push().setValue(Player8);
+        PlayerItemRef.child(FirebaseReferences.PLAYER_ITEM_REFERENCE).push().setValue(Player9);*/
+
         Log.i("Xavi",String.format("%d",number_players));
 
         for (int i=0; i<10-number_players; i++){
             Log.i("Xavi",String.format("%d",i));
             PlayerDataBase[9-i].setAnnihilated(true);
         }
-
+/*
         for (int l = 0; l< playersalive; l++){
             if (Integer.toString(PlayerDataBase[l].getChips()).equals("0")){
                 PlayerDataBase[l].setAnnihilated(true);
             }
-        }
+        }*/
 
         for (int i = 0; i< playersalive; i++){
             if(PlayerDataBase[i].isAnnihilated()){playersout[cont_playersout]=i; cont_playersout++;
@@ -272,6 +289,7 @@ public class GameActivity extends AppCompatActivity {
         list = (ListView)findViewById(R.id.players_list);
 
         players = new ArrayList<>();
+
         //PlayerItems( int i,
         // String name, int chips,      boolean dealer,
         // boolean big, boolean small,  boolean out,
@@ -291,11 +309,7 @@ public class GameActivity extends AppCompatActivity {
         list.setAdapter(adapter);
 
 
-
-        final int chips[] ={5,10,25,50,100};
-
-
-
+        final int chips[] ={5,10,25,50,100,250,500};
 
         //declaramos botones y views de las fichas
         final Button btn_plus_chip = (Button) findViewById(R.id.btn_plus_chip);
@@ -309,10 +323,12 @@ public class GameActivity extends AppCompatActivity {
 
         //declaramos el boton de All-in
         final Button btn_all_in=(Button)findViewById(R.id.btn_all_in);
+
         //TOTAL BET
         total_bet=0;
         txt_total_bet = (TextView) findViewById(R.id.txt_total_bet_number);
-        //TODO: de momento usamos total bet para hacer display de la gente que esta in
+
+
         //checkWinner();
         //declaramos el boton de igualar y una variable apuesta individual actual (arriba) y aqui la inicializamos
         final Button btn_equalize=(Button)findViewById(R.id.btn_equalize);
@@ -361,8 +377,7 @@ public class GameActivity extends AppCompatActivity {
 
         //utilizamos el metodo turnState para saber en que parte de la partida nos encontramos
         // blind bet, preflop, flop, turn, river
-        turnALLIN(); turnState();
-
+        turnState();
 
 
         //BTN+ Chips
@@ -377,6 +392,7 @@ public class GameActivity extends AppCompatActivity {
                                              }
                                          }
         );
+
         //BTN- Chips
         btn_minus_chip.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -388,6 +404,7 @@ public class GameActivity extends AppCompatActivity {
                 }
             }
         });
+
         //BTN+ Bet
         btn_plus_bet.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -400,6 +417,7 @@ public class GameActivity extends AppCompatActivity {
                     txt_bet.setText(textBetBtn);}
                 else{}}
         });
+
         //BTN- Bet
         btn_minus_bet.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -412,8 +430,8 @@ public class GameActivity extends AppCompatActivity {
                     txt_bet.setText(textBetBtn);}
             }
         });
-        //BTN ALL IN
 
+        //BTN ALL IN
 
         btn_all_in.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -500,6 +518,7 @@ public class GameActivity extends AppCompatActivity {
                         toBet(bet2);}
                 }}
         });
+
         list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> list, View item, int pos, long id) {
@@ -528,7 +547,7 @@ public class GameActivity extends AppCompatActivity {
 
         });
 
-/*
+/*  Esto fue cuando intentamos hacer el Choose Winner general
         list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> list, View item, int pos, long id) {
@@ -588,17 +607,18 @@ public class GameActivity extends AppCompatActivity {
                 if (min==-1){
                     min=time_big_up-1;
                     big=change_value_big+big;
-                }
+                    Toast big_notify = Toast.makeText(getApplicationContext(),
+                                                  R.string.BigChangeMessage,
+                                                               Toast.LENGTH_LONG);
+                    big_notify.show();}
+
 
 
                 start();
             }
         }.start();
 
-
     }
-
-
 
 
     private void Message0bet() {
@@ -619,15 +639,15 @@ public class GameActivity extends AppCompatActivity {
             Log.i("Galvan","CHECK");
             //utilizamos el metodo turnState para saber en que parte de la partida nos encontramos
             // blind bet, preflop, flop, turn, river
-            turnALLIN(); turnState();
-            nextTurn();
+            turnALLIN();
+            nextTurn();turnState();
         }
         else{
             Log.i("Galvan","FOLD");
             PlayerDataBase[playernumber].setIn(false);
             PlayerDataBase[playernumber].setCall(false);
-            turnALLIN(); turnState();
-            nextTurn();
+            turnALLIN();
+            nextTurn();turnState();
         }
     }
 
@@ -699,7 +719,8 @@ public class GameActivity extends AppCompatActivity {
                     nextTurn();
                     Log.i("Galvan","siguiente");
                     Log.i("Galvan",String.format("Player %s",Integer.toString(playernumber)));
-                    turnALLIN(); turnState();
+                    //todo he comentado esto porque abajo tambien se llama a esto y creo que es innecesario
+                    //turnALLIN(); turnState();
                 }
 
             });
@@ -768,6 +789,7 @@ public class GameActivity extends AppCompatActivity {
                 builder2.create().show();
 
             }}
+
         String SownChips= Integer.toString(ownChips);
         txt_ownChips.setText(SownChips);
         turnALLIN(); turnState();
@@ -794,17 +816,17 @@ public class GameActivity extends AppCompatActivity {
     private void turnState() {
 
         switch (nState) {
+
             //BIG BLIND SMALL BLIND
             case 0:
+
+                txt_turn.setText(getString(R.string.preflop));
+
                 PlayersAnnihilateds();
+
                 for (int i=0; i<playersalive;i++) {
                     PlayerDataBase[i].setIn(true);
                 }
-
-                txt_turn.setText(getString(R.string.preflop));  //añadido recurso
-                PlayersAnnihilateds();
-
-
 
                 for(int i = 0; i< playersalive; i++ ){
 
@@ -813,6 +835,7 @@ public class GameActivity extends AppCompatActivity {
                         Player_big_blind = i;
                         PlayerDataBase[i].setChips(PlayerDataBase[i].getChips()-big);
                         //Creamos una memoria del num de fichas que ha apostado este jugador
+                        Log.i("Big",String.format("Estoy aqui 10 %d",i));
                         PlayerDataBase[i].setBet(big);
                         current_total_bet= current_total_bet+big;
                         current_individual_bet=big;
@@ -821,7 +844,6 @@ public class GameActivity extends AppCompatActivity {
                         //inicializo turno
                         Log.i("WHERE",String.format("%d",playernumber));
                         if(playernumber>= playersalive){
-
                             playernumber=0;
                             PlayerDataBase[playernumber].setTurn(true);
                             refresh();}
@@ -948,13 +970,17 @@ public class GameActivity extends AppCompatActivity {
             case 0:
                 if(PlayerDataBase[0].isIn() & !(playersin==cont_playersin)){
 
+                    for (int i=0; i<playersalive;i++){
+                        PlayerDataBase[i].setWin(false);
+                    }
+
                     AlertDialog.Builder builder2= new AlertDialog.Builder(this);
                     builder2.setMessage(String.format(getString(R.string.chooseWinner),PlayerDataBase[0].getName()));
                     builder2.create().show();
                     cont_playersin++;
                     break;}
-                else {PlayerDataBase[winner2].setIn(false);
-
+                else {
+                    PlayerDataBase[winner2].setIn(false);
                     winner2++;}
 
             case 1:
@@ -964,10 +990,10 @@ public class GameActivity extends AppCompatActivity {
                     builder3.setMessage(String.format(getString(R.string.chooseWinner),PlayerDataBase[1].getName()));
                     builder3.create().show();
                     cont_playersin++;
-
                     break;}
 
-                else {PlayerDataBase[winner2].setIn(false);
+                else {
+                    PlayerDataBase[winner2].setIn(false);
                     winner2++;}
 
             case 2:
@@ -979,7 +1005,8 @@ public class GameActivity extends AppCompatActivity {
 
                     break;}
 
-                else {PlayerDataBase[winner2].setIn(false);
+                else {
+                    PlayerDataBase[winner2].setIn(false);
                     winner2++;}
 
             case 3:
@@ -992,7 +1019,8 @@ public class GameActivity extends AppCompatActivity {
 
                     break;}
 
-                else {PlayerDataBase[winner2].setIn(false);
+                else {
+                    PlayerDataBase[winner2].setIn(false);
                     winner2++;}
 
             case 4:
@@ -1003,7 +1031,8 @@ public class GameActivity extends AppCompatActivity {
                     builder2.create().show();
                     cont_playersin++;
                     break;}
-                else {PlayerDataBase[winner2].setIn(false);
+                else {
+                    PlayerDataBase[winner2].setIn(false);
                     winner2++;}
 
             case 5:
@@ -1015,7 +1044,8 @@ public class GameActivity extends AppCompatActivity {
 
                     break;}
 
-                else {PlayerDataBase[winner2].setIn(false);
+                else {
+                    PlayerDataBase[winner2].setIn(false);
                     winner2++;}
 
             case 6:
@@ -1027,7 +1057,8 @@ public class GameActivity extends AppCompatActivity {
 
                     break;}
 
-                else {PlayerDataBase[winner2].setIn(false);
+                else {
+                    PlayerDataBase[winner2].setIn(false);
                     winner2++;}
 
             case 7:
@@ -1039,7 +1070,8 @@ public class GameActivity extends AppCompatActivity {
                     cont_playersin++;
                     break;}
 
-                else {PlayerDataBase[winner2].setIn(false);
+                else {
+                    PlayerDataBase[winner2].setIn(false);
                     winner2++;}
 
 
@@ -1052,7 +1084,8 @@ public class GameActivity extends AppCompatActivity {
 
                     break;}
 
-                else {PlayerDataBase[winner2].setIn(false);
+                else {
+                    PlayerDataBase[winner2].setIn(false);
                     winner2++;}
 
             case 9:
@@ -1063,7 +1096,8 @@ public class GameActivity extends AppCompatActivity {
                     builder5.create().show();
 
                 }
-                else{PlayerDataBase[winner2].setIn(false);}
+                else{
+                    PlayerDataBase[winner2].setIn(false);}
 
                 break;
 
@@ -1079,7 +1113,7 @@ public class GameActivity extends AppCompatActivity {
 
         }
 
-/*
+/* todo esto se intento hacer para hacer est emetodo general
         PlayersIn();
 
         for(int i = check_players_pressed;i<playersin;i++){
@@ -1110,12 +1144,9 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
-
     private void checkWinner() {
 
-        pulsado=false;
-        check_players_pressed=0;
-        check_winner_finish=false;
+
         PlayersIn();
         Log.i("WINS","CHECKWINNER");
         //condiciones para que el juega haya acabado
@@ -1153,6 +1184,9 @@ public class GameActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Log.i("WINS","DIFERENTE");
                         nState=8; winner2=0; cont_winner_out=1; winner_check=0;
+                        for (int j=0;j<winner_pos.length;j++){
+                            winner_pos[j]=7;
+                        }
                         for (int o = 0; o< playersalive; o++){
                             PlayerDataBase[o].setWin(false); }
                         //turnALLIN();
@@ -1179,13 +1213,14 @@ public class GameActivity extends AppCompatActivity {
                     }
                 }
                 //Log.i("WINS","IGUAL");
-                //todo sumar current total bet siempre?
+
                 loot= PlayerDataBase[winner_check].getChips()+total_bet+current_total_bet;
                 //Log.i("LOOT",String.format("loot %d // chips %d",loot,PlayerDataBase[winner_check].getChips()));
                 PlayerDataBase[winner_check].setChips(loot);
                 AlertDialog.Builder builder3= new AlertDialog.Builder(this);
                 builder3.setMessage(String.format(getString(R.string.PlayerWonChips),PlayerDataBase[winner_check].getName(),Integer.toString(total_bet)));
                 builder3.create().show();
+                //Se pone to*do a 0
                 current_total_bet=0;
                 current_individual_bet=0;
                 total_bet=0;
@@ -1193,14 +1228,15 @@ public class GameActivity extends AppCompatActivity {
                 nState=0;
                 winner_finish=false;
                 cont_winner_out=1;
-                //Se pone to*do a 0
+                for (int j=0;j<winner_pos.length;j++){
+                    winner_pos[j]=7;
+                }
                 for(int i = 0; i< playersalive; i++){
                     //PlayerDataBase[i].setIn(true);
                     PlayerDataBase[i].setBet(0);
                     PlayerDataBase[i].setCall(false);
                     PlayerDataBase[i].setTurn(false);
                     PlayerDataBase[i].setAllin(false);
-
                     //valores a 0 por allin
                     all_in=false;
                     all_in_value=0;
@@ -1209,6 +1245,7 @@ public class GameActivity extends AppCompatActivity {
                     txt_bet.setText(string_bet);}
                 RotateBlind(playersin);}
         }}
+
 
     private void OnePlayerIn() {
         PlayersIn();
@@ -1346,9 +1383,7 @@ public class GameActivity extends AppCompatActivity {
             if (playernumber==playersout[i]){playernumber++;}}*/
 
         //MIRAMOS SI PUEDE HABER GANADOR
-        for (int i = 0; i< playersalive; i++){
-            if(PlayerDataBase[i].isIn()){playersin++;}
-        }
+        //PlayersIn();
         Log.i("WIN","YES");
         OnePlayerIn();
         Log.i("Xavi",String.format("playernumber %d // playeralive %d",playernumber,playersalive));
@@ -1383,9 +1418,8 @@ public class GameActivity extends AppCompatActivity {
         //Miramos si algun jugador esta fuera de la partida
 
         //si alguno esta fuera eliminamos to*do lo que pueda tener on y cogemos posicion en cont_playersout
-        for (int i = 0; i< playersalive; i++){
+        for (int i = 0; i< PlayerDataBase.length; i++){
             if(PlayerDataBase[i].isAnnihilated()){
-                playersout[cont_playersout]=i; cont_playersout++;
                 PlayerDataBase[i].setIn(false);
                 PlayerDataBase[i].setTurn(false);
                 PlayerDataBase[i].setAllin(false);
@@ -1400,7 +1434,6 @@ public class GameActivity extends AppCompatActivity {
         //contamos cuantos jugadores estan fuera
         PlayersAnnihilateds();
             Log.i("Turn",String.format("playersalive %d",playersalive));
-
 
             if (playersalive>3){
                 //DESPLAZAMIENTO CIEGAS
@@ -1440,7 +1473,7 @@ public class GameActivity extends AppCompatActivity {
                                 !PlayerDataBase[i].isBig() &
                                         !PlayerDataBase[i].isDealer() &
                                         !PlayerDataBase[i].isSmall()) {
-
+                            Log.i("Big","Estoy aqui 10");
                             PlayerDataBase[i].setBig(true);
                             Log.i("GALVAN",String.format("Player %s is Big",Integer.toString(i)));
                             aux=false;
@@ -1452,6 +1485,7 @@ public class GameActivity extends AppCompatActivity {
                 }
                 //si el ultimo es big
                 else if(PlayerDataBase[playersalive -1].isBig()) {
+                    Log.i("Big","Estoy aqui 1");
                     PlayerDataBase[0].setBig(true);
 
                     for (int i = 1; i < playersalive; i++) {
@@ -1483,6 +1517,7 @@ public class GameActivity extends AppCompatActivity {
                 else if(PlayerDataBase[playersalive -1].isSmall()){
                     PlayerDataBase[0].setBig(false);
                     PlayerDataBase[0].setSmall(true);
+                    Log.i("Big","Estoy aqui 2");
                     PlayerDataBase[1].setBig(true);
 
                     for(int i = 1; i< playersalive; i++){
@@ -1504,7 +1539,7 @@ public class GameActivity extends AppCompatActivity {
                         }
 
                         if( PlayerDataBase[i-1].isSmall()) {
-
+                            Log.i("Big","Estoy aqui 3");
                             PlayerDataBase[i].setBig(true);
                             Log.i("GALVAN",String.format("Player %s is Big",Integer.toString(i)));
 
@@ -1518,6 +1553,8 @@ public class GameActivity extends AppCompatActivity {
                     PlayerDataBase[0].setDealer(true);
                     PlayerDataBase[1].setBig(false);
                     PlayerDataBase[1].setSmall(true);
+                    Log.i("Big","Estoy aqui 4");
+
                     PlayerDataBase[2].setBig(true);
                     //DEALER->nA
                     for(int i = 3; i< playersalive; i++){
@@ -1537,257 +1574,72 @@ public class GameActivity extends AppCompatActivity {
 
                     //Rotar turno
 
-                    refresh();}
-
-/*
-        else if(playersalive==3){
-
-                for (int i=0;i<playersalive; i++){
-
-                    PlayerDataBase[i].setIn(true);
-                    PlayerDataBase[i].setAllin(false);
-
-                    if (PlayerDataBase[i].isDealer()){
-                        PlayerDataBase[i].setDealer(false);
-                        PlayerDataBase[i].setBig(true);
-                        i++;
-                    }
-                    if (PlayerDataBase[i].isSmall()){
-                        PlayerDataBase[i].setSmall(false);
-                        PlayerDataBase[i].setDealer(true);
-                        i++;
-                    }
-                    if (PlayerDataBase[i].isBig()){
-                        PlayerDataBase[i].setBig(false);
-                        PlayerDataBase[i].setSmall(true);
-                    }
-
-                }
-
-                for(int i = 0; i< playersalive; i++){
-                    checkout = PlayerDataBase[i].isIn();
-                    if(checkout){playersin++;}
-                    txt_current_total_bet.setText(Integer.toString(playersin));
-                }
-
-                //Rotar turno
-
-                refresh();}
-/*
-            //D/ESPLAZAMIENTO CIEGAS
-            //si el ultimo de la lista no es ni big small ni dealer
-            if( !PlayerDataBase[playersalive -1].isBig() &
-                    !PlayerDataBase[playersalive -1].isDealer() &
-                    !PlayerDataBase[playersalive -1].isSmall()) {
-                boolean aux= false;
-                for(int i = 0; i< playersalive; i++){
-                    PlayerDataBase[i].setIn(true);
-                    PlayerDataBase[i].setAllin(false);
-
-
-
-                    //DEALER->nA
-                    if(PlayerDataBase[i].isDealer()){
-                        PlayerDataBase[i].setDealer(false);
-                        Log.i("GALVAN","Dealer-na");
-                    }
-                    //SMALL->DEALER
-                    if(PlayerDataBase[i].isSmall()){
-                        PlayerDataBase[i].setDealer(true);
-                        PlayerDataBase[i].setSmall(false);
-                        Log.i("GALVAN","Small-Big");
-                    }
-                    //BIG->SMALL
-                    if(PlayerDataBase[i].isBig()){
-                        PlayerDataBase[i].setSmall(true);
-                        PlayerDataBase[i].setBig(false);
-                        Log.i("GALVAN","Big-Small");
-                        aux=true;
-                        Log.i("GALVAN","aux true");
-                    }
-                    //nA->BIG
-                    if( aux==true&&
-                            !PlayerDataBase[i].isBig() &
-                                    !PlayerDataBase[i].isDealer() &
-                                    !PlayerDataBase[i].isSmall()) {
-
-                        PlayerDataBase[i].setBig(true);
-                        Log.i("GALVAN",String.format("Player %s is Big",Integer.toString(i)));
-                        aux=false;
-
-                    }
-                    Log.i("GALVAN",String.format("i= %s",Integer.toString(i)));
-                    list.setAdapter(adapter);
-                }
-            }
-            //si el ultimo es big
-            else if(PlayerDataBase[playersalive -1].isBig()) {
-                PlayerDataBase[0].setBig(true);
-
-                for (int i = 1; i < playersalive; i++) {
-                    PlayerDataBase[i].setIn(true);
-                    PlayerDataBase[i].setAllin(false);
-
-
-                    //DEALER->nA
-                    if (PlayerDataBase[i].isDealer()) {
-                        PlayerDataBase[i].setDealer(false);
-                        Log.i("GALVAN", "Dealer-na");
-                    }
-                    //SMALL->DEALER
-                    if (PlayerDataBase[i].isSmall()) {
-                        PlayerDataBase[i].setDealer(true);
-                        PlayerDataBase[i].setSmall(false);
-                        Log.i("GALVAN", "Small-Big");
-                    }
-                    //BIG->SMALL
-                    if (PlayerDataBase[i].isBig()) {
-                        PlayerDataBase[i].setSmall(true);
-                        PlayerDataBase[i].setBig(false);
-
-                        list.setAdapter(adapter);
-                    }
-                }
-            }
-            //si el ultimo es small
-            else if(PlayerDataBase[playersalive -1].isSmall()){
-                PlayerDataBase[0].setBig(false);
-                PlayerDataBase[0].setSmall(true);
-                PlayerDataBase[1].setBig(true);
-
-                for(int i = 1; i< playersalive; i++){
-                    PlayerDataBase[i].setIn(true);
-                    PlayerDataBase[i].setAllin(false);
-
-
-
-                    //DEALER->nA
-                    if(PlayerDataBase[i].isDealer()){
-                        PlayerDataBase[i].setDealer(false);
-                        Log.i("GALVAN","Dealer-na");
-                    }
-                    //SMALL->DEALER
-                    if(PlayerDataBase[i].isSmall()){
-                        PlayerDataBase[i].setDealer(true);
-                        PlayerDataBase[i].setSmall(false);
-                        Log.i("GALVAN","Small-Big");
-                    }
-
-                    if( PlayerDataBase[i-1].isSmall()) {
-
-                        PlayerDataBase[i].setBig(true);
-                        Log.i("GALVAN",String.format("Player %s is Big",Integer.toString(i)));
-
-
-                    }
-                    list.setAdapter(adapter);
-                }
-            }
-            else if(PlayerDataBase[playersalive -1].isDealer()){
-                PlayerDataBase[0].setSmall(false);
-                PlayerDataBase[0].setDealer(true);
-                PlayerDataBase[1].setBig(false);
-                PlayerDataBase[1].setSmall(true);
-                PlayerDataBase[2].setBig(true);
-                //DEALER->nA
-                for(int i = 3; i< playersalive; i++){
-                    if(PlayerDataBase[i].isDealer()){
-                        PlayerDataBase[i].setDealer(false);
-                        Log.i("GALVAN","Dealer-na");
-                    }
-                }}*/
-
-
-            //RESTAURAR OUT
-
-/*
-            else if(playersalive==2){
-
-
-                for (int i=0;i<PlayerDataBase.length; i++){
-
-                    PlayerDataBase[i].setDealer(false);}
-
-                for (int i=0;i<playersalive; i++){
-
-                    PlayerDataBase[i].setIn(true);
-                    PlayerDataBase[i].setAllin(false);
-
-
-                    if (PlayerDataBase[i].isSmall()){
-                        PlayerDataBase[i].setSmall(false);
-                        PlayerDataBase[i].setBig(true);
-                        i++;
-                    }
-                    if (PlayerDataBase[i].isBig()){
-                        PlayerDataBase[i].setBig(false);
-                        PlayerDataBase[i].setSmall(true);
-                    }
-
-                }
-            //RESTAURAR OUT
-                for(int i = 0; i< playersalive; i++){
-                    checkout = PlayerDataBase[i].isIn();
-                    if(checkout){playersin++;}
-                    txt_current_total_bet.setText(Integer.toString(playersin));
-                }
-
-                //Rotar turno
-
-                refresh();
-            }*/
+                    refresh();
+                            }
 
             else if(playersalive<=3){
-                int dealerpos=-1;
-                for(int i=0; i<PlayerDataBase.length; i++){
-                    if(PlayerDataBase[i].isDealer()){
-                        dealerpos=i;
-                        Log.i("Aniquilador",String.format("Dealer position =%d",dealerpos));
-                    }
-                }
 
-
-
-            for (int i = 0; i < PlayerDataBase.length - 1; i++) {
-                PlayerDataBase[i].setDealer(false);
-                PlayerDataBase[i].setSmall(false);
-                PlayerDataBase[i].setDealer(false);
-            }
             //y ahora reorganizamos los estados
 //si temenos mas de 3 jugadores vivos
+                Log.i("Aniquilador",String.format("PlayersAlive =%d",playersalive));
+
+
             if (playersalive == 3) {
+                for (int i = 0; i < PlayerDataBase.length - 1; i++) {
+                    PlayerDataBase[i].setDealer(false);
+                    PlayerDataBase[i].setSmall(false);
+                    PlayerDataBase[i].setBig(false);
+
+                }
                 //si la posición del big no se sale de la parte de la lista de los vivos:
                 Log.i("Reorganizador", String.format("dealerpos+2=%d , playersalive=%d", dealerpos + 2, playersalive));
 
                 if (dealerpos + 2 == playersalive - 1) {//Bigpos<playersalive-1
                     Log.i("Reorganizador", "(el big no se sale)");
+                    Log.i("Big","Estoy aqui 5");
                     PlayerDataBase[dealerpos].setBig(true);
                     PlayerDataBase[dealerpos + 1].setDealer(true);
                     PlayerDataBase[dealerpos + 2].setSmall(true);
+
                 }
                 //si se sale
                 //si solo se sale el big
                 else if (dealerpos + 2 == playersalive) {
                     Log.i("Reorganizador", "(el big se sale)");
+                    Log.i("Big","Estoy aqui 6");
                     PlayerDataBase[dealerpos].setBig(true);
                     PlayerDataBase[dealerpos + 1].setDealer(true);
                     PlayerDataBase[0].setSmall(true);
+                    Log.i("CheckBig3",String.format("PlayerDabatabig 0 %b // " +
+                                    "PlayerDabatabig 1 %b // PlayerDabatabig 2 %b // PlayerDabatabig 3 %b",
+                            PlayerDataBase[0].isBig(),PlayerDataBase[1].isBig(),PlayerDataBase[2].isBig(),
+                            PlayerDataBase[3].isBig()));
                 }
 
                 //si se sale el small y el big
                 else if (dealerpos == playersalive - 1) {
                     Log.i("Reorganizador", "(small y blind  se salen)");
+                    Log.i("Big","Estoy aqui 7");
                     PlayerDataBase[dealerpos].setBig(true);
                     PlayerDataBase[0].setDealer(true);
                     PlayerDataBase[1].setSmall(true);
                 }
+
             }
 
             //para 2 jugadores vivos no ponemos dealer
             else if (playersalive == 2) {
-                PlayerDataBase[dealerpos].setDealer(false);
+
+                for (int i = 0; i < PlayerDataBase.length - 1; i++) {
+                    PlayerDataBase[i].setDealer(false);
+                    PlayerDataBase[i].setSmall(false);
+                    PlayerDataBase[i].setBig(false);
+
+                }
+
                 if (dealerpos + 2 == playersalive - 1) {//Bigpos<playersalive-1
                     Log.i("Reorganizador", "(el big no se sale)");
+                    Log.i("Big","Estoy aqui 8");
                     PlayerDataBase[dealerpos].setBig(true);
                     PlayerDataBase[dealerpos+1].setSmall(true);
                 }
@@ -1796,6 +1648,7 @@ public class GameActivity extends AppCompatActivity {
                 else {
                     Log.i("Reorganizador", "(small y blind  se salen)");
                     PlayerDataBase[0].setSmall(true);
+                    Log.i("Big","Estoy aqui 9");
                     PlayerDataBase[1].setBig(true);
 
             }
@@ -1816,7 +1669,10 @@ public class GameActivity extends AppCompatActivity {
         im_allin=false;
         total_bet=0;
         txt_total_bet.setText(Integer.toString(total_bet));
-
+        //Log.i("CheckBig",String.format("PlayerDabatabig 0 %b // " +
+        //        "PlayerDabatabig 1 %b // PlayerDabatabig 2 %b // PlayerDabatabig 3 %b",
+        //        PlayerDataBase[0].isBig(),PlayerDataBase[1].isBig(),PlayerDataBase[2].isBig(),
+        //        PlayerDataBase[3].isBig()));
         turnState();
     }
 
@@ -1841,11 +1697,19 @@ public class GameActivity extends AppCompatActivity {
             }
         }
 
+
         for (int i = 0; i< playersalive; i++){
             Log.i("Check",String.format("i %d isAnnihilated %b // %b isGenerated",i, PlayerDataBase[i].isAnnihilated(),PlayerDataBase[i].isGenerated()));
             if(PlayerDataBase[i].isAnnihilated() & PlayerDataBase[i].isGenerated()){
                 //al aniquilar a un player el reorganizador se activará a continuación
 
+                dealerpos=-1;
+                for(int j=0; j<playersalive; j++){
+                    if(PlayerDataBase[j].isDealer()){
+                        dealerpos=j;
+                        Log.i("Aniquilador",String.format("Dealer position =%d",dealerpos));
+                    }
+                }
 
                 PlayerItems auxPlayer = PlayerDataBase[i];
                 for(int l=i; l<9;l++){
@@ -1857,6 +1721,7 @@ public class GameActivity extends AppCompatActivity {
                 Log.i("Aniquilador",String.format("Player name %s",PlayerDataBase[2].getName()));
             }
         }
+
         //actualizamos el valor de los jugadores que quedan vivos
 
         //Log.i("Check3",String.format("Plaersalive %d // i %d",playersalive,i));

@@ -75,5 +75,6 @@
     <string name="enterInitialChips">Please enter initial chips</string>
     <string name="scanQR">Scan QR</string>
     <string name="PlayerWonChips">Player %1$s won %2$s chips</string>
+    <string name="BigChangeMessage">Big blind value increase</string>
 
 </resources>

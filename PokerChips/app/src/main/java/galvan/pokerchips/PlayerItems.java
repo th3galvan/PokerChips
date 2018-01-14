@@ -161,21 +161,4 @@ public class PlayerItems extends AppCompatActivity {
     public void setCall(boolean call){this.call = call;}
     public boolean isCall(){return call;}
 
-    //Algo de Firebase
-    @Override
-    public String toString(){
-        return "Player{" +
-                "id=" + id +
-                "name='" + name + '\'' +
-                "chips=" + chips +
-                "dealer=" + dealer +
-                "big=" + big +
-                "small=" + small +
-                "in=" + in +
-                "bet=" + bet +
-                "turn=" + chips +
-                "allin=" + chips +
-                "call=" + chips +
-                '}';
-    }
 }

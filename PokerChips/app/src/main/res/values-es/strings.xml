@@ -36,7 +36,7 @@
     <string name="writeCode">Escrbe el código para entrar a la partida</string>
     <string name="writeYourName">Escribe tu nombre</string>
     <string name="wrtName">Escribe tu nombre</string>
-    <string name="Code">Código</string>
+    <string name="Code">En el siguiente turno se suben las ciegas</string>
     <string name="Frecuency">Frecuencia de subida</string>
     <string name="PlayerWonChips">El jugador %1$s a ganado %2$s fichas</string>
     <string name="Rise_value">Valor de subida</string>
@@ -61,4 +61,5 @@
     <string name="enterBig">Porfavor escribe el valor de BIG BLIND</string>
     <string name="enterInitialChips">Porfavor escribe las fichas iniciales</string>
     <string name="scanQR">Escanear QR</string>
+    <string name="BigChangeMessage">Subimos las ciegas</string>
 </resources>
