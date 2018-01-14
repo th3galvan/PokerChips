@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.jar.Attributes;
 
+import galvan.pokerchips.Datos.PlayerItems;
+
 /**
  * Created by Alvaro on 13/12/2017.
  */

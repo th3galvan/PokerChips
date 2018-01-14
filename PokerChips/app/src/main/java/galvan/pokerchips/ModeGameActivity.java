@@ -11,11 +11,15 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import galvan.pokerchips.Datos.FirebaseReferences;
+
 
 public class ModeGameActivity extends AppCompatActivity {
 
     private int code;
-    private int players;
     private int number_players;
     private int initial_chips;
     private int big;
@@ -38,9 +42,18 @@ public class ModeGameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_modegame);
 
+        /* TODO DIRIA QUE NO HACE FALTA SUBIR ESTO A FIREBASE
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference number_players_ref = database.getReference(FirebaseReferences.NUMBER_PLAYERS_REFERENCE);
+        DatabaseReference initial_chips_ref = database.getReference(FirebaseReferences.INITIAL_CHIPS_REFERENCE);
+        DatabaseReference big_ref = database.getReference(FirebaseReferences.BIG_REFERENCE);
+        DatabaseReference time_big_up_ref = database.getReference(FirebaseReferences.TIME_BIG_UP_REFERENCE);
+        DatabaseReference change_value_ref = database.getReference(FirebaseReferences.CHANGE_VALUE_BIG_REFERENCE);
+        DatabaseReference name_ref = database.getReference(FirebaseReferences.NAME_REFERENCE);*/
+
+
         Bundle code_receive = getIntent().getExtras();
         code = code_receive.getInt("code");
-        players = code_receive.getInt("players");
 
         final RadioButton rb_fast = (RadioButton)findViewById(R.id.rb_fast);
         final RadioButton rb_custom = (RadioButton)findViewById(R.id.rb_custom);

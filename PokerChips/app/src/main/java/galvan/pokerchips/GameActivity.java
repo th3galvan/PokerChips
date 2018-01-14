@@ -3,6 +3,7 @@ package galvan.pokerchips;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.CountDownTimer;
+import android.provider.ContactsContract;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,53 +15,72 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import galvan.pokerchips.Datos.FirebaseReferences;
+import galvan.pokerchips.Datos.PlayerItems;
 
 
 public class GameActivity extends AppCompatActivity {
 
     // Añado un comentario para probar el push + update...
 
-    private int pos;
-    private int bet2;
-    private int ownChips;
-    private int current_individual_bet;
-    private int current_total_bet;
-    private int total_bet;
+    private int pos=0;
+    private int bet2=0;
+    private int ownChips=0;
+    private int current_individual_bet=0;
+    private int current_total_bet=0;
+    private int total_bet=0;
     private int winner=0;
     private int big=50;
     private int loot =0;
     private int playersin=0;
-    private int nState;
-    private int Player_big_blind;
-    private int Player_small_blind;
+    private int nState=0;
+    private int Player_big_blind=0;
+    private int Player_small_blind=0;
     //todo se podria rellenar en funcion del numero de jugadores
     private int winner_pos[] ={7,7,7,7,7,7,7,7,7,7};
-    private int winner_check;
-    private int eq_bet;
+    private int winner_check=0;
+    private int eq_bet=0;
     private int winner2=0;
-    private int playerscall;
+    private int playerscall=0;
     private int count_winner_pos=0;
-    private int all_in_value;
-    private int players_allin;
-    private int restart_bet;
-    private int cont_playersin;
+    private int all_in_value=0;
+    private int players_allin=0;
+    private int restart_bet=0;
+    private int cont_playersin=0;
     private int cont_winner_out=1;
-    private int count_loser_pos;
-    private int playernumber;
-    private int time;
+    private int count_loser_pos=0;
+    private int playernumber=0;
+    private int time=0;
+    private int initial_chips=0;
+    private int time_big_up=0;
+    private int change_value_big=0;
+    private int min=0;
+    private int number_players=0;
+    private int playersout[] ={7,7,7,7};
+    private int cont_playersout=0;
+    private int number_playersout=0;
+    private int playersalive=0;
+    private int dealerpos=0;
 
-    private String string_big;
-    private String string_bet;
+
+    private String string_big="0";
+    private String string_bet="0";
+    private String name_host;
 
     private boolean all_in;
     private boolean checkout;
     private boolean winner_finish=false;
+    private boolean im_allin=false;
+    private boolean first_allin=true;
 
     private TextView txt_current_individual_bet;
     private TextView txt_ownChips;
@@ -69,14 +89,7 @@ public class GameActivity extends AppCompatActivity {
     private TextView txt_total_bet;
     private TextView txt_big;
     private TextView txt_time_number;
-
-
-
-    //VARIABLES DE PRUEBA
-    private TextView fichasmalaquito ;
-    private TextView fichasmalaquitodatabase ;
-    private TextView txt_playernumber;
-//// TODO: 17/12/2017 hay que hacer algo para asignar un mobil con un jugador
+    private TextView txt_turn;
 
     private ArrayList<PlayerItems> players;
     private PlayerItemAdapter adapter;
@@ -156,21 +169,39 @@ public class GameActivity extends AppCompatActivity {
             false,      false,   false, false);
 
     private PlayerItems PlayerDataBase[]={Player0,Player1,Player2,Player3,Player4,Player5,Player6,Player7,Player8,Player9};
-    private int initial_chips;
-    private int time_big_up;
-    private int change_value_big;
-    private String name_host;
-    private int min;
-    private TextView txt_turn;
-    private int number_players;
     private String Scurrent_total_bet;
-    private boolean im_allin=false;
-    private boolean first_allin=true;
-    private int playersout[] ={7,7,7,7};
-    private int cont_playersout;
-    private int number_playersout;
-    private int playersalive;
-    private int dealerpos;
+    private DatabaseReference posref;
+    private DatabaseReference bet2ref;
+    private DatabaseReference ownChipsref;
+    private DatabaseReference current_individual_bet_ref;
+    private DatabaseReference current_total_ref;
+    private DatabaseReference total_bet_ref;
+    private DatabaseReference winnerref;
+    private DatabaseReference lootref;
+    private DatabaseReference playersinref;
+    private DatabaseReference nStateref;
+    private DatabaseReference player_big_blind_ref;
+    private DatabaseReference Player_small_blind_ref;
+    private DatabaseReference eq_bet_ref;
+    private DatabaseReference winner_check_ref;
+    private DatabaseReference winner2ref;
+    private DatabaseReference playerscallref;
+    private DatabaseReference count_winner_posref;
+    private DatabaseReference all_in_value_ref;
+    private DatabaseReference players_allin_ref;
+    private DatabaseReference restart_bet_ref;
+    private DatabaseReference cont_playersin_ref;
+    private DatabaseReference cont_winner_out_ref;
+    private DatabaseReference count_loser_pos_ref;
+    private DatabaseReference playersnumberref;
+    private DatabaseReference timeref;
+    private DatabaseReference cont_playersoutref;
+    private DatabaseReference number_playersoutref;
+    private DatabaseReference playersaliveref;
+    private DatabaseReference dealerposref;
+
+    private DatabaseReference string_bigref;
+    private DatabaseReference string_betref;
 
 
     //salvar datos de la aplicacion si esta en segundo plano y hace onDestroy
@@ -238,19 +269,6 @@ public class GameActivity extends AppCompatActivity {
         change_value_big =code_receive.getInt("change");
         name_host =code_receive.getString("name");
 
-        /*
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference PlayerItemRef = database.getReference(FirebaseReferences.PLAYER_ITEM_REFERENCE);
-        PlayerItemRef.child(FirebaseReferences.PLAYER_ITEM_REFERENCE).push().setValue(Player0);
-        PlayerItemRef.child(FirebaseReferences.PLAYER_ITEM_REFERENCE).push().setValue(Player1);
-        PlayerItemRef.child(FirebaseReferences.PLAYER_ITEM_REFERENCE).push().setValue(Player2);
-        PlayerItemRef.child(FirebaseReferences.PLAYER_ITEM_REFERENCE).push().setValue(Player3);
-        PlayerItemRef.child(FirebaseReferences.PLAYER_ITEM_REFERENCE).push().setValue(Player4);
-        PlayerItemRef.child(FirebaseReferences.PLAYER_ITEM_REFERENCE).push().setValue(Player5);
-        PlayerItemRef.child(FirebaseReferences.PLAYER_ITEM_REFERENCE).push().setValue(Player6);
-        PlayerItemRef.child(FirebaseReferences.PLAYER_ITEM_REFERENCE).push().setValue(Player7);
-        PlayerItemRef.child(FirebaseReferences.PLAYER_ITEM_REFERENCE).push().setValue(Player8);
-        PlayerItemRef.child(FirebaseReferences.PLAYER_ITEM_REFERENCE).push().setValue(Player9);*/
 
         Log.i("Xavi",String.format("%d",number_players));
 
@@ -357,7 +375,7 @@ public class GameActivity extends AppCompatActivity {
         final Button btn_check= (Button) findViewById(R.id.btn_check);
         final Button btn_bet= (Button) findViewById(R.id.btn_bet);
         current_total_bet= 0;
-        String Scurrent_total_bet= Integer.toString(current_total_bet);
+        final String Scurrent_total_bet= Integer.toString(current_total_bet);
         txt_current_total_bet.setText(Scurrent_total_bet);
 
         //declaramos apuesta total de la mesa
@@ -379,6 +397,469 @@ public class GameActivity extends AppCompatActivity {
         // blind bet, preflop, flop, turn, river
         turnState();
 
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+        //ints
+        posref = database.getReference(FirebaseReferences.POS_REFERENCE);
+        posref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                    pos = dataSnapshot.getValue(Integer.class);
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        bet2ref = database.getReference(FirebaseReferences.BET2_REFERENCE);
+        bet2ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                    bet2 = dataSnapshot.getValue(Integer.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        ownChipsref = database.getReference(FirebaseReferences.OWNCHIPS_REFERENCE);
+        ownChipsref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                    ownChips = dataSnapshot.getValue(Integer.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        current_individual_bet_ref = database.getReference(FirebaseReferences.CURRENT_INDIVIDUAL_BET_REFERENCE);
+        current_individual_bet_ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                current_individual_bet = dataSnapshot.getValue(Integer.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        current_total_ref = database.getReference(FirebaseReferences.CURRENT_TOTAL_BET_REFERENCE);
+        current_total_ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                    current_total_bet = dataSnapshot.getValue(Integer.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        total_bet_ref = database.getReference(FirebaseReferences.TOTAL_BET_REFERENCE);
+        total_bet_ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                total_bet = dataSnapshot.getValue(Integer.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        winnerref = database.getReference(FirebaseReferences.WINNER_REFERENCE);
+        winnerref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                winner = dataSnapshot.getValue(Integer.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        lootref = database.getReference(FirebaseReferences.LOOT_REFERENCE);
+        lootref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                    loot = dataSnapshot.getValue(Integer.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        playersinref = database.getReference(FirebaseReferences.PLAYERSIN_REFERENCE);
+        playersinref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                playersin = dataSnapshot.getValue(Integer.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        nStateref = database.getReference(FirebaseReferences.NSTATE_REFERENCE);
+        nStateref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                    nState = dataSnapshot.getValue(Integer.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        player_big_blind_ref = database.getReference(FirebaseReferences.PLAYER_BIG_BLIND_REFERENCE);
+        player_big_blind_ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                    Player_big_blind = dataSnapshot.getValue(Integer.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        Player_small_blind_ref = database.getReference(FirebaseReferences.PLAYER_SMALL_BLIND_REFERENCE);
+        Player_small_blind_ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                    Player_small_blind = dataSnapshot.getValue(Integer.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });/*
+        winner_pos_ref = database.getReference(FirebaseReferences.WINNER_POS_REFERENCE);
+        winner_pos_ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                    winner_pos = dataSnapshot.getValue(Array.In);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });*/
+
+        winner_check_ref = database.getReference(FirebaseReferences.WINNER_CHECK_REFERENCE);
+        winner_check_ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                winner_check = dataSnapshot.getValue(Integer.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        eq_bet_ref = database.getReference(FirebaseReferences.EQ_BET_REFERENCE);
+        eq_bet_ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                eq_bet = dataSnapshot.getValue(Integer.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        winner2ref = database.getReference(FirebaseReferences.WINNER2_REFERENCE);
+        winner2ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                    winner2 = dataSnapshot.getValue(Integer.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        playerscallref = database.getReference(FirebaseReferences.PLAYERSCALL_REFERENCE);
+        playerscallref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                playerscall = dataSnapshot.getValue(Integer.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        count_winner_posref = database.getReference(FirebaseReferences.COUNT_WINNER_POS_REFERENCE);
+        count_winner_posref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                    count_winner_pos = dataSnapshot.getValue(Integer.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        all_in_value_ref = database.getReference(FirebaseReferences.ALL_IN_VALUE_REFERENCE);
+        all_in_value_ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                    all_in_value = dataSnapshot.getValue(Integer.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        players_allin_ref = database.getReference(FirebaseReferences.PLAYERS_ALLIN_REFERENCE);
+        players_allin_ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                    players_allin = dataSnapshot.getValue(Integer.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        restart_bet_ref = database.getReference(FirebaseReferences.RESTART_BET_REFERENCE);
+        restart_bet_ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                    restart_bet = dataSnapshot.getValue(Integer.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        cont_playersin_ref = database.getReference(FirebaseReferences.CONT_PLAYERSIN_REFERENCE);
+        cont_playersin_ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                cont_playersin = dataSnapshot.getValue(Integer.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        cont_winner_out_ref = database.getReference(FirebaseReferences.CONT_WINNER_OUT_REFERENCE);
+        cont_winner_out_ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                    cont_winner_out = dataSnapshot.getValue(Integer.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        count_loser_pos_ref = database.getReference(FirebaseReferences.COUNT_LOSER_POS_REFERENCE);
+        count_loser_pos_ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                    count_loser_pos = dataSnapshot.getValue(Integer.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        playersnumberref = database.getReference(FirebaseReferences.PLAYERNUMBER_REFERENCE);
+        playersnumberref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                    playernumber = dataSnapshot.getValue(Integer.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        timeref = database.getReference(FirebaseReferences.TIME_REFERENCE);
+        timeref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                    time = dataSnapshot.getValue(Integer.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });/*
+        playersoutref = database.getReference(FirebaseReferences.PLAYERSOUT_REFERENCE);
+        playersoutref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                    playersout
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });*/
+        cont_playersoutref = database.getReference(FirebaseReferences.CONT_PLAYERSOUT_REFERENCE);
+        cont_playersoutref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                    cont_playersout = dataSnapshot.getValue(Integer.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        number_playersoutref = database.getReference(FirebaseReferences.NUMBER_PLAYERSOUT_REFERENCE);
+        number_playersoutref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                number_playersout = dataSnapshot.getValue(Integer.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        playersaliveref = database.getReference(FirebaseReferences.PLAYERSALIVE_REFERENCE);
+        playersaliveref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                playersalive = dataSnapshot.getValue(Integer.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        dealerposref = database.getReference(FirebaseReferences.DEALERPOS_REFERENCE);
+        dealerposref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                    dealerpos = dataSnapshot.getValue(Integer.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        //strings
+        string_bigref = database.getReference(FirebaseReferences.STRING_BIG_REFERENCE);
+        string_bigref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                    string_big = dataSnapshot.getValue(String.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        string_betref = database.getReference(FirebaseReferences.STRING_BET_REFERENCE);
+        string_betref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                string_bet = dataSnapshot.getValue(String.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        posref.setValue(pos);
+        bet2ref.setValue(bet2);
+        ownChipsref.setValue(ownChips);
+        current_individual_bet_ref.setValue(current_individual_bet);
+        current_total_ref.setValue(current_total_bet);
+        total_bet_ref.setValue(total_bet);
+        winnerref.setValue(winner);
+        lootref.setValue(loot);
+        playersinref.setValue(playersin);
+        nStateref.setValue(nState);
+        player_big_blind_ref.setValue(Player_big_blind);
+        Player_small_blind_ref.setValue(Player_small_blind);
+        winner_check_ref.setValue(winner_check);
+        eq_bet_ref.setValue(eq_bet);
+        winner2ref.setValue(winner2);
+        playerscallref.setValue(playerscall);
+        count_winner_posref.setValue(count_winner_pos);
+        all_in_value_ref.setValue(all_in_value);
+        players_allin_ref.setValue(players_allin);
+        restart_bet_ref.setValue(restart_bet);
+        cont_playersin_ref.setValue(cont_playersin);
+        cont_winner_out_ref.setValue(cont_winner_out);
+        count_loser_pos_ref.setValue(count_loser_pos);
+        playersnumberref.setValue(playernumber);
+        timeref.setValue(time);
+        cont_playersoutref.setValue(cont_playersout);
+        number_playersoutref.setValue(number_playersout);
+        playersaliveref.setValue(playersalive);
+        dealerposref.setValue(dealerpos);
+
+        string_bigref.setValue(string_big);
+        string_betref.setValue(string_bet);
+
+       /* final PlayerItemRef = database.getReference(FirebaseReferences.PLAYERS_REFERENCE)
+        PlayerItemRef.child(FirebaseReferences.PLAYER_ITEM_REFERENCE).setValue(Player0);
+        PlayerItemRef.child(FirebaseReferences.PLAYER_ITEM_REFERENCE).setValue(Player1);
+        PlayerItemRef.child(FirebaseReferences.PLAYER_ITEM_REFERENCE).setValue(Player2);
+        PlayerItemRef.child(FirebaseReferences.PLAYER_ITEM_REFERENCE).setValue(Player3);
+        PlayerItemRef.child(FirebaseReferences.PLAYER_ITEM_REFERENCE).setValue(Player4);
+        PlayerItemRef.child(FirebaseReferences.PLAYER_ITEM_REFERENCE).setValue(Player5);
+        PlayerItemRef.child(FirebaseReferences.PLAYER_ITEM_REFERENCE).setValue(Player6);
+        PlayerItemRef.child(FirebaseReferences.PLAYER_ITEM_REFERENCE).setValue(Player7);
+        PlayerItemRef.child(FirebaseReferences.PLAYER_ITEM_REFERENCE).setValue(Player8);
+        PlayerItemRef.child(FirebaseReferences.PLAYER_ITEM_REFERENCE).setValue(Player9);*/
 
         //BTN+ Chips
         btn_plus_chip.setOnClickListener(new View.OnClickListener() {
@@ -1390,6 +1871,41 @@ private void Message0bet() {
         PlayerDataBase[playernumber].setTurn(true);
         list.setAdapter(adapter);
         refresh();
+
+
+        posref.setValue(pos);
+        bet2ref.setValue(bet2);
+        ownChipsref.setValue(ownChips);
+        current_individual_bet_ref.setValue(current_individual_bet);
+        current_total_ref.setValue(current_total_bet);
+        total_bet_ref.setValue(total_bet);
+        winnerref.setValue(winner);
+        lootref.setValue(loot);
+        playersinref.setValue(playersin);
+        nStateref.setValue(nState);
+        player_big_blind_ref.setValue(Player_big_blind);
+        Player_small_blind_ref.setValue(Player_small_blind);
+        winner_check_ref.setValue(winner_check);
+        eq_bet_ref.setValue(eq_bet);
+        winner2ref.setValue(winner2);
+        playerscallref.setValue(playerscall);
+        count_winner_posref.setValue(count_winner_pos);
+        all_in_value_ref.setValue(all_in_value);
+        players_allin_ref.setValue(players_allin);
+        restart_bet_ref.setValue(restart_bet);
+        cont_playersin_ref.setValue(cont_playersin);
+        cont_winner_out_ref.setValue(cont_winner_out);
+        count_loser_pos_ref.setValue(count_loser_pos);
+        playersnumberref.setValue(playernumber);
+        timeref.setValue(time);
+        cont_playersoutref.setValue(cont_playersout);
+        number_playersoutref.setValue(number_playersout);
+        playersaliveref.setValue(playersalive);
+        dealerposref.setValue(dealerpos);
+
+        string_bigref.setValue(string_big);
+        string_betref.setValue(string_bet);
+
     }
 
 

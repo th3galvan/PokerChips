@@ -1,14 +1,10 @@
-package galvan.pokerchips;
+package galvan.pokerchips.Datos;
 
-import android.support.v7.app.AppCompatActivity;
+/**
+ * Created by Xavi on 14/01/2018.
+ */
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.HashMap;
-import java.util.Map;
-
-public class PlayerItems extends AppCompatActivity {
+public class PlayerItems {
     protected long id;
     private  String name;
     private int chips;
@@ -19,7 +15,6 @@ public class PlayerItems extends AppCompatActivity {
     private boolean win;
     private boolean annihilated;
     private boolean generated;
-
 
     private  int bet;
     private  boolean turn;
@@ -114,14 +109,8 @@ public class PlayerItems extends AppCompatActivity {
         this.dealer = dealer;
     }
 
-    public boolean isBig()
-    {
-        return big;
-    }
+    public boolean isBig(){return big;}
 
-    public boolean getBig() {
-        return big;
-    }
 
     public int getBet(){return bet;}
 
@@ -135,9 +124,6 @@ public class PlayerItems extends AppCompatActivity {
         return small;
     }
 
-    public boolean getSmall() {
-        return small;
-    }
 
     public void setSmall(boolean small) {
         this.small = small;

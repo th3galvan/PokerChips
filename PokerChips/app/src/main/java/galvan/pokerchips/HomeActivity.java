@@ -22,7 +22,7 @@ import galvan.pokerchips.Datos.FirebaseReferences;
 
 public class HomeActivity extends AppCompatActivity {
 
-    private int code;
+    private int code=5694;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -30,23 +30,22 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference reference = database.getReference(FirebaseReferences.DATE_REFERENCE);
-        reference.setValue(1234);
-        Log.i("Xavi",reference.getKey());
-        reference.addValueEventListener(new ValueEventListener() {
+        DatabaseReference code_reference = database.getReference(FirebaseReferences.CODE_REFERENCE);
+
+        code_reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 code = dataSnapshot.getValue(Integer.class);
-                Log.i("Xavi",code+"");
-
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
-                Log.e("ERROR",databaseError.getMessage());
+                    Log.e("ERROR", databaseError.getMessage());
             }
         });
+
+        code_reference.setValue(code);
 
         Button btn_new_game =(Button)findViewById(R.id.btn_new_game);
         Button btn_join_game=(Button)findViewById(R.id.btn_join_game);
