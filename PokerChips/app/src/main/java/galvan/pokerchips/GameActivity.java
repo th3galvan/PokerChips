@@ -15,6 +15,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.ui.database.FirebaseListAdapter;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -93,6 +95,7 @@ public class GameActivity extends AppCompatActivity {
 
     private ArrayList<PlayerItems> players;
     private PlayerItemAdapter adapter;
+
     private ListView list;
 
    /* public PlayerItems(int i,
@@ -170,6 +173,7 @@ public class GameActivity extends AppCompatActivity {
 
     private PlayerItems PlayerDataBase[]={Player0,Player1,Player2,Player3,Player4,Player5,Player6,Player7,Player8,Player9};
     private String Scurrent_total_bet;
+    //Declaramos las variables que se guardaran en la database de firebase
     private DatabaseReference posref;
     private DatabaseReference bet2ref;
     private DatabaseReference ownChipsref;
@@ -215,6 +219,9 @@ public class GameActivity extends AppCompatActivity {
     private DatabaseReference PlayerItemRef8;
     private DatabaseReference PlayerItemRef9;
 
+    //para hacer una lista de firebase
+    private DatabaseReference FirebaseListRef;
+
 
 
     //salvar datos de la aplicacion si esta en segundo plano y hace onDestroy
@@ -246,7 +253,7 @@ public class GameActivity extends AppCompatActivity {
 
 
     }
-    //Cargar datos salvados despues de un onDestroy
+    //Cargar datos salvados despues de un onDestroy todo:(no tiene pinta de funcionar arlvarinho)
     @Override
     protected void onRestoreInstanceState(Bundle recoverState){
         super.onRestoreInstanceState(recoverState);
@@ -315,6 +322,8 @@ public class GameActivity extends AppCompatActivity {
         playernumber=0;
 
         //parte de añadir lista de jugadores y adapter
+
+
         list = (ListView)findViewById(R.id.players_list);
 
         players = new ArrayList<>();
@@ -323,7 +332,7 @@ public class GameActivity extends AppCompatActivity {
         // String name, int chips,      boolean dealer,
         // boolean big, boolean small,  boolean out,
         // int bet,      boolean turn    boolean allin)
-
+//hola generamos la lista
         for (int i=0;i<number_players;i++){
         players.add(PlayerDataBase[i]);
         PlayerDataBase[i].setGenerated(true);
@@ -413,6 +422,53 @@ public class GameActivity extends AppCompatActivity {
 
 
         //ints
+        //hola en las siguientes chorrocientas lineas ponemos listeners para que cuando se detecten cambios en la database de firebase se actualicen las variables internas de la app
+        //basicamente actualizamos variables y refrescamos el layout
+/*        FirebaseListRef = database.getReference(FirebaseReferences.LIST_REFERENCE);
+        FirebaseListAdapter<PlayerItems> fireAdapter = new FirebaseListAdapter<PlayerItems>(
+                this,
+                PlayerItems.class,
+                R.layout.activity_playeritems,
+                FirebaseListRef) {
+            @Override
+            protected void populateView(View v, PlayerItems player, int position) {
+FirebaseListRef.add
+            }
+        } ;
+*/
+        //FirebaseListAdapter
+        FirebaseListRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                for (int i=0;i<number_players;i++){
+                    players.add(PlayerDataBase[i]);
+                    PlayerDataBase[i].setGenerated(true);
+                    adapter.notifyDataSetChanged();
+                    }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
         posref = database.getReference(FirebaseReferences.POS_REFERENCE);
         posref.addValueEventListener(new ValueEventListener() {
             @Override
