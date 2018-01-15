@@ -899,40 +899,40 @@ public class GameActivity extends AppCompatActivity {
 
         //Players
         PlayerItemRef = database.getReference(FirebaseReferences.PLAYER_ITEM_REFERENCE);
-        PlayerItemRef.setValue(Player0);
+        PlayerItemRef.setValue(PlayerDataBase[0]);
 
         PlayerItemRef1 = database.getReference(FirebaseReferences.PLAYER_ITEM_REFERENCE1);
-        PlayerItemRef1.setValue(Player1);
+        PlayerItemRef1.setValue(PlayerDataBase[1]);
 
         PlayerItemRef2 = database.getReference(FirebaseReferences.PLAYER_ITEM_REFERENCE2);
-        PlayerItemRef2.setValue(Player2);
+        PlayerItemRef2.setValue(PlayerDataBase[2]);
 
         PlayerItemRef3 = database.getReference(FirebaseReferences.PLAYER_ITEM_REFERENCE3);
-        PlayerItemRef3.setValue(Player3);
+        PlayerItemRef3.setValue(PlayerDataBase[3]);
 
         PlayerItemRef4 = database.getReference(FirebaseReferences.PLAYER_ITEM_REFERENCE4);
-        PlayerItemRef4.setValue(Player4);
+        PlayerItemRef4.setValue(PlayerDataBase[4]);
 
         PlayerItemRef5 = database.getReference(FirebaseReferences.PLAYER_ITEM_REFERENCE5);
-        PlayerItemRef5.setValue(Player5);
+        PlayerItemRef5.setValue(PlayerDataBase[5]);
 
         PlayerItemRef6 = database.getReference(FirebaseReferences.PLAYER_ITEM_REFERENCE6);
-        PlayerItemRef6.setValue(Player6);
+        PlayerItemRef6.setValue(PlayerDataBase[6]);
 
         PlayerItemRef7 = database.getReference(FirebaseReferences.PLAYER_ITEM_REFERENCE7);
-        PlayerItemRef7.setValue(Player7);
+        PlayerItemRef7.setValue(PlayerDataBase[7]);
 
         PlayerItemRef8 = database.getReference(FirebaseReferences.PLAYER_ITEM_REFERENCE8);
-        PlayerItemRef8.setValue(Player8);
+        PlayerItemRef8.setValue(PlayerDataBase[8]);
 
         PlayerItemRef9 = database.getReference(FirebaseReferences.PLAYER_ITEM_REFERENCE9);
-        PlayerItemRef9.setValue(Player9);
+        PlayerItemRef9.setValue(PlayerDataBase[9]);
 
 
         PlayerItemRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Player0 = dataSnapshot.getValue(PlayerItems.class);
+                PlayerDataBase[0] = dataSnapshot.getValue(PlayerItems.class);
                 refresh();
             }
 
@@ -945,7 +945,7 @@ public class GameActivity extends AppCompatActivity {
         PlayerItemRef1.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Player1 = dataSnapshot.getValue(PlayerItems.class);
+                PlayerDataBase[1] = dataSnapshot.getValue(PlayerItems.class);
                 refresh();
             }
 
@@ -958,7 +958,7 @@ public class GameActivity extends AppCompatActivity {
         PlayerItemRef2.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Player2 = dataSnapshot.getValue(PlayerItems.class);
+                PlayerDataBase[2] = dataSnapshot.getValue(PlayerItems.class);
                 refresh();
             }
 
@@ -971,7 +971,7 @@ public class GameActivity extends AppCompatActivity {
         PlayerItemRef3.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Player3 = dataSnapshot.getValue(PlayerItems.class);
+                PlayerDataBase[3] = dataSnapshot.getValue(PlayerItems.class);
                 refresh();
             }
 
@@ -984,7 +984,7 @@ public class GameActivity extends AppCompatActivity {
         PlayerItemRef4.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Player4 = dataSnapshot.getValue(PlayerItems.class);
+                PlayerDataBase[4] = dataSnapshot.getValue(PlayerItems.class);
                 refresh();
             }
 
@@ -997,7 +997,7 @@ public class GameActivity extends AppCompatActivity {
         PlayerItemRef5.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Player5 = dataSnapshot.getValue(PlayerItems.class);
+                PlayerDataBase[5] = dataSnapshot.getValue(PlayerItems.class);
                 refresh();
             }
 
@@ -1010,7 +1010,7 @@ public class GameActivity extends AppCompatActivity {
         PlayerItemRef6.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Player6 = dataSnapshot.getValue(PlayerItems.class);
+                PlayerDataBase[6] = dataSnapshot.getValue(PlayerItems.class);
                 refresh();
             }
 
@@ -1023,7 +1023,7 @@ public class GameActivity extends AppCompatActivity {
         PlayerItemRef7.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Player7 = dataSnapshot.getValue(PlayerItems.class);
+                PlayerDataBase[7] = dataSnapshot.getValue(PlayerItems.class);
                 refresh();
             }
 
@@ -1036,7 +1036,7 @@ public class GameActivity extends AppCompatActivity {
         PlayerItemRef8.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Player8 = dataSnapshot.getValue(PlayerItems.class);
+                PlayerDataBase[8] = dataSnapshot.getValue(PlayerItems.class);
                 refresh();
             }
 
@@ -1049,7 +1049,7 @@ public class GameActivity extends AppCompatActivity {
         PlayerItemRef9.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Player9 = dataSnapshot.getValue(PlayerItems.class);
+                PlayerDataBase[9] = dataSnapshot.getValue(PlayerItems.class);
                 refresh();
             }
 
