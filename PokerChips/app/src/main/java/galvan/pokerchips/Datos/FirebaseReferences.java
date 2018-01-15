@@ -25,6 +25,10 @@ public class FirebaseReferences {
     final public static String PLAYER_ITEM_REFERENCE8 = "PlayerItem8";
     final public static String PLAYER_ITEM_REFERENCE9 = "PlayerItem9";
 
+    //ReferenciaScanActivity
+
+    final public static String PLAYERS_JOIN_REFERENCE = "Players_join";
+
 
 
     //referencias game activity

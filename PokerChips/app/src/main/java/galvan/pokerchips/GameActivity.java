@@ -272,8 +272,6 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
-        Intent intent =getIntent();
-
         Bundle code_receive = getIntent().getExtras();
         number_players =code_receive.getInt("playersnumber");
         initial_chips =code_receive.getInt("initial_chips");
@@ -933,7 +931,9 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 PlayerDataBase[0] = dataSnapshot.getValue(PlayerItems.class);
+                Log.i("Lista",String.format("%d",PlayerDataBase[0].getBet()));
                 refresh();
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -947,6 +947,7 @@ public class GameActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 PlayerDataBase[1] = dataSnapshot.getValue(PlayerItems.class);
                 refresh();
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -960,6 +961,7 @@ public class GameActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 PlayerDataBase[2] = dataSnapshot.getValue(PlayerItems.class);
                 refresh();
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -973,6 +975,7 @@ public class GameActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 PlayerDataBase[3] = dataSnapshot.getValue(PlayerItems.class);
                 refresh();
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -986,6 +989,7 @@ public class GameActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 PlayerDataBase[4] = dataSnapshot.getValue(PlayerItems.class);
                 refresh();
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -999,6 +1003,7 @@ public class GameActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 PlayerDataBase[5] = dataSnapshot.getValue(PlayerItems.class);
                 refresh();
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -1012,6 +1017,7 @@ public class GameActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 PlayerDataBase[6] = dataSnapshot.getValue(PlayerItems.class);
                 refresh();
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -1025,6 +1031,7 @@ public class GameActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 PlayerDataBase[7] = dataSnapshot.getValue(PlayerItems.class);
                 refresh();
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -1038,6 +1045,7 @@ public class GameActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 PlayerDataBase[8] = dataSnapshot.getValue(PlayerItems.class);
                 refresh();
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -1051,6 +1059,7 @@ public class GameActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 PlayerDataBase[9] = dataSnapshot.getValue(PlayerItems.class);
                 refresh();
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -1559,7 +1568,7 @@ private void Message0bet() {
                 for(int p = 0; p< playersalive; p++){
                     if(PlayerDataBase[p].isCall()){playerscall++;}}
 
-                //Log.i("XaviVilaseca",String.format("%d // %d", playersin, playerscall));
+                Log.i("XaviVilaseca",String.format("%d // %d", playersin, playerscall));
                 if (playersin== playerscall){nState=2;}
                 else {break;}
 

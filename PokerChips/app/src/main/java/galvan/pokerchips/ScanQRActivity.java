@@ -1,150 +1,84 @@
 package galvan.pokerchips;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.util.SparseArray;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
 
-import com.google.android.gms.vision.CameraSource;
-import com.google.android.gms.vision.Detector;
-import com.google.android.gms.vision.barcode.Barcode;
-import com.google.android.gms.vision.barcode.BarcodeDetector;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.zxing.Result;
 
-import java.io.IOException;
+import galvan.pokerchips.Datos.FirebaseReferences;
+import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
-public class ScanQRActivity extends AppCompatActivity {
+/**
+ * Created by Xavi on 15/01/2018.
+ */
 
-    private CameraSource cameraSource;
-    private SurfaceView cameraView;
-    private final int MY_PERMISSIONS_REQUEST_CAMERA = 1;
-    private String token = "";
-    private String tokenanterior = "";
+public class ScanQRActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler{
 
+    private int players_join;
+
+    private ZXingScannerView scannerView;
+    private FirebaseDatabase database;
+    private DatabaseReference players_join_ref;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_scanqr);
 
-        cameraView = (SurfaceView) findViewById(R.id.camera_view);
-        initQR();
-    }
+        Bundle code_receive = getIntent().getExtras();
+        players_join = code_receive.getInt("players_join");
 
-    public void initQR() {
 
-        // creo el detector qr
-        BarcodeDetector barcodeDetector =
-                new BarcodeDetector.Builder(this)
-                        .setBarcodeFormats(Barcode.ALL_FORMATS)
-                        .build();
+        scannerView = new ZXingScannerView(this);
+        setContentView(scannerView);
+        scannerView.setResultHandler(this);
+        scannerView.startCamera();
 
-        // creo la camara
-        cameraSource = new CameraSource
-                .Builder(this, barcodeDetector)
-                .setRequestedPreviewSize(1600, 1024)
-                .setAutoFocusEnabled(true)
-                .build();
+        database = FirebaseDatabase.getInstance();
+        players_join_ref = database.getReference(FirebaseReferences.PLAYERS_JOIN_REFERENCE);
 
-        // listener de ciclo de vida de la camara
-        cameraView.getHolder().addCallback(new SurfaceHolder.Callback() {
+        players_join_ref.addValueEventListener(new ValueEventListener() {
             @Override
-            public void surfaceCreated(SurfaceHolder holder) {
-
-                // verifico si el usuario dio los permisos para la camara
-                if (ActivityCompat.checkSelfPermission(ScanQRActivity.this, Manifest.permission.CAMERA)
-                        != PackageManager.PERMISSION_GRANTED) {
-
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        // verificamos la version de Android que sea al menos la M para mostrar
-                        // el dialog de la solicitud de la camara
-                        if (shouldShowRequestPermissionRationale(
-                                Manifest.permission.CAMERA)) ;
-                        requestPermissions(new String[]{Manifest.permission.CAMERA},
-                                MY_PERMISSIONS_REQUEST_CAMERA);
-                    }
-                    return;
-                } else {
-                    try {
-                        cameraSource.start(cameraView.getHolder());
-                    } catch (IOException ie) {
-                        Log.e("CAMERA SOURCE", ie.getMessage());
-                    }
-                }
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                players_join = dataSnapshot.getValue(Integer.class);
             }
 
             @Override
-            public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-            }
+            public void onCancelled(DatabaseError databaseError) {
 
-            @Override
-            public void surfaceDestroyed(SurfaceHolder holder) {
-                cameraSource.stop();
-            }
-        });
-
-        // preparo el detector de QR
-        barcodeDetector.setProcessor(new Detector.Processor<Barcode>() {
-            @Override
-            public void release() {
-            }
-
-
-            @Override
-            public void receiveDetections(Detector.Detections<Barcode> detections) {
-                final SparseArray<Barcode> barcodes = detections.getDetectedItems();
-
-                if (barcodes.size() > 0) {
-
-                    // obtenemos el codigo
-                    token = barcodes.valueAt(0).displayValue.toString();
-
-                    // verificamos que el token anterior no es igual al actual
-                    // para evitar multiples llamadas empleando el mismo token
-                    if (!token.equals(tokenanterior)) {
-
-                        // guardamos el ultimo token proceado
-                        tokenanterior = token;
-                        Log.i("token", token);
-
-
-
-                        if (token != null) {
-                            //Pasamos a WaitActivity, no se verifica nada aun
-                            Intent intent_wait = new Intent(getApplicationContext(), WaitActivity.class);
-                            startActivity(intent_wait);
-                        } else {
-
-
-                        }
-
-                        new Thread(new Runnable() {
-                            public void run() {
-                                try {
-                                    synchronized (this) {
-                                        wait(5000);
-                                        // limpiamos el token
-                                        tokenanterior = "";
-                                    }
-                                } catch (InterruptedException e) {
-
-                                    Log.e("Error", "Waiting didnt work!!");
-                                    e.printStackTrace();
-                                }
-                            }
-                        }).start();
-
-                    }
-                }
             }
         });
 
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        scannerView.stopCamera();
+    }
+
+    @Override
+    public void handleResult(Result result) {
+
+        Log.i("Result",result.getText());
+        if (result.getText().equals("5694")){
+            players_join++;
+            players_join_ref.setValue(players_join);
+
+        Intent intent_wait = new Intent(getApplicationContext(), WaitActivity.class);
+            intent_wait.putExtra("players_join",players_join);
+        startActivity(intent_wait);}
+        else{
+            scannerView.startCamera();
+        }
+    }
 }

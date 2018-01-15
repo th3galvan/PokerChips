@@ -34,41 +34,8 @@ android:padding="24dp">
         android:id="@+id/btn_scanQR"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/EnterGame"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
-
-    <TextView
-        android:id="@+id/txtCode"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="15dp"
-        android:layout_marginRight="15dp"
-        android:text="@string/writeCode"
-        android:layout_alignBaseline="@+id/editText_code"
-        android:layout_alignBottom="@+id/editText_code"
-        android:layout_toLeftOf="@+id/editText_code"
-        android:layout_toStartOf="@+id/editText_code" />
-
-    <EditText
-        android:id="@+id/editText_code"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="number"
-        android:layout_marginBottom="28dp"
-        android:layout_above="@+id/btn_scanQR"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="19dp"
-        android:layout_marginEnd="19dp" />
-
-    <Button
-        android:id="@+id/btn_scan"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/editText_code"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
         android:text="@string/scanQR" />
 </RelativeLayout>

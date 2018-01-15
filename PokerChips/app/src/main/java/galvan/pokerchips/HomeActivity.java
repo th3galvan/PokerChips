@@ -23,6 +23,8 @@ import galvan.pokerchips.Datos.FirebaseReferences;
 public class HomeActivity extends AppCompatActivity {
 
     private int code=5694;
+    private int players_join;
+    private DatabaseReference players_join_ref;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -31,6 +33,19 @@ public class HomeActivity extends AppCompatActivity {
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference code_reference = database.getReference(FirebaseReferences.CODE_REFERENCE);
+
+        players_join_ref = database.getReference(FirebaseReferences.PLAYERS_JOIN_REFERENCE);
+        players_join_ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                players_join = dataSnapshot.getValue(Integer.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         code_reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -65,6 +80,7 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent_join_game = new Intent (HomeActivity.this, JoinGameActivity.class);
                 intent_join_game.putExtra("code",code);
+                intent_join_game.putExtra("players_join",players_join);
                 startActivity(intent_join_game);
             }
         });

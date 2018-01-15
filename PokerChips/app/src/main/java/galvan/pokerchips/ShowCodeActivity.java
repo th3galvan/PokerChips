@@ -3,6 +3,7 @@ package galvan.pokerchips;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -10,11 +11,15 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
+
+import galvan.pokerchips.Datos.FirebaseReferences;
 
 
 /**
@@ -26,7 +31,6 @@ public class ShowCodeActivity extends AppCompatActivity {
     private TextView txt_code;
 
     private int code;
-    private int players;
     private int number_players;
     private int initial_chips;
     private int big;
@@ -35,17 +39,16 @@ public class ShowCodeActivity extends AppCompatActivity {
 
     private String name;
     private ImageView image;
-
-
+    private int players_join=1;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_showqr);
 
+
         Bundle code_receive = getIntent().getExtras();
         code = code_receive.getInt("code");
-        players =code_receive.getInt("players");
         number_players =code_receive.getInt("playersnumber");
         initial_chips =code_receive.getInt("initial_chips");
         big =code_receive.getInt("bigblind");
@@ -57,6 +60,10 @@ public class ShowCodeActivity extends AppCompatActivity {
         Button btn_code = (Button)findViewById(R.id.btn_generate_code);
         txt_code = (TextView)findViewById(R.id.txt_code);
         image = (ImageView) findViewById(R.id.image);
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = database.getReference(FirebaseReferences.PLAYERS_JOIN_REFERENCE);
+        databaseReference.setValue(players_join);
 
 
         btn_code.setOnClickListener(new View.OnClickListener() {

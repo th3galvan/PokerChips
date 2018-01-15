@@ -12,23 +12,22 @@ import android.support.v7.app.AppCompatActivity;
 
 public class WaitActivity extends AppCompatActivity {
 
-    public static int milisegungos_espera = 5000;
+    private int players_join;
+    private int number_players=4;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wait);
 
-        esperar(milisegungos_espera);
+        Bundle code_receive = getIntent().getExtras();
+        players_join = code_receive.getInt("players_join");
+
+        if (players_join==number_players){
+        Intent intent_game = new Intent(getApplicationContext(), GameActivity.class);
+        startActivity(intent_game);}
+
     }
-    public void esperar(int milisegundos){
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Intent intent_game= new Intent(getApplicationContext(), GameActivity.class);
-                startActivity(intent_game);
-            }
-        },milisegundos);
-    }
+
 }
