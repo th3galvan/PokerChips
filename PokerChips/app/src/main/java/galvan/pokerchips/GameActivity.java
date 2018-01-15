@@ -899,34 +899,34 @@ public class GameActivity extends AppCompatActivity {
 
         //Players
         PlayerItemRef = database.getReference(FirebaseReferences.PLAYER_ITEM_REFERENCE);
-        PlayerItemRef.push().setValue(Player0);
+        PlayerItemRef.setValue(Player0);
 
         PlayerItemRef1 = database.getReference(FirebaseReferences.PLAYER_ITEM_REFERENCE1);
-        PlayerItemRef1.push().setValue(Player1);
+        PlayerItemRef1.setValue(Player1);
 
         PlayerItemRef2 = database.getReference(FirebaseReferences.PLAYER_ITEM_REFERENCE2);
-        PlayerItemRef2.push().setValue(Player2);
+        PlayerItemRef2.setValue(Player2);
 
         PlayerItemRef3 = database.getReference(FirebaseReferences.PLAYER_ITEM_REFERENCE3);
-        PlayerItemRef3.push().setValue(Player3);
+        PlayerItemRef3.setValue(Player3);
 
         PlayerItemRef4 = database.getReference(FirebaseReferences.PLAYER_ITEM_REFERENCE4);
-        PlayerItemRef4.push().setValue(Player4);
+        PlayerItemRef4.setValue(Player4);
 
         PlayerItemRef5 = database.getReference(FirebaseReferences.PLAYER_ITEM_REFERENCE5);
-        PlayerItemRef5.push().setValue(Player5);
+        PlayerItemRef5.setValue(Player5);
 
         PlayerItemRef6 = database.getReference(FirebaseReferences.PLAYER_ITEM_REFERENCE6);
-        PlayerItemRef6.push().setValue(Player6);
+        PlayerItemRef6.setValue(Player6);
 
         PlayerItemRef7 = database.getReference(FirebaseReferences.PLAYER_ITEM_REFERENCE7);
-        PlayerItemRef7.push().setValue(Player7);
+        PlayerItemRef7.setValue(Player7);
 
         PlayerItemRef8 = database.getReference(FirebaseReferences.PLAYER_ITEM_REFERENCE8);
-        PlayerItemRef8.push().setValue(Player8);
+        PlayerItemRef8.setValue(Player8);
 
         PlayerItemRef9 = database.getReference(FirebaseReferences.PLAYER_ITEM_REFERENCE9);
-        PlayerItemRef9.push().setValue(Player9);
+        PlayerItemRef9.setValue(Player9);
 
 
         PlayerItemRef.addValueEventListener(new ValueEventListener() {
@@ -2111,16 +2111,16 @@ private void Message0bet() {
         string_betref.setValue(string_bet);
 
         //playersitems
-        PlayerItemRef.setValue(Player0);
-        PlayerItemRef1.setValue(Player1);
-        PlayerItemRef2.setValue(Player2);
-        PlayerItemRef3.setValue(Player3);
-        PlayerItemRef4.setValue(Player4);
-        PlayerItemRef5.setValue(Player5);
-        PlayerItemRef6.setValue(Player6);
-        PlayerItemRef7.setValue(Player7);
-        PlayerItemRef8.setValue(Player8);
-        PlayerItemRef9.setValue(Player9);
+        PlayerItemRef.setValue(PlayerDataBase[0]);
+        PlayerItemRef1.setValue(PlayerDataBase[1]);
+        PlayerItemRef2.setValue(PlayerDataBase[2]);
+        PlayerItemRef3.setValue(PlayerDataBase[3]);
+        PlayerItemRef4.setValue(PlayerDataBase[4]);
+        PlayerItemRef5.setValue(PlayerDataBase[5]);
+        PlayerItemRef6.setValue(PlayerDataBase[6]);
+        PlayerItemRef7.setValue(PlayerDataBase[7]);
+        PlayerItemRef8.setValue(PlayerDataBase[8]);
+        PlayerItemRef9.setValue(PlayerDataBase[9]);
 
 
     }
