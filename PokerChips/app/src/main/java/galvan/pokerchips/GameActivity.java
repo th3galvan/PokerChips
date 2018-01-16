@@ -1,12 +1,10 @@
 package galvan.pokerchips;
 //salu2
 import android.content.DialogInterface;
-import android.content.Intent;
+import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.provider.ContactsContract;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,7 +13,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,7 +20,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import galvan.pokerchips.Datos.FirebaseReferences;
@@ -225,13 +221,7 @@ public class GameActivity extends AppCompatActivity {
 
 
     //salvar datos de la aplicacion si esta en segundo plano y hace onDestroy
-    /*private TextView txt_current_individual_bet;
-    private TextView txt_ownChips;
-    private TextView txt_bet;
-    private TextView txt_current_total_bet;
-    private TextView txt_total_bet;
-    private TextView txt_big;
-    private TextView txt_time_number;*/
+ 
 
     @Override
     protected void onSaveInstanceState(Bundle outState){

@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-android:layout_width="220dp"
-android:layout_height="match_parent"
-android:orientation="horizontal">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_player"
+    android:layout_width="220dp"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
 
     <TextView
         android:id="@+id/txt_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:text="@string/name"
         android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/txt_chips"
@@ -30,13 +32,13 @@ android:orientation="horizontal">
         android:id="@+id/player_out"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+
         android:clickable="false"
         android:focusable="false"
-        android:textSize="12dp"
-
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:textSize="12dp" />
 
     <TextView
         android:id="@+id/txt_call"
@@ -87,11 +89,11 @@ android:orientation="horizontal">
         android:id="@+id/txt_bet_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="WW"
         android:layout_alignBottom="@+id/txt_chips"
-        android:layout_alignRight="@+id/txt_chips"
         android:layout_alignEnd="@+id/txt_chips"
+        android:layout_alignRight="@+id/txt_chips"
+        android:layout_marginEnd="23dp"
         android:layout_marginRight="23dp"
-        android:layout_marginEnd="23dp" />
+        android:text="WW" />
 
 </RelativeLayout>

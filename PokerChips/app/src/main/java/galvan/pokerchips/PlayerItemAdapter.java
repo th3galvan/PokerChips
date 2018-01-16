@@ -1,7 +1,7 @@
 package galvan.pokerchips;
 
-import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,15 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import java.text.Format;
-import java.text.Normalizer;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.jar.Attributes;
 
 import galvan.pokerchips.Datos.PlayerItems;
 
@@ -48,17 +44,20 @@ public class PlayerItemAdapter extends ArrayAdapter<PlayerItems> {
         TextView call = result.findViewById(R.id.txt_call);
         TextView bet = (TextView) result.findViewById(R.id.txt_bet_list);
         CheckBox out = (CheckBox) result.findViewById(R.id.player_out);
+        RelativeLayout layout = (RelativeLayout) result.findViewById(R.id.layout_player);
 
         PlayerItems item = getItem(position);
         name.setText(item.getName());
         chips.setText(Integer.toString(item.getChips()));
         out.setChecked(item.isIn());
+        if(item.isIn()){}
+        else {layout.setBackgroundColor(Color.GRAY);}
         bet.setText(String.format("Bet: %d",item.getBet()));
         if(item.isBig()){state.setText("B");}
         if(item.isSmall()){state.setText("S");}
         if(item.isDealer()){state.setText("D");}
         if(item.isBig()==false & item.isDealer()==false & item.isSmall()==false){state.setText("x");}
-        if(item.isTurn()){turn.setText("Turn");}
+        if(item.isTurn()){turn.setText("Turn");layout.setBackgroundColor(Color.GREEN);}
         else{turn.setText("");}
 
         if(item.isAllin()){allin.setText("ALL IN");}
