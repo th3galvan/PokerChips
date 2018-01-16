@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -22,35 +23,25 @@ import galvan.pokerchips.Datos.FirebaseReferences;
 
 public class HomeActivity extends AppCompatActivity {
 
-    private int code=5694;
-    private int players_join;
-    private DatabaseReference players_join_ref;
+    private int code;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        //subo valor de player_join_a firebase
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference code_reference = database.getReference(FirebaseReferences.CODE_REFERENCE);
-
-        players_join_ref = database.getReference(FirebaseReferences.PLAYERS_JOIN_REFERENCE);
-        players_join_ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                players_join = dataSnapshot.getValue(Integer.class);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-        code_reference.addValueEventListener(new ValueEventListener() {
+        final DatabaseReference code_reference = database.getReference(FirebaseReferences.CODE_REFERENCE);
+        code_reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 code = dataSnapshot.getValue(Integer.class);
+                code++;
+                if (code ==9999){
+                    code=1000;
+
+                }
             }
 
             @Override
@@ -61,7 +52,6 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         code_reference.setValue(code);
-
         Button btn_new_game =(Button)findViewById(R.id.btn_new_game);
         Button btn_join_game=(Button)findViewById(R.id.btn_join_game);
 
@@ -80,7 +70,6 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent_join_game = new Intent (HomeActivity.this, JoinGameActivity.class);
                 intent_join_game.putExtra("code",code);
-                intent_join_game.putExtra("players_join",players_join);
                 startActivity(intent_join_game);
             }
         });

@@ -6,14 +6,19 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.zxing.BarcodeFormat;
+import com.google.zxing.FormatException;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
@@ -36,10 +41,13 @@ public class ShowCodeActivity extends AppCompatActivity {
     private int big;
     private int time_big_up;
     private int change_value_big;
+    private int players_join=1;
 
     private String name;
     private ImageView image;
-    private int players_join=1;
+    private DatabaseReference game_reference;
+    private String game_id;
+    private DatabaseReference players_join_ref;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,14 +64,57 @@ public class ShowCodeActivity extends AppCompatActivity {
         change_value_big =code_receive.getInt("change");
         name =code_receive.getString("name");
 
+        //aqui genero una Key en firebase aleatoria y me la guardo en game_id, cada id correspondra con una partida diferente
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+        game_reference = database.getReference(FirebaseReferences.GAME_REFERENCE);
+        //cojemos id aleatoria
+        game_id = game_reference.push().getKey();
+        //subimos la id a firebase para poder usarla
+
+        game_reference.child(game_id).child(FirebaseReferences.GAME_ID_REFERENCE).setValue(game_id);
+        game_reference.child(game_id).child(FirebaseReferences.PLAYERS_JOIN_REFERENCE).setValue(players_join);
+
+        //listener para captar cuando se van introduciendo diferentes jugadores
+        //metemos dentro el intent para que sea automatico
+
+        players_join_ref = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.PLAYERS_JOIN_REFERENCE);
+        players_join_ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //cojemos el valor de base de datos
+                players_join = dataSnapshot.getValue(Integer.class);
+
+                //hasta que no se hayan incorporado todos los jugadores no se pasa a la siguiente pantalla
+                boolean go=true;
+                //todo incorporado boton para poder seguir adelante
+
+                Log.i("Xavi",String.format("players_join %d // number_players %d",players_join,number_players));
+                if (players_join==number_players){
+
+                    Intent intent_list = new Intent(ShowCodeActivity.this, PlayersListActivity.class);
+                    intent_list.putExtra("name", name);
+                    intent_list.putExtra("playersnumber", number_players);
+                    intent_list.putExtra("initial_chips", initial_chips);
+                    intent_list.putExtra("bigblind", big);
+                    intent_list.putExtra("frecuency", time_big_up);
+                    intent_list.putExtra("change", change_value_big);
+                    intent_list.putExtra("game_id",game_id);
+                    startActivity(intent_list);}
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         Button btn_code = (Button)findViewById(R.id.btn_generate_code);
         txt_code = (TextView)findViewById(R.id.txt_code);
         image = (ImageView) findViewById(R.id.image);
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference databaseReference = database.getReference(FirebaseReferences.PLAYERS_JOIN_REFERENCE);
-        databaseReference.setValue(players_join);
+
 
 
         btn_code.setOnClickListener(new View.OnClickListener() {
@@ -72,15 +123,6 @@ public class ShowCodeActivity extends AppCompatActivity {
 
                 String string_code = Integer.toString(code);
                 txt_code.setText(string_code);
-
-                Intent intent_list = new Intent(ShowCodeActivity.this, PlayersListActivity.class);
-                intent_list.putExtra("name", name);
-                intent_list.putExtra("playersnumber", number_players);
-                intent_list.putExtra("initial_chips", initial_chips);
-                intent_list.putExtra("bigblind", big);
-                intent_list.putExtra("frecuency", time_big_up);
-                intent_list.putExtra("change", change_value_big);
-                startActivity(intent_list);
 
                 //funcion de generar QR
                 MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
@@ -94,6 +136,9 @@ public class ShowCodeActivity extends AppCompatActivity {
                 }
             }
         });
+
+
+
     }
 }
 

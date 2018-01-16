@@ -127,14 +127,13 @@ public class ModeGameActivity extends AppCompatActivity {
 
                     else{max_players=false;}
 
-                    boolean go =true;
-                    //todo he puesto todo para poder pasar sin rellenar parametros
-                    if (!empty_players & !empty_name  & !max_players|| go){
+                    if (!empty_players & !empty_name  & !max_players){
 
                         initial_chips=1500;
                         big=10;
                         time_big_up=10;
                         change_value_big=10;
+
                         
                         Intent fastgame = new Intent(getApplicationContext(), ShowCodeActivity.class);
                         fastgame.putExtra("code",code);

@@ -30,7 +30,6 @@ public class SetGameActivity extends AppCompatActivity {
     private String string_change_value_big;
 
     private int code;
-    private int players;
     private int number_players;
     private int initial_chips;
     private int big;
@@ -54,7 +53,6 @@ public class SetGameActivity extends AppCompatActivity {
 
         Bundle code_receive = getIntent().getExtras();
         code = code_receive.getInt("code");
-        players = code_receive.getInt("players");
 
         //Cogemos todos los edits
         edit_initial_chips = (EditText)findViewById(R.id.edit_initial_chips);
@@ -144,7 +142,6 @@ public class SetGameActivity extends AppCompatActivity {
                 if(!empty_time & !empty_big & !empty_initial & !empty_name & !empty_players & !empty_change & !max_players){
                 Intent generateqr = new Intent(getApplicationContext(), ShowCodeActivity.class);
                 generateqr.putExtra("code",code);
-                generateqr.putExtra("players",players);
                     generateqr.putExtra("name",name);
                     generateqr.putExtra("playersnumber",number_players);
                     generateqr.putExtra("initial_chips",initial_chips);

@@ -27,6 +27,17 @@ public class FirebaseReferences {
 
     //referencia lista
     final public static String LIST_REFERENCE = "list";
+    final public static String NAME_GUEST_REFERENCE ="name_guest0";
+    final public static String NAME_GUEST_REFERENCE1 ="name_guest1";
+    final public static String NAME_GUEST_REFERENCE2 ="name_guest2";
+    final public static String NAME_GUEST_REFERENCE3 ="name_guest3";
+    final public static String NAME_GUEST_REFERENCE4 ="name_guest4";
+    final public static String NAME_GUEST_REFERENCE5 ="name_guest5";
+    final public static String NAME_GUEST_REFERENCE6 ="name_guest6";
+    final public static String NAME_GUEST_REFERENCE7 ="name_guest7";
+    final public static String NAME_GUEST_REFERENCE8 ="name_guest8";
+    final public static String NAME_GUEST_REFERENCE9 ="name_guest9";
+
     //ReferenciaScanActivity
 
     final public static String PLAYERS_JOIN_REFERENCE = "Players_join";
@@ -78,6 +89,11 @@ public class FirebaseReferences {
     final public static String STRING_BET_REFERENCE = "string_bet";
     //final public static String NAME_HOST_REFERENCE = "name_host";
     final public static String SCURRENT_TOTAL_BET_REFERENCE = "Scurrent_total_bet";
+
+
+    //Game
+    final public static String GAME_REFERENCE = "Game";
+    final public static String GAME_ID_REFERENCE ="Game_id";
 
 
 }

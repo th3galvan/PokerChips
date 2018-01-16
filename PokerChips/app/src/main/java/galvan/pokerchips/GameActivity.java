@@ -4,25 +4,33 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.provider.ContactsContract;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseListAdapter;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import galvan.pokerchips.Datos.FirebaseReferences;
@@ -177,6 +185,9 @@ public class GameActivity extends AppCompatActivity {
     private DatabaseReference FirebaseListRef;
     private String Scurrent_total_bet;
     //Declaramos las variables que se guardaran en la database de firebase
+
+    private FirebaseDatabase database;
+
     private DatabaseReference posref;
     private DatabaseReference bet2ref;
     private DatabaseReference ownChipsref;
@@ -206,11 +217,8 @@ public class GameActivity extends AppCompatActivity {
     private DatabaseReference number_playersoutref;
     private DatabaseReference playersaliveref;
     private DatabaseReference dealerposref;
-
     private DatabaseReference string_bigref;
     private DatabaseReference string_betref;
-
-    private FirebaseDatabase database;
     private DatabaseReference PlayerItemRef;
     private DatabaseReference PlayerItemRef1;
     private DatabaseReference PlayerItemRef2;
@@ -225,6 +233,10 @@ public class GameActivity extends AppCompatActivity {
             PlayerItemRef,PlayerItemRef1,PlayerItemRef2,PlayerItemRef3,
             PlayerItemRef4,PlayerItemRef5,PlayerItemRef6,PlayerItemRef7,
             PlayerItemRef8,PlayerItemRef9};
+    private String game_id;
+    private DatabaseReference game_reference;
+
+
     //para hacer una lista de firebase
 
 
@@ -294,6 +306,7 @@ public class GameActivity extends AppCompatActivity {
         time_big_up =code_receive.getInt("frecuency");
         change_value_big =code_receive.getInt("change");
         name_host =code_receive.getString("name");
+        game_id=code_receive.getString("game_id");
 
 
         Log.i("Xavi",String.format("%d",number_players));
@@ -357,7 +370,7 @@ public class GameActivity extends AppCompatActivity {
 
 
         //FirebaseListAdapter
-        FirebaseListRef = database.getReference(FirebaseReferences.LIST_REFERENCE);
+        FirebaseListRef = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.LIST_REFERENCE);
 
     adapter = new FirebaseListAdapter<PlayerItems>(
             this,
@@ -471,17 +484,14 @@ public class GameActivity extends AppCompatActivity {
         //Cogemos txt turn
         txt_turn = (TextView)findViewById(R.id.txt_turn);
 
-
         //utilizamos el metodo turnState para saber en que parte de la partida nos encontramos
         // blind bet, preflop, flop, turn, river
         turnState();
 
+        database = FirebaseDatabase.getInstance();
+        game_reference = database.getReference(FirebaseReferences.GAME_REFERENCE);
 
-// en las siguientes chorrocientas lineas ponemos listeners para que cuando se detecten cambios en la database de firebase se actualicen las variables internas de la app
-        //basicamente actualizamos variables y refrescamos el layout
-
-
-        posref = database.getReference(FirebaseReferences.POS_REFERENCE);
+        posref = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.POS_REFERENCE);
         posref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -494,7 +504,7 @@ public class GameActivity extends AppCompatActivity {
 
             }
         });
-        bet2ref = database.getReference(FirebaseReferences.BET2_REFERENCE);
+        bet2ref = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.BET2_REFERENCE);
         bet2ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -508,7 +518,7 @@ public class GameActivity extends AppCompatActivity {
             }
         });
 
-        ownChipsref = database.getReference(FirebaseReferences.OWNCHIPS_REFERENCE);
+        ownChipsref = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.OWNCHIPS_REFERENCE);
         ownChipsref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -521,7 +531,7 @@ public class GameActivity extends AppCompatActivity {
 
             }
         });
-        current_individual_bet_ref = database.getReference(FirebaseReferences.CURRENT_INDIVIDUAL_BET_REFERENCE);
+        current_individual_bet_ref =  database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.CURRENT_INDIVIDUAL_BET_REFERENCE);
         current_individual_bet_ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -535,7 +545,7 @@ public class GameActivity extends AppCompatActivity {
             }
         });
 
-        current_total_ref = database.getReference(FirebaseReferences.CURRENT_TOTAL_BET_REFERENCE);
+        current_total_ref = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.CURRENT_TOTAL_BET_REFERENCE);
         current_total_ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -548,7 +558,7 @@ public class GameActivity extends AppCompatActivity {
 
             }
         });
-        total_bet_ref = database.getReference(FirebaseReferences.TOTAL_BET_REFERENCE);
+        total_bet_ref =  database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.TOTAL_BET_REFERENCE);
         total_bet_ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -562,7 +572,7 @@ public class GameActivity extends AppCompatActivity {
             }
         });
 
-        winnerref = database.getReference(FirebaseReferences.WINNER_REFERENCE);
+        winnerref = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.WINNER_REFERENCE);
         winnerref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -575,7 +585,7 @@ public class GameActivity extends AppCompatActivity {
 
             }
         });
-        lootref = database.getReference(FirebaseReferences.LOOT_REFERENCE);
+        lootref = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.LOOT_REFERENCE);
         lootref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -589,7 +599,7 @@ public class GameActivity extends AppCompatActivity {
             }
         });
 
-        playersinref = database.getReference(FirebaseReferences.PLAYERSIN_REFERENCE);
+        playersinref =  database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.PLAYERSIN_REFERENCE);
         playersinref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -602,7 +612,7 @@ public class GameActivity extends AppCompatActivity {
 
             }
         });
-        nStateref = database.getReference(FirebaseReferences.NSTATE_REFERENCE);
+        nStateref =  database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.NSTATE_REFERENCE);
         nStateref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -616,7 +626,7 @@ public class GameActivity extends AppCompatActivity {
             }
         });
 
-        player_big_blind_ref = database.getReference(FirebaseReferences.PLAYER_BIG_BLIND_REFERENCE);
+        player_big_blind_ref =  database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.PLAYER_BIG_BLIND_REFERENCE);
         player_big_blind_ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -629,7 +639,7 @@ public class GameActivity extends AppCompatActivity {
 
             }
         });
-        Player_small_blind_ref = database.getReference(FirebaseReferences.PLAYER_SMALL_BLIND_REFERENCE);
+        Player_small_blind_ref = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.PLAYER_SMALL_BLIND_REFERENCE);
         Player_small_blind_ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -641,7 +651,9 @@ public class GameActivity extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        });/*
+        });
+
+        /*todo como subir un array?
         winner_pos_ref = database.getReference(FirebaseReferences.WINNER_POS_REFERENCE);
         winner_pos_ref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -655,7 +667,7 @@ public class GameActivity extends AppCompatActivity {
             }
         });*/
 
-        winner_check_ref = database.getReference(FirebaseReferences.WINNER_CHECK_REFERENCE);
+        winner_check_ref = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.WINNER_CHECK_REFERENCE);
         winner_check_ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -668,7 +680,7 @@ public class GameActivity extends AppCompatActivity {
 
             }
         });
-        eq_bet_ref = database.getReference(FirebaseReferences.EQ_BET_REFERENCE);
+        eq_bet_ref = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.EQ_BET_REFERENCE);
         eq_bet_ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -682,7 +694,7 @@ public class GameActivity extends AppCompatActivity {
             }
         });
 
-        winner2ref = database.getReference(FirebaseReferences.WINNER2_REFERENCE);
+        winner2ref = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.WINNER2_REFERENCE);
         winner2ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -695,7 +707,7 @@ public class GameActivity extends AppCompatActivity {
 
             }
         });
-        playerscallref = database.getReference(FirebaseReferences.PLAYERSCALL_REFERENCE);
+        playerscallref = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.PLAYERSCALL_REFERENCE);
         playerscallref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -709,7 +721,7 @@ public class GameActivity extends AppCompatActivity {
             }
         });
 
-        count_winner_posref = database.getReference(FirebaseReferences.COUNT_WINNER_POS_REFERENCE);
+        count_winner_posref = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.COUNT_WINNER_POS_REFERENCE);
         count_winner_posref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -722,7 +734,7 @@ public class GameActivity extends AppCompatActivity {
 
             }
         });
-        all_in_value_ref = database.getReference(FirebaseReferences.ALL_IN_VALUE_REFERENCE);
+        all_in_value_ref = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.ALL_IN_VALUE_REFERENCE);
         all_in_value_ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -736,7 +748,7 @@ public class GameActivity extends AppCompatActivity {
             }
         });
 
-        players_allin_ref = database.getReference(FirebaseReferences.PLAYERS_ALLIN_REFERENCE);
+        players_allin_ref = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.PLAYERS_ALLIN_REFERENCE);
         players_allin_ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -749,7 +761,7 @@ public class GameActivity extends AppCompatActivity {
 
             }
         });
-        restart_bet_ref = database.getReference(FirebaseReferences.RESTART_BET_REFERENCE);
+        restart_bet_ref = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.RESTART_BET_REFERENCE);
         restart_bet_ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -763,7 +775,7 @@ public class GameActivity extends AppCompatActivity {
             }
         });
 
-        cont_playersin_ref = database.getReference(FirebaseReferences.CONT_PLAYERSIN_REFERENCE);
+        cont_playersin_ref = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.CONT_PLAYERSIN_REFERENCE);
         cont_playersin_ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -776,7 +788,7 @@ public class GameActivity extends AppCompatActivity {
 
             }
         });
-        cont_winner_out_ref = database.getReference(FirebaseReferences.CONT_WINNER_OUT_REFERENCE);
+        cont_winner_out_ref =  database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.CONT_WINNER_OUT_REFERENCE);
         cont_winner_out_ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -790,7 +802,7 @@ public class GameActivity extends AppCompatActivity {
             }
         });
 
-        count_loser_pos_ref = database.getReference(FirebaseReferences.COUNT_LOSER_POS_REFERENCE);
+        count_loser_pos_ref = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.COUNT_LOSER_POS_REFERENCE);
         count_loser_pos_ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -803,7 +815,7 @@ public class GameActivity extends AppCompatActivity {
 
             }
         });
-        playersnumberref = database.getReference(FirebaseReferences.PLAYERNUMBER_REFERENCE);
+        playersnumberref = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.PLAYERNUMBER_REFERENCE);
         playersnumberref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -817,7 +829,7 @@ public class GameActivity extends AppCompatActivity {
             }
         });
 
-        timeref = database.getReference(FirebaseReferences.TIME_REFERENCE);
+        timeref = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.TIME_REFERENCE);
         timeref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -829,7 +841,8 @@ public class GameActivity extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        });/*
+        });
+        /*todo subir un array?
         playersoutref = database.getReference(FirebaseReferences.PLAYERSOUT_REFERENCE);
         playersoutref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -842,7 +855,7 @@ public class GameActivity extends AppCompatActivity {
 
             }
         });*/
-        cont_playersoutref = database.getReference(FirebaseReferences.CONT_PLAYERSOUT_REFERENCE);
+        cont_playersoutref = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.CONT_PLAYERSOUT_REFERENCE);
         cont_playersoutref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -856,7 +869,7 @@ public class GameActivity extends AppCompatActivity {
             }
         });
 
-        number_playersoutref = database.getReference(FirebaseReferences.NUMBER_PLAYERSOUT_REFERENCE);
+        number_playersoutref = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.NUMBER_PLAYERSOUT_REFERENCE);
         number_playersoutref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -869,7 +882,7 @@ public class GameActivity extends AppCompatActivity {
 
             }
         });
-        playersaliveref = database.getReference(FirebaseReferences.PLAYERSALIVE_REFERENCE);
+        playersaliveref = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.PLAYERSALIVE_REFERENCE);
         playersaliveref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -883,7 +896,7 @@ public class GameActivity extends AppCompatActivity {
             }
         });
 
-        dealerposref = database.getReference(FirebaseReferences.DEALERPOS_REFERENCE);
+        dealerposref = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.DEALERPOS_REFERENCE);
         dealerposref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -898,7 +911,7 @@ public class GameActivity extends AppCompatActivity {
         });
 
         //strings
-        string_bigref = database.getReference(FirebaseReferences.STRING_BIG_REFERENCE);
+        string_bigref = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.STRING_BIG_REFERENCE);
         string_bigref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -912,7 +925,7 @@ public class GameActivity extends AppCompatActivity {
             }
         });
 
-        string_betref = database.getReference(FirebaseReferences.STRING_BET_REFERENCE);
+        string_betref = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.STRING_BET_REFERENCE);
         string_betref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -926,110 +939,101 @@ public class GameActivity extends AppCompatActivity {
             }
         });
 
+        //hacmeos push de los datos dentro de la id de nuestra partida
 
+        game_reference.child(game_id).child(FirebaseReferences.POS_REFERENCE).setValue(pos);
+        game_reference.child(game_id).child(FirebaseReferences.BET2_REFERENCE).setValue(bet2);
+        game_reference.child(game_id).child(FirebaseReferences.OWNCHIPS_REFERENCE).setValue(ownChips);
+        game_reference.child(game_id).child(FirebaseReferences.CURRENT_INDIVIDUAL_BET_REFERENCE).setValue(current_individual_bet);
+        game_reference.child(game_id).child(FirebaseReferences.CURRENT_TOTAL_BET_REFERENCE).setValue(current_total_bet);
+        game_reference.child(game_id).child(FirebaseReferences.TOTAL_BET_REFERENCE).setValue(total_bet);
+        game_reference.child(game_id).child(FirebaseReferences.WINNER_REFERENCE).setValue(winner);
+        game_reference.child(game_id).child(FirebaseReferences.LOOT_REFERENCE).setValue(loot);
+        game_reference.child(game_id).child(FirebaseReferences.PLAYERSIN_REFERENCE).setValue(playersin);
+        game_reference.child(game_id).child(FirebaseReferences.NSTATE_REFERENCE).setValue(nState);
+        game_reference.child(game_id).child(FirebaseReferences.PLAYER_BIG_BLIND_REFERENCE).setValue(Player_big_blind);
+        game_reference.child(game_id).child(FirebaseReferences.PLAYER_SMALL_BLIND_REFERENCE).setValue(Player_small_blind);
+        game_reference.child(game_id).child(FirebaseReferences.WINNER_CHECK_REFERENCE).setValue(winner_check);
+        game_reference.child(game_id).child(FirebaseReferences.EQ_BET_REFERENCE).setValue(eq_bet);
+        game_reference.child(game_id).child(FirebaseReferences.WINNER2_REFERENCE).setValue(winner2);
+        game_reference.child(game_id).child(FirebaseReferences.PLAYERSCALL_REFERENCE).setValue(playerscall);
+        game_reference.child(game_id).child(FirebaseReferences.COUNT_WINNER_POS_REFERENCE).setValue(count_winner_pos);
+        game_reference.child(game_id).child(FirebaseReferences.ALL_IN_VALUE_REFERENCE).setValue(all_in_value);
+        game_reference.child(game_id).child(FirebaseReferences.PLAYERS_ALLIN_REFERENCE).setValue(players_allin);
+        game_reference.child(game_id).child(FirebaseReferences.RESTART_BET_REFERENCE).setValue(restart_bet);
+        game_reference.child(game_id).child(FirebaseReferences.CONT_PLAYERSIN_REFERENCE).setValue(cont_playersin);
+        game_reference.child(game_id).child(FirebaseReferences.CONT_WINNER_OUT_REFERENCE).setValue(cont_winner_out);
+        game_reference.child(game_id).child(FirebaseReferences.COUNT_LOSER_POS_REFERENCE).setValue(count_loser_pos);
+        game_reference.child(game_id).child(FirebaseReferences.PLAYERNUMBER_REFERENCE).setValue(playernumber);
+        game_reference.child(game_id).child(FirebaseReferences.TIME_REFERENCE).setValue(time);
+        game_reference.child(game_id).child(FirebaseReferences.CONT_PLAYERSOUT_REFERENCE).setValue(cont_playersout);
+        game_reference.child(game_id).child(FirebaseReferences.NUMBER_PLAYERSOUT_REFERENCE).setValue(number_playersout);
+        game_reference.child(game_id).child(FirebaseReferences.PLAYERSALIVE_REFERENCE).setValue(playersalive);
+        game_reference.child(game_id).child(FirebaseReferences.DEALERPOS_REFERENCE).setValue(dealerpos);
 
-
-        posref.setValue(pos);
-        bet2ref.setValue(bet2);
-        ownChipsref.setValue(ownChips);
-        current_individual_bet_ref.setValue(current_individual_bet);
-        current_total_ref.setValue(current_total_bet);
-        total_bet_ref.setValue(total_bet);
-        winnerref.setValue(winner);
-        lootref.setValue(loot);
-        playersinref.setValue(playersin);
-        nStateref.setValue(nState);
-        player_big_blind_ref.setValue(Player_big_blind);
-        Player_small_blind_ref.setValue(Player_small_blind);
-        winner_check_ref.setValue(winner_check);
-        eq_bet_ref.setValue(eq_bet);
-        winner2ref.setValue(winner2);
-        playerscallref.setValue(playerscall);
-        count_winner_posref.setValue(count_winner_pos);
-        all_in_value_ref.setValue(all_in_value);
-        players_allin_ref.setValue(players_allin);
-        restart_bet_ref.setValue(restart_bet);
-        cont_playersin_ref.setValue(cont_playersin);
-        cont_winner_out_ref.setValue(cont_winner_out);
-        count_loser_pos_ref.setValue(count_loser_pos);
-        playersnumberref.setValue(playernumber);
-        timeref.setValue(time);
-        cont_playersoutref.setValue(cont_playersout);
-        number_playersoutref.setValue(number_playersout);
-        playersaliveref.setValue(playersalive);
-        dealerposref.setValue(dealerpos);
-
-        string_bigref.setValue(string_big);
-        string_betref.setValue(string_bet);
+        game_reference.child(game_id).child(FirebaseReferences.STRING_BIG_REFERENCE).setValue(string_big);
+        game_reference.child(game_id).child(FirebaseReferences.STRING_BET_REFERENCE).setValue(string_bet);
 
 
         //Players
-       /* PlayerItemRef = database.getReference(FirebaseReferences.PLAYER_ITEM_REFERENCE);
-        PlayerItemRef.setValue(PlayerDataBase[0]);
 
-        PlayerItemRef1 = database.getReference(FirebaseReferences.PLAYER_ITEM_REFERENCE1);
-        PlayerItemRef1.setValue(PlayerDataBase[1]);
+        game_reference.child(game_id).child(FirebaseReferences.LIST_REFERENCE).child(FirebaseReferences.PLAYER_ITEM_REFERENCE).setValue(PlayerDataBase[0]);
 
-        PlayerItemRef2 = database.getReference(FirebaseReferences.PLAYER_ITEM_REFERENCE2);
-        PlayerItemRef2.setValue(PlayerDataBase[2]);
+        game_reference.child(game_id).child(FirebaseReferences.LIST_REFERENCE).child(FirebaseReferences.PLAYER_ITEM_REFERENCE1).setValue(PlayerDataBase[1]);
 
-        PlayerItemRef3 = database.getReference(FirebaseReferences.PLAYER_ITEM_REFERENCE3);
-        PlayerItemRef3.setValue(PlayerDataBase[3]);
+        game_reference.child(game_id).child(FirebaseReferences.LIST_REFERENCE).child(FirebaseReferences.PLAYER_ITEM_REFERENCE2).setValue(PlayerDataBase[2]);
 
-        PlayerItemRef4 = database.getReference(FirebaseReferences.PLAYER_ITEM_REFERENCE4);
-        PlayerItemRef4.setValue(PlayerDataBase[4]);
+        game_reference.child(game_id).child(FirebaseReferences.LIST_REFERENCE).child(FirebaseReferences.PLAYER_ITEM_REFERENCE3).setValue(PlayerDataBase[3]);
 
-        PlayerItemRef5 = database.getReference(FirebaseReferences.PLAYER_ITEM_REFERENCE5);
-        PlayerItemRef5.setValue(PlayerDataBase[5]);
+        game_reference.child(game_id).child(FirebaseReferences.LIST_REFERENCE).child(FirebaseReferences.PLAYER_ITEM_REFERENCE4).setValue(PlayerDataBase[4]);
 
-        PlayerItemRef6 = database.getReference(FirebaseReferences.PLAYER_ITEM_REFERENCE6);
-        PlayerItemRef6.setValue(PlayerDataBase[6]);
+        game_reference.child(game_id).child(FirebaseReferences.LIST_REFERENCE).child(FirebaseReferences.PLAYER_ITEM_REFERENCE5).setValue(PlayerDataBase[5]);
 
-        PlayerItemRef7 = database.getReference(FirebaseReferences.PLAYER_ITEM_REFERENCE7);
-        PlayerItemRef7.setValue(PlayerDataBase[7]);
+        game_reference.child(game_id).child(FirebaseReferences.LIST_REFERENCE).child(FirebaseReferences.PLAYER_ITEM_REFERENCE6).setValue(PlayerDataBase[6]);
 
-        PlayerItemRef8 = database.getReference(FirebaseReferences.PLAYER_ITEM_REFERENCE8);
-        PlayerItemRef8.setValue(PlayerDataBase[8]);
+        game_reference.child(game_id).child(FirebaseReferences.LIST_REFERENCE).child(FirebaseReferences.PLAYER_ITEM_REFERENCE7).setValue(PlayerDataBase[7]);
 
-        PlayerItemRef9 = database.getReference(FirebaseReferences.PLAYER_ITEM_REFERENCE9);
-        PlayerItemRef9.setValue(PlayerDataBase[9]);*/
+        game_reference.child(game_id).child(FirebaseReferences.LIST_REFERENCE).child(FirebaseReferences.PLAYER_ITEM_REFERENCE8).setValue(PlayerDataBase[8]);
 
-        PlayerItemRef = database.getReference(FirebaseReferences.LIST_REFERENCE);
+        game_reference.child(game_id).child(FirebaseReferences.LIST_REFERENCE).child(FirebaseReferences.PLAYER_ITEM_REFERENCE9).setValue(PlayerDataBase[9]);
+
+        /*
         PlayerItemRef1 = database.getReference(FirebaseReferences.LIST_REFERENCE);
+        PlayerItemRef1.child(game_id).push().setValue(PlayerDataBase[1]);
+
         PlayerItemRef2 = database.getReference(FirebaseReferences.LIST_REFERENCE);
+        PlayerItemRef2.child(game_id).push().setValue(PlayerDataBase[2]);
+
         PlayerItemRef3 = database.getReference(FirebaseReferences.LIST_REFERENCE);
+        PlayerItemRef3.child(game_id).push().setValue(PlayerDataBase[3]);
+
         PlayerItemRef4 = database.getReference(FirebaseReferences.LIST_REFERENCE);
+        PlayerItemRef4.child(game_id).push().setValue(PlayerDataBase[4]);
+
         PlayerItemRef5 = database.getReference(FirebaseReferences.LIST_REFERENCE);
+        PlayerItemRef5.child(game_id).push().setValue(PlayerDataBase[5]);
+
         PlayerItemRef6 = database.getReference(FirebaseReferences.LIST_REFERENCE);
+        PlayerItemRef6.child(game_id).push().setValue(PlayerDataBase[6]);
+
         PlayerItemRef7 = database.getReference(FirebaseReferences.LIST_REFERENCE);
+        PlayerItemRef7.child(game_id).push().setValue(PlayerDataBase[7]);
+
         PlayerItemRef8 = database.getReference(FirebaseReferences.LIST_REFERENCE);
+        PlayerItemRef8.child(game_id).push().setValue(PlayerDataBase[8]);
+
         PlayerItemRef9 = database.getReference(FirebaseReferences.LIST_REFERENCE);
-
-        PlayerItemRef.push().setValue(PlayerDataBase[0]);
-        PlayerItemRef1.push().setValue(PlayerDataBase[1]);
-        PlayerItemRef2.push().setValue(PlayerDataBase[2]);
-        PlayerItemRef3.push().setValue(PlayerDataBase[3]);
-        PlayerItemRef4.push().setValue(PlayerDataBase[4]);
-        PlayerItemRef5.push().setValue(PlayerDataBase[5]);
-        PlayerItemRef6.push().setValue(PlayerDataBase[6]);
-        PlayerItemRef7.push().setValue(PlayerDataBase[7]);
-        PlayerItemRef8.push().setValue(PlayerDataBase[8]);
-        PlayerItemRef9.push().setValue(PlayerDataBase[9]);
+        PlayerItemRef9.child(game_id).push().setValue(PlayerDataBase[9]);*/
 
 
-
-
-
-//hola
-
-
+        PlayerItemRef = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.LIST_REFERENCE).child(FirebaseReferences.PLAYER_ITEM_REFERENCE);
         PlayerItemRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 PlayerDataBase[0] = dataSnapshot.getValue(PlayerItems.class);
                 Log.i("Lista",String.format("%d",PlayerDataBase[0].getBet()));
                 refresh();
-                adapter.notifyDataSetChanged();
+
             }
 
             @Override
@@ -1037,13 +1041,13 @@ public class GameActivity extends AppCompatActivity {
 
             }
         });
-
+        PlayerItemRef1 = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.LIST_REFERENCE).child(FirebaseReferences.PLAYER_ITEM_REFERENCE1);
         PlayerItemRef1.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 PlayerDataBase[1] = dataSnapshot.getValue(PlayerItems.class);
                 refresh();
-                adapter.notifyDataSetChanged();
+
             }
 
             @Override
@@ -1051,13 +1055,13 @@ public class GameActivity extends AppCompatActivity {
 
             }
         });
-
+        PlayerItemRef2 = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.LIST_REFERENCE).child(FirebaseReferences.PLAYER_ITEM_REFERENCE2);
         PlayerItemRef2.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 PlayerDataBase[2] = dataSnapshot.getValue(PlayerItems.class);
                 refresh();
-                adapter.notifyDataSetChanged();
+
             }
 
             @Override
@@ -1065,13 +1069,13 @@ public class GameActivity extends AppCompatActivity {
 
             }
         });
-
+        PlayerItemRef3 = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.LIST_REFERENCE).child(FirebaseReferences.PLAYER_ITEM_REFERENCE3);
         PlayerItemRef3.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 PlayerDataBase[3] = dataSnapshot.getValue(PlayerItems.class);
                 refresh();
-                adapter.notifyDataSetChanged();
+
             }
 
             @Override
@@ -1080,12 +1084,13 @@ public class GameActivity extends AppCompatActivity {
             }
         });
 
+        PlayerItemRef4 = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.LIST_REFERENCE).child(FirebaseReferences.PLAYER_ITEM_REFERENCE4);
         PlayerItemRef4.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 PlayerDataBase[4] = dataSnapshot.getValue(PlayerItems.class);
                 refresh();
-                adapter.notifyDataSetChanged();
+
             }
 
             @Override
@@ -1094,12 +1099,13 @@ public class GameActivity extends AppCompatActivity {
             }
         });
 
+        PlayerItemRef5 = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.LIST_REFERENCE).child(FirebaseReferences.PLAYER_ITEM_REFERENCE5);
         PlayerItemRef5.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 PlayerDataBase[5] = dataSnapshot.getValue(PlayerItems.class);
                 refresh();
-                adapter.notifyDataSetChanged();
+
             }
 
             @Override
@@ -1108,12 +1114,13 @@ public class GameActivity extends AppCompatActivity {
             }
         });
 
+        PlayerItemRef6 = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.LIST_REFERENCE).child(FirebaseReferences.PLAYER_ITEM_REFERENCE6);
         PlayerItemRef6.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 PlayerDataBase[6] = dataSnapshot.getValue(PlayerItems.class);
                 refresh();
-                adapter.notifyDataSetChanged();
+
             }
 
             @Override
@@ -1122,12 +1129,13 @@ public class GameActivity extends AppCompatActivity {
             }
         });
 
+        PlayerItemRef7 = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.LIST_REFERENCE).child(FirebaseReferences.PLAYER_ITEM_REFERENCE7);
         PlayerItemRef7.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 PlayerDataBase[7] = dataSnapshot.getValue(PlayerItems.class);
                 refresh();
-                adapter.notifyDataSetChanged();
+
             }
 
             @Override
@@ -1136,12 +1144,13 @@ public class GameActivity extends AppCompatActivity {
             }
         });
 
+        PlayerItemRef8 = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.LIST_REFERENCE).child(FirebaseReferences.PLAYER_ITEM_REFERENCE8);
         PlayerItemRef8.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 PlayerDataBase[8] = dataSnapshot.getValue(PlayerItems.class);
                 refresh();
-                adapter.notifyDataSetChanged();
+
             }
 
             @Override
@@ -1150,12 +1159,13 @@ public class GameActivity extends AppCompatActivity {
             }
         });
 
+        PlayerItemRef9 = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.LIST_REFERENCE).child(FirebaseReferences.PLAYER_ITEM_REFERENCE9);
         PlayerItemRef9.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 PlayerDataBase[9] = dataSnapshot.getValue(PlayerItems.class);
                 refresh();
-                adapter.notifyDataSetChanged();
+
             }
 
             @Override
@@ -2180,52 +2190,114 @@ private void Message0bet() {
         playerlist.setAdapter(adapter);
         refresh();
 
+
+        //entramos los datos dentro de la id de la partida pero no hacemos push
         //ints
-        posref.setValue(pos);
-        bet2ref.setValue(bet2);
-        ownChipsref.setValue(ownChips);
-        current_individual_bet_ref.setValue(current_individual_bet);
-        current_total_ref.setValue(current_total_bet);
-        total_bet_ref.setValue(total_bet);
-        winnerref.setValue(winner);
-        lootref.setValue(loot);
-        playersinref.setValue(playersin);
-        nStateref.setValue(nState);
-        player_big_blind_ref.setValue(Player_big_blind);
-        Player_small_blind_ref.setValue(Player_small_blind);
-        winner_check_ref.setValue(winner_check);
-        eq_bet_ref.setValue(eq_bet);
-        winner2ref.setValue(winner2);
-        playerscallref.setValue(playerscall);
-        count_winner_posref.setValue(count_winner_pos);
-        all_in_value_ref.setValue(all_in_value);
-        players_allin_ref.setValue(players_allin);
-        restart_bet_ref.setValue(restart_bet);
-        cont_playersin_ref.setValue(cont_playersin);
-        cont_winner_out_ref.setValue(cont_winner_out);
-        count_loser_pos_ref.setValue(count_loser_pos);
-        playersnumberref.setValue(playernumber);
-        timeref.setValue(time);
-        cont_playersoutref.setValue(cont_playersout);
-        number_playersoutref.setValue(number_playersout);
-        playersaliveref.setValue(playersalive);
-        dealerposref.setValue(dealerpos);
+
+
+        game_reference.child(game_id).child(FirebaseReferences.POS_REFERENCE).setValue(pos);
+        game_reference.child(game_id).child(FirebaseReferences.BET2_REFERENCE).setValue(bet2);
+        game_reference.child(game_id).child(FirebaseReferences.OWNCHIPS_REFERENCE).setValue(ownChips);
+        game_reference.child(game_id).child(FirebaseReferences.CURRENT_INDIVIDUAL_BET_REFERENCE).setValue(current_individual_bet);
+        game_reference.child(game_id).child(FirebaseReferences.CURRENT_TOTAL_BET_REFERENCE).setValue(current_total_bet);
+        game_reference.child(game_id).child(FirebaseReferences.TOTAL_BET_REFERENCE).setValue(total_bet);
+        game_reference.child(game_id).child(FirebaseReferences.WINNER_REFERENCE).setValue(winner);
+        game_reference.child(game_id).child(FirebaseReferences.LOOT_REFERENCE).setValue(loot);
+        game_reference.child(game_id).child(FirebaseReferences.PLAYERSIN_REFERENCE).setValue(playersin);
+        game_reference.child(game_id).child(FirebaseReferences.NSTATE_REFERENCE).setValue(nState);
+        game_reference.child(game_id).child(FirebaseReferences.PLAYER_BIG_BLIND_REFERENCE).setValue(Player_big_blind);
+        game_reference.child(game_id).child(FirebaseReferences.PLAYER_SMALL_BLIND_REFERENCE).setValue(Player_small_blind);
+        game_reference.child(game_id).child(FirebaseReferences.WINNER_CHECK_REFERENCE).setValue(winner_check);
+        game_reference.child(game_id).child(FirebaseReferences.EQ_BET_REFERENCE).setValue(eq_bet);
+        game_reference.child(game_id).child(FirebaseReferences.WINNER2_REFERENCE).setValue(winner2);
+        game_reference.child(game_id).child(FirebaseReferences.PLAYERSCALL_REFERENCE).setValue(playerscall);
+        game_reference.child(game_id).child(FirebaseReferences.COUNT_WINNER_POS_REFERENCE).setValue(count_winner_pos);
+        game_reference.child(game_id).child(FirebaseReferences.ALL_IN_VALUE_REFERENCE).setValue(all_in_value);
+        game_reference.child(game_id).child(FirebaseReferences.PLAYERS_ALLIN_REFERENCE).setValue(players_allin);
+        game_reference.child(game_id).child(FirebaseReferences.RESTART_BET_REFERENCE).setValue(restart_bet);
+        game_reference.child(game_id).child(FirebaseReferences.CONT_PLAYERSIN_REFERENCE).setValue(cont_playersin);
+        game_reference.child(game_id).child(FirebaseReferences.CONT_WINNER_OUT_REFERENCE).setValue(cont_winner_out);
+        game_reference.child(game_id).child(FirebaseReferences.COUNT_LOSER_POS_REFERENCE).setValue(count_loser_pos);
+        game_reference.child(game_id).child(FirebaseReferences.PLAYERNUMBER_REFERENCE).setValue(playernumber);
+        game_reference.child(game_id).child(FirebaseReferences.TIME_REFERENCE).setValue(time);
+        game_reference.child(game_id).child(FirebaseReferences.CONT_PLAYERSOUT_REFERENCE).setValue(cont_playersout);
+        game_reference.child(game_id).child(FirebaseReferences.NUMBER_PLAYERSOUT_REFERENCE).setValue(number_playersout);
+        game_reference.child(game_id).child(FirebaseReferences.PLAYERSALIVE_REFERENCE).setValue(playersalive);
+        game_reference.child(game_id).child(FirebaseReferences.DEALERPOS_REFERENCE).setValue(dealerpos);
+
+        game_reference.child(game_id).child(FirebaseReferences.STRING_BIG_REFERENCE).setValue(string_big);
+        game_reference.child(game_id).child(FirebaseReferences.STRING_BET_REFERENCE).setValue(string_bet);
+
+
+        //Players
+
+        game_reference.child(game_id).child(FirebaseReferences.LIST_REFERENCE).child(FirebaseReferences.PLAYER_ITEM_REFERENCE).setValue(PlayerDataBase[0]);
+
+        game_reference.child(game_id).child(FirebaseReferences.LIST_REFERENCE).child(FirebaseReferences.PLAYER_ITEM_REFERENCE1).setValue(PlayerDataBase[1]);
+
+        game_reference.child(game_id).child(FirebaseReferences.LIST_REFERENCE).child(FirebaseReferences.PLAYER_ITEM_REFERENCE2).setValue(PlayerDataBase[2]);
+
+        game_reference.child(game_id).child(FirebaseReferences.LIST_REFERENCE).child(FirebaseReferences.PLAYER_ITEM_REFERENCE3).setValue(PlayerDataBase[3]);
+
+        game_reference.child(game_id).child(FirebaseReferences.LIST_REFERENCE).child(FirebaseReferences.PLAYER_ITEM_REFERENCE4).setValue(PlayerDataBase[4]);
+
+        game_reference.child(game_id).child(FirebaseReferences.LIST_REFERENCE).child(FirebaseReferences.PLAYER_ITEM_REFERENCE5).setValue(PlayerDataBase[5]);
+
+        game_reference.child(game_id).child(FirebaseReferences.LIST_REFERENCE).child(FirebaseReferences.PLAYER_ITEM_REFERENCE6).setValue(PlayerDataBase[6]);
+
+        game_reference.child(game_id).child(FirebaseReferences.LIST_REFERENCE).child(FirebaseReferences.PLAYER_ITEM_REFERENCE7).setValue(PlayerDataBase[7]);
+
+        game_reference.child(game_id).child(FirebaseReferences.LIST_REFERENCE).child(FirebaseReferences.PLAYER_ITEM_REFERENCE8).setValue(PlayerDataBase[8]);
+
+        game_reference.child(game_id).child(FirebaseReferences.LIST_REFERENCE).child(FirebaseReferences.PLAYER_ITEM_REFERENCE9).setValue(PlayerDataBase[9]);
+
+
+        /*
+        posref.child(game_id).setValue(pos);
+        bet2ref.child(game_id).setValue(bet2);
+        ownChipsref.child(game_id).setValue(ownChips);
+        current_individual_bet_ref.child(game_id).setValue(current_individual_bet);
+        current_total_ref.child(game_id).setValue(current_total_bet);
+        total_bet_ref.child(game_id).setValue(total_bet);
+        winnerref.child(game_id).setValue(winner);
+        lootref.child(game_id).setValue(loot);
+        playersinref.child(game_id).setValue(playersin);
+        nStateref.child(game_id).setValue(nState);
+        player_big_blind_ref.child(game_id).setValue(Player_big_blind);
+        Player_small_blind_ref.child(game_id).setValue(Player_small_blind);
+        winner_check_ref.child(game_id).setValue(winner_check);
+        eq_bet_ref.child(game_id).setValue(eq_bet);
+        winner2ref.child(game_id).setValue(winner2);
+        playerscallref.child(game_id).setValue(playerscall);
+        count_winner_posref.child(game_id).setValue(count_winner_pos);
+        all_in_value_ref.child(game_id).setValue(all_in_value);
+        players_allin_ref.child(game_id).setValue(players_allin);
+        restart_bet_ref.child(game_id).setValue(restart_bet);
+        cont_playersin_ref.child(game_id).setValue(cont_playersin);
+        cont_winner_out_ref.child(game_id).setValue(cont_winner_out);
+        count_loser_pos_ref.child(game_id).setValue(count_loser_pos);
+        playersnumberref.child(game_id).setValue(playernumber);
+        timeref.child(game_id).setValue(time);
+        cont_playersoutref.child(game_id).setValue(cont_playersout);
+        number_playersoutref.child(game_id).setValue(number_playersout);
+        playersaliveref.child(game_id).setValue(playersalive);
+        dealerposref.child(game_id).setValue(dealerpos);
 
         //strings
-        string_bigref.setValue(string_big);
-        string_betref.setValue(string_bet);
+        string_bigref.child(game_id).setValue(string_big);
+        string_betref.child(game_id).setValue(string_bet);
 
         //playersitems
-        PlayerItemRef.setValue(PlayerDataBase[0]);
-        PlayerItemRef1.setValue(PlayerDataBase[1]);
-        PlayerItemRef2.setValue(PlayerDataBase[2]);
-        PlayerItemRef3.setValue(PlayerDataBase[3]);
-        PlayerItemRef4.setValue(PlayerDataBase[4]);
-        PlayerItemRef5.setValue(PlayerDataBase[5]);
-        PlayerItemRef6.setValue(PlayerDataBase[6]);
-        PlayerItemRef7.setValue(PlayerDataBase[7]);
-        PlayerItemRef8.setValue(PlayerDataBase[8]);
-        PlayerItemRef9.setValue(PlayerDataBase[9]);
+        PlayerItemRef.child(game_id).setValue(PlayerDataBase[0]);
+        PlayerItemRef1.child(game_id).setValue(PlayerDataBase[1]);
+        PlayerItemRef2.child(game_id).setValue(PlayerDataBase[2]);
+        PlayerItemRef3.child(game_id).setValue(PlayerDataBase[3]);
+        PlayerItemRef4.child(game_id).setValue(PlayerDataBase[4]);
+        PlayerItemRef5.child(game_id).setValue(PlayerDataBase[5]);
+        PlayerItemRef6.child(game_id).setValue(PlayerDataBase[6]);
+        PlayerItemRef7.child(game_id).setValue(PlayerDataBase[7]);
+        PlayerItemRef8.child(game_id).setValue(PlayerDataBase[8]);
+        PlayerItemRef9.child(game_id).setValue(PlayerDataBase[9]);*/
 
 
     }

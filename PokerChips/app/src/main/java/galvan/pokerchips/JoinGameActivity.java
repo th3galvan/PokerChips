@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,15 +23,10 @@ import galvan.pokerchips.Datos.FirebaseReferences;
 
 public class JoinGameActivity extends AppCompatActivity {
 
-    private EditText name;
-
-
-    private String string_name;
-
+    private EditText edit_name;
+    private String name_guest;
     private boolean empty=false;
-
-    private int players_join;
-    private DatabaseReference players_join_ref;
+    private int code;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,24 +34,9 @@ public class JoinGameActivity extends AppCompatActivity {
         setContentView(R.layout.activity_joingame);
 
         Bundle code_receive = getIntent().getExtras();
-        players_join = code_receive.getInt("players_join");
+        code = code_receive.getInt("code");
 
-        name = (EditText)findViewById(R.id.editText_nombre);
-
-
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        players_join_ref = database.getReference(FirebaseReferences.PLAYERS_JOIN_REFERENCE);
-        players_join_ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                players_join = dataSnapshot.getValue(Integer.class);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+        edit_name = (EditText)findViewById(R.id.editText_nombre);
 
         start();
 
@@ -72,9 +51,9 @@ public class JoinGameActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                string_name = name.getText().toString();
+                name_guest = edit_name.getText().toString();
 
-                if(string_name.equals("")){empty=true;
+                if(name_guest.equals("")){empty=true;
                     AlertDialog.Builder builder= new AlertDialog.Builder(JoinGameActivity.this);
                     builder.setTitle(R.string.Name);
                     builder.setMessage(R.string.enterName);
@@ -83,8 +62,10 @@ public class JoinGameActivity extends AppCompatActivity {
                 else {empty=false;}
 
                 if (!empty){
+
                 Intent intent_wait = new Intent(getApplicationContext(), ScanQRActivity.class);
-                    intent_wait.putExtra("players_join",players_join);
+                    intent_wait.putExtra("code",code);
+                    intent_wait.putExtra("name_guest",name_guest);
                 startActivity(intent_wait);}
 
             }
