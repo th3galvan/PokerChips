@@ -1,28 +1,29 @@
 package galvan.pokerchips;
 //salu2
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.provider.ContactsContract;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.database.ChildEventListener;
+import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import galvan.pokerchips.Datos.FirebaseReferences;
@@ -93,9 +94,9 @@ public class GameActivity extends AppCompatActivity {
     private TextView txt_turn;
 
     private ArrayList<PlayerItems> players;
-    private PlayerItemAdapter adapter;
-
-    private ListView list;
+    //private PlayerItemAdapter adapter; lo sustituimos por firebase adapter
+    private FirebaseListAdapter<PlayerItems> adapter;
+    private ListView playerlist;
 
    /* public PlayerItems(int i,
                        String name,         int chips,      boolean dealer,
@@ -221,7 +222,8 @@ public class GameActivity extends AppCompatActivity {
     //para hacer una lista de firebase
     private DatabaseReference FirebaseListRef;
 
-    private DatabaseReference adapterref;
+    //no se usa nunca
+    // private DatabaseReference adapterref;
 
 
     //salvar datos de la aplicacion si esta en segundo plano y hace onDestroy
@@ -324,14 +326,10 @@ public class GameActivity extends AppCompatActivity {
         //parte de añadir lista de jugadores y adapter
 
 
-        list = (ListView)findViewById(R.id.players_list);
+        playerlist = (ListView)findViewById(R.id.players_list);
 
         players = new ArrayList<>();
 
-        //PlayerItems( int i,
-        // String name, int chips,      boolean dealer,
-        // boolean big, boolean small,  boolean out,
-        // int bet,      boolean turn    boolean allin)
 //hola generamos la lista
         for (int i=0;i<number_players;i++){
         players.add(PlayerDataBase[i]);
@@ -339,12 +337,64 @@ public class GameActivity extends AppCompatActivity {
             Log.i("Check",String.format("i %d // isGenerated %b",i, PlayerDataBase[i].isGenerated()));}
 
 
-        adapter = new PlayerItemAdapter(
+    /*    adapter = new PlayerItemAdapter(
                 this,
                 R.layout.activity_playeritems,
                 players
         );
-        list.setAdapter(adapter);
+        playerlist.setAdapter(adapter);*/
+
+//Enlace con la base de datos de firebase
+        database = FirebaseDatabase.getInstance();
+
+        //ints
+
+
+        //FirebaseListAdapter
+        FirebaseListRef = database.getReference(FirebaseReferences.LIST_REFERENCE);
+
+    adapter = new FirebaseListAdapter<PlayerItems>(
+            this,
+            PlayerItems.class,
+            R.layout.activity_playeritems,
+            FirebaseListRef) {
+        @Override
+        protected void populateView(View v, PlayerItems player, int position) {
+
+            TextView state = (TextView) v.findViewById(R.id.txt_state);
+            TextView turn = (TextView) v.findViewById(R.id.txt_isturn);
+            TextView name = (TextView) v.findViewById(R.id.txt_name);
+            TextView chips = (TextView) v.findViewById(R.id.txt_chips);
+            TextView allin = v.findViewById(R.id.txt_allin);
+            TextView call = v.findViewById(R.id.txt_call);
+            TextView bet = (TextView) v.findViewById(R.id.txt_bet_list);
+            CheckBox out = (CheckBox) v.findViewById(R.id.player_out);
+            RelativeLayout layout = (RelativeLayout) v.findViewById(R.id.layout_player);
+
+            PlayerItems item = getItem(position);
+            name.setText(item.getName());
+
+            chips.setText(Integer.toString(item.getChips()));
+            out.setChecked(item.isIn());
+            if(item.isIn()){}
+            else {layout.setBackgroundColor(Color.GRAY);}
+            bet.setText(String.format("Bet: %d",item.getBet()));
+            if(item.isBig()){state.setText("B");}
+            if(item.isSmall()){state.setText("S");}
+            if(item.isDealer()){state.setText("D");}
+            if(!item.isBig() & !item.isDealer() & !item.isSmall()){state.setText("x");}
+            if(item.isTurn()){turn.setText(R.string.adapter_txt_turn);layout.setBackgroundColor(Color.GREEN);}
+            else{turn.setText("");}
+
+            if(item.isAllin()){allin.setText(R.string.adapter_txt_allin);}
+            else{allin.setText("");}
+            if(item.isCall()){call.setText(R.string.adapter_txt_call);}
+            else{call.setText("");}
+        }
+    } ;
+//FirebaseListRef.push().setValue(playerlist);
+        //FirebaseListRef.setValue(playerlist);
+        playerlist.setAdapter(adapter);
 
 
         final int chips[] ={5,10,25,50,100,250,500};
@@ -418,55 +468,8 @@ public class GameActivity extends AppCompatActivity {
         turnState();
 
 
-        database = FirebaseDatabase.getInstance();
-
-
-        //ints
-        //hola en las siguientes chorrocientas lineas ponemos listeners para que cuando se detecten cambios en la database de firebase se actualicen las variables internas de la app
+// en las siguientes chorrocientas lineas ponemos listeners para que cuando se detecten cambios en la database de firebase se actualicen las variables internas de la app
         //basicamente actualizamos variables y refrescamos el layout
-/*        FirebaseListRef = database.getReference(FirebaseReferences.LIST_REFERENCE);
-        FirebaseListAdapter<PlayerItems> fireAdapter = new FirebaseListAdapter<PlayerItems>(
-                this,
-                PlayerItems.class,
-                R.layout.activity_playeritems,
-                FirebaseListRef) {
-            @Override
-            protected void populateView(View v, PlayerItems player, int position) {
-FirebaseListRef.add
-            }
-        } ;
-*/
-        //FirebaseListAdapter
-        FirebaseListRef.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                for (int i=0;i<number_players;i++){
-                    players.add(PlayerDataBase[i]);
-                    PlayerDataBase[i].setGenerated(true);
-                    adapter.notifyDataSetChanged();
-                    }
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
 
 
         posref = database.getReference(FirebaseReferences.POS_REFERENCE);
@@ -981,6 +984,7 @@ FirebaseListRef.add
 
         PlayerItemRef9 = database.getReference(FirebaseReferences.PLAYER_ITEM_REFERENCE9);
         PlayerItemRef9.setValue(PlayerDataBase[9]);
+//hola
 
 
         PlayerItemRef.addValueEventListener(new ValueEventListener() {
@@ -1265,7 +1269,7 @@ FirebaseListRef.add
                 }}
         });
 
-        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        playerlist.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> list, View item, int pos, long id) {
 
@@ -1294,9 +1298,9 @@ FirebaseListRef.add
         });
 
 /*  Esto fue cuando intentamos hacer el Choose Winner general
-        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        playerlist.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> list, View item, int pos, long id) {
+            public boolean onItemLongClick(AdapterView<?> playerlist, View item, int pos, long id) {
                 PlayersAnnihilateds();
 
                 if(nState==8 & !winner_finish){
@@ -2068,7 +2072,7 @@ private void Message0bet() {
 
                 PlayerDataBase[i].setCall(false);
 
-                list.setAdapter(adapter);}
+                playerlist.setAdapter(adapter);}
 
             current_individual_bet = PlayerDataBase[playernumber].getBet();
             String Scurrent_individual_bet = Integer.toString(current_individual_bet);
@@ -2083,7 +2087,7 @@ private void Message0bet() {
 
                 PlayerDataBase[i].setCall(false);
 
-                list.setAdapter(adapter);
+                playerlist.setAdapter(adapter);
             }
 
             //se sustituye por la apuesta mas grande
@@ -2102,7 +2106,7 @@ private void Message0bet() {
         txt_ownChips.setText(Integer.toString(ownChips));
         txt_current_individual_bet.setText(Integer.toString(current_individual_bet));
         txt_current_total_bet.setText(Integer.toString(current_total_bet));
-        list.setAdapter(adapter);
+        playerlist.setAdapter(adapter);
         if(current_individual_bet!=0 || PlayerDataBase[playernumber].getBet()==current_individual_bet){btn_check.setText(R.string.check);}
         else{btn_check.setText(R.string.fold);}
 
@@ -2137,7 +2141,7 @@ private void Message0bet() {
         OnePlayerIn();
         Log.i("Xavi",String.format("playernumber %d // playeralive %d",playernumber,playersalive));
         PlayerDataBase[playernumber].setTurn(true);
-        list.setAdapter(adapter);
+        playerlist.setAdapter(adapter);
         refresh();
 
         //ints
@@ -2205,7 +2209,7 @@ private void Message0bet() {
         }
 
         PlayerDataBase[playernumber].setTurn(true);
-        list.setAdapter(adapter);
+        playerlist.setAdapter(adapter);
 
     }
 
@@ -2278,7 +2282,7 @@ private void Message0bet() {
 
                         }
                         Log.i("GALVAN",String.format("i= %s",Integer.toString(i)));
-                        list.setAdapter(adapter);
+                        playerlist.setAdapter(adapter);
                     }
                 }
                 //si el ultimo es big
@@ -2307,7 +2311,7 @@ private void Message0bet() {
                             PlayerDataBase[i].setSmall(true);
                             PlayerDataBase[i].setBig(false);
 
-                            list.setAdapter(adapter);
+                            playerlist.setAdapter(adapter);
                         }
                     }
                 }
@@ -2343,7 +2347,7 @@ private void Message0bet() {
 
 
                         }
-                        list.setAdapter(adapter);
+                        playerlist.setAdapter(adapter);
                     }
                 }
                 else if(PlayerDataBase[playersalive -1].isDealer()){
