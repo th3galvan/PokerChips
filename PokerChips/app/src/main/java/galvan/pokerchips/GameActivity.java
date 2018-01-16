@@ -7,7 +7,6 @@ import android.os.CountDownTimer;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -28,6 +27,8 @@ import java.util.ArrayList;
 
 import galvan.pokerchips.Datos.FirebaseReferences;
 import galvan.pokerchips.Datos.PlayerItems;
+
+import static android.graphics.Color.rgb;
 
 
 public class GameActivity extends AppCompatActivity {
@@ -172,6 +173,8 @@ public class GameActivity extends AppCompatActivity {
             false,      false,   false, false);
 
     private PlayerItems PlayerDataBase[]={Player0,Player1,Player2,Player3,Player4,Player5,Player6,Player7,Player8,Player9};
+
+    private DatabaseReference FirebaseListRef;
     private String Scurrent_total_bet;
     //Declaramos las variables que se guardaran en la database de firebase
     private DatabaseReference posref;
@@ -218,9 +221,12 @@ public class GameActivity extends AppCompatActivity {
     private DatabaseReference PlayerItemRef7;
     private DatabaseReference PlayerItemRef8;
     private DatabaseReference PlayerItemRef9;
-
+    private DatabaseReference ListOfPlayerReferences[]={
+            PlayerItemRef,PlayerItemRef1,PlayerItemRef2,PlayerItemRef3,
+            PlayerItemRef4,PlayerItemRef5,PlayerItemRef6,PlayerItemRef7,
+            PlayerItemRef8,PlayerItemRef9};
     //para hacer una lista de firebase
-    private DatabaseReference FirebaseListRef;
+
 
     //no se usa nunca
     // private DatabaseReference adapterref;
@@ -376,15 +382,18 @@ public class GameActivity extends AppCompatActivity {
 
             chips.setText(Integer.toString(item.getChips()));
             out.setChecked(item.isIn());
-            if(item.isIn()){}
+            if(item.isIn()){layout.setBackgroundColor(rgb(0,0,0));}
             else {layout.setBackgroundColor(Color.GRAY);}
             bet.setText(String.format("Bet: %d",item.getBet()));
             if(item.isBig()){state.setText("B");}
             if(item.isSmall()){state.setText("S");}
             if(item.isDealer()){state.setText("D");}
             if(!item.isBig() & !item.isDealer() & !item.isSmall()){state.setText("x");}
-            if(item.isTurn()){turn.setText(R.string.adapter_txt_turn);layout.setBackgroundColor(Color.GREEN);}
-            else{turn.setText("");}
+            if(item.isTurn()){turn.setText(R.string.adapter_txt_turn);layout.setBackgroundColor(rgb(0,170,0));}
+            else{
+                turn.setText("");
+                layout.setBackgroundColor(rgb(194,194,194));
+            }
 
             if(item.isAllin()){allin.setText(R.string.adapter_txt_allin);}
             else{allin.setText("");}
@@ -955,7 +964,7 @@ public class GameActivity extends AppCompatActivity {
 
 
         //Players
-        PlayerItemRef = database.getReference(FirebaseReferences.PLAYER_ITEM_REFERENCE);
+       /* PlayerItemRef = database.getReference(FirebaseReferences.PLAYER_ITEM_REFERENCE);
         PlayerItemRef.setValue(PlayerDataBase[0]);
 
         PlayerItemRef1 = database.getReference(FirebaseReferences.PLAYER_ITEM_REFERENCE1);
@@ -983,7 +992,34 @@ public class GameActivity extends AppCompatActivity {
         PlayerItemRef8.setValue(PlayerDataBase[8]);
 
         PlayerItemRef9 = database.getReference(FirebaseReferences.PLAYER_ITEM_REFERENCE9);
-        PlayerItemRef9.setValue(PlayerDataBase[9]);
+        PlayerItemRef9.setValue(PlayerDataBase[9]);*/
+
+        PlayerItemRef = database.getReference(FirebaseReferences.LIST_REFERENCE);
+        PlayerItemRef1 = database.getReference(FirebaseReferences.LIST_REFERENCE);
+        PlayerItemRef2 = database.getReference(FirebaseReferences.LIST_REFERENCE);
+        PlayerItemRef3 = database.getReference(FirebaseReferences.LIST_REFERENCE);
+        PlayerItemRef4 = database.getReference(FirebaseReferences.LIST_REFERENCE);
+        PlayerItemRef5 = database.getReference(FirebaseReferences.LIST_REFERENCE);
+        PlayerItemRef6 = database.getReference(FirebaseReferences.LIST_REFERENCE);
+        PlayerItemRef7 = database.getReference(FirebaseReferences.LIST_REFERENCE);
+        PlayerItemRef8 = database.getReference(FirebaseReferences.LIST_REFERENCE);
+        PlayerItemRef9 = database.getReference(FirebaseReferences.LIST_REFERENCE);
+
+        PlayerItemRef.push().setValue(PlayerDataBase[0]);
+        PlayerItemRef1.push().setValue(PlayerDataBase[1]);
+        PlayerItemRef2.push().setValue(PlayerDataBase[2]);
+        PlayerItemRef3.push().setValue(PlayerDataBase[3]);
+        PlayerItemRef4.push().setValue(PlayerDataBase[4]);
+        PlayerItemRef5.push().setValue(PlayerDataBase[5]);
+        PlayerItemRef6.push().setValue(PlayerDataBase[6]);
+        PlayerItemRef7.push().setValue(PlayerDataBase[7]);
+        PlayerItemRef8.push().setValue(PlayerDataBase[8]);
+        PlayerItemRef9.push().setValue(PlayerDataBase[9]);
+
+
+
+
+
 //hola
 
 
