@@ -41,15 +41,16 @@ public class WaitActivity extends AppCompatActivity {
         Bundle code_receive = getIntent().getExtras();
         game_id = code_receive.getString("game_id");
         name_guest = code_receive.getString("name_guest");
-
-        players_join++;
-        players_join_ref.setValue(players_join);
+        players_join = code_receive.getInt("players_join");
 
 
         database = FirebaseDatabase.getInstance();
 
+
+
+
         players_join_ref = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.PLAYERS_JOIN_REFERENCE);
-        players_join_ref.addValueEventListener(new ValueEventListener() {
+        /*players_join_ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 players_join = dataSnapshot.getValue(Integer.class);
@@ -61,71 +62,72 @@ public class WaitActivity extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        });
+        });*/
 
-        while(inside){
+        if (inside) {
+            players_join=1;
+            players_join_ref.setValue(players_join);
+        }
 
             game_ref = database.getReference(FirebaseReferences.GAME_REFERENCE);
 
-        switch (players_join) {
 
-            case 1:
+
+                if(players_join==1 & inside){
 
                 game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE1).setValue(name_guest);
-                inside = false;
-                break;
+                inside = false;}
 
-            case 2:
+
+                else if (players_join==2 & inside){
 
                 game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE2).setValue(name_guest);
-                inside = false;
-                break;
+                inside = false;}
 
-            case 3:
+
+                else if (players_join==3 & inside){
 
                 game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE3).setValue(name_guest);
-                inside = false;
-                break;
+                inside = false;}
 
-            case 4:
+
+                else if (players_join==4 & inside){
 
                 game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE4).setValue(name_guest);
-                inside = false;
-                break;
+                inside = false;}
 
-            case 5:
+
+                else if (players_join==5 & inside){
 
                 game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE5).setValue(name_guest);
-                inside = false;
-                break;
+                inside = false;}
 
-            case 6:
+
+                else if (players_join==6 & inside){
 
                 game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE6).setValue(name_guest);
-                inside = false;
-                break;
+                inside = false;}
 
-            case 7:
+
+                else if (players_join==7 & inside){
 
                 game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE7).setValue(name_guest);
-                inside = false;
-                break;
+                inside = false;}
 
-            case 8:
+                else if (players_join==8 & inside){
 
                 game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE8).setValue(name_guest);
-                inside = false;
-                break;
+                inside = false;}
 
-            case 9:
+
+                else if (players_join==9 & inside){
 
                 game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE9).setValue(name_guest);
-                inside = false;
-                break;
+                inside = false;}
 
 
 
-        }}
+
 
 
 
@@ -153,3 +155,4 @@ public class WaitActivity extends AppCompatActivity {
 
         }
     }
+

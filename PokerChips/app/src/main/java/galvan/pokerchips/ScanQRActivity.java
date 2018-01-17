@@ -76,7 +76,7 @@ public class ScanQRActivity extends AppCompatActivity implements ZXingScannerVie
     public void handleResult(Result result) {
 
 
-        Intent intent_wait = new Intent(getApplicationContext(), WaitActivity.class);
+        Intent intent_wait = new Intent(getApplicationContext(), WaitActivity2.class);
             intent_wait.putExtra("game_id",game_id);
             intent_wait.putExtra("name_guest",name_guest);
         startActivity(intent_wait);}

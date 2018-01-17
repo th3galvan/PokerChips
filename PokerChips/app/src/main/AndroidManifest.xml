@@ -43,6 +43,9 @@
         <activity
             android:name=".WaitActivity"
             android:screenOrientation="reverseLandscape" />
+        <activity
+            android:name=".WaitActivity2"
+            android:screenOrientation="reverseLandscape" />
 
         <activity android:name=".ScanQRActivity"
             android:screenOrientation="reverseLandscape" ></activity>

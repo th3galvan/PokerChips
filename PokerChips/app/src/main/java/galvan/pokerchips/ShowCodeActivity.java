@@ -102,7 +102,6 @@ public class ShowCodeActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 //cojemos el valor de base de datos
                 players_join = dataSnapshot.getValue(Integer.class);
-                players_join_change = true;
 
 
                 //hasta que no se hayan incorporado todos los jugadores no se pasa a la siguiente pantalla
@@ -110,8 +109,7 @@ public class ShowCodeActivity extends AppCompatActivity {
                 if (players_join==number_players){
 
                     //renuevo para que todos los jugadores obtengan el valor
-                    players_join_ref.removeValue();
-                    players_join_ref.setValue(number_players);
+
 
                     Intent intent_list = new Intent(ShowCodeActivity.this, PlayersListActivity.class);
                     intent_list.putExtra("name", name);
@@ -122,6 +120,7 @@ public class ShowCodeActivity extends AppCompatActivity {
                     intent_list.putExtra("change", change_value_big);
                     intent_list.putExtra("game_id",game_id);
                     startActivity(intent_list);}
+                else{players_join_change = true;}
 
             }
 
