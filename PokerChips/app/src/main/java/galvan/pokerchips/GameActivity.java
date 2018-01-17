@@ -290,7 +290,7 @@ public class GameActivity extends AppCompatActivity {
     }
     //Cargar datos salvados despues de un onDestroy todo:(no tiene pinta de funcionar arlvarinho)
     @Override
-    protected void onRestoreInstanceState(Bundle recoverState){
+    protected void onRestoreInstanceState(eBundle recoverState){
         super.onRestoreInstanceState(recoverState);
         big = recoverState.getInt("big");
         Scurrent_total_bet = recoverState.getString("current total bet");

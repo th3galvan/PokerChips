@@ -6,12 +6,12 @@ package galvan.pokerchips.Datos;
 
 public class FirebaseReferences {
     final public static String CODE_REFERENCE = "code";
-    final public static String NUMBER_PLAYERS_REFERENCE = "code";
-    final public static String INITIAL_CHIPS_REFERENCE = "code";
-    final public static String BIG_REFERENCE = "code";
-    final public static String TIME_BIG_UP_REFERENCE = "code";
-    final public static String CHANGE_VALUE_BIG_REFERENCE = "code";
-    final public static String NAME_REFERENCE = "code";
+    final public static String NUMBER_PLAYERS_REFERENCE = "number_players";
+    final public static String INITIAL_CHIPS_REFERENCE = "initial_chips";
+    final public static String BIG_REFERENCE = "big";
+    final public static String TIME_BIG_UP_REFERENCE = "time_big_up";
+    final public static String CHANGE_VALUE_BIG_REFERENCE = "change_value_big";
+    final public static String NAME_REFERENCE = "name_host";
 
 
     final public static String PLAYER_ITEM_REFERENCE = "PlayerItem";
