@@ -55,6 +55,7 @@ public class HomeActivity extends AppCompatActivity {
         Button btn_new_game =(Button)findViewById(R.id.btn_new_game);
         Button btn_join_game=(Button)findViewById(R.id.btn_join_game);
 
+
         btn_new_game.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

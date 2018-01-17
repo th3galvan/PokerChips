@@ -10,9 +10,12 @@ android:padding="24dp">
         android:id="@+id/btn_finish2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="@string/next"
+        android:layout_marginLeft="75dp"
+        android:layout_marginStart="75dp"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:text="@string/next" />
+        android:layout_alignLeft="@+id/edit_players_fast"
+        android:layout_alignStart="@+id/edit_players_fast" />
 
     <RadioButton
         android:id="@+id/rb_fast"
@@ -79,6 +82,15 @@ android:padding="24dp">
         android:ems="10"
         android:inputType="number"
         android:textAlignment="center" />
+
+    <Button
+        android:id="@+id/btn_single"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="LOCAL"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/rb_custom"
+        android:layout_alignStart="@+id/rb_custom" />
 
 
 </RelativeLayout>

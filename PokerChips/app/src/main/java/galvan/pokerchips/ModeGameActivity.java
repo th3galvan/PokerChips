@@ -158,10 +158,10 @@ public class ModeGameActivity extends AppCompatActivity {
 
                 if(rb_custom.isChecked()){
 
-                    Intent customgame = new Intent(getApplicationContext(), SetGameActivity.class);
-                    customgame.putExtra("code",code);
-                    customgame.putExtra("game_id",game_id);
-                    startActivity(customgame);
+                    Intent localgame = new Intent(getApplicationContext(), SetGameActivity.class);
+                    localgame.putExtra("code",code);
+                    localgame.putExtra("game_id",game_id);
+                    startActivity(localgame);
                 }
             }
         });

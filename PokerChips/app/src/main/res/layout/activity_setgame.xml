@@ -142,9 +142,10 @@
         android:id="@+id/btn_done_gotoqr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="@string/nextAcction"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:text="@string/nextAcction" />
+        android:layout_alignLeft="@+id/txt_players_number"
+        android:layout_alignStart="@+id/txt_players_number" />
 
     <TextView
         android:id="@+id/txt_unity"
@@ -156,4 +157,13 @@
         android:layout_toRightOf="@+id/txt_big_change_value"
         android:text="@string/minutes"
         android:textSize="14sp" />
+
+    <Button
+        android:id="@+id/btn_local2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/txt_first_big_value"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/txt_first_big_value"
+        android:text="LOCAL" />
 </RelativeLayout>

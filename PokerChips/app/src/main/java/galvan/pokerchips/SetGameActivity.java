@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.method.SingleLineTransformationMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -81,9 +82,88 @@ public class SetGameActivity extends AppCompatActivity {
 
         //Button
         Button btn_done_gotoqr = (Button) findViewById(R.id.btn_done_gotoqr);
+        Button btn_local =(Button) findViewById(R.id.btn_local2);
 
+        btn_local.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TakeTextEdits();
+                //y miramos si algun campo esta vacio y avisamos uno por uno de cual
+                if(name.equals("")){empty_name=true;
+                    AlertDialog.Builder builder= new AlertDialog.Builder(SetGameActivity.this);
+                    builder.setTitle(R.string.Name);
+                    builder.setMessage(getString(R.string.enterName));      //añadido recurso
+                    builder.create().show();
+                }
+                else {empty_name=false;}
 
+                if(string_number_players.equals("0")){empty_players=true;
+                    if(!empty_name){
+                        AlertDialog.Builder builder= new AlertDialog.Builder(SetGameActivity.this);
+                        builder.setTitle(R.string.players);
+                        builder.setMessage(getString(R.string.enterPlayers));   //añadido recurso
+                        builder.create().show();}
+                }
+                else {empty_players=false;}
 
+                if(string_initial_chips.equals("0")){empty_initial=true;
+                    if(!empty_name & !empty_players){
+                        AlertDialog.Builder builder= new AlertDialog.Builder(SetGameActivity.this);
+                        builder.setTitle(R.string.initial_chips);
+                        builder.setMessage(R.string.enterInitialChips);     //añadido recurso
+                        builder.create().show();}
+                }
+                else {empty_initial=false;}
+
+                if(string_big.equals("0")){empty_big=true;
+                    if(!empty_initial & !empty_name & !empty_players){
+                        AlertDialog.Builder builder= new AlertDialog.Builder(SetGameActivity.this);
+                        builder.setTitle(R.string.bigblind);
+                        builder.setMessage(R.string.enterBig);      //añadido recurso
+                        builder.create().show();}
+                }
+                else {empty_big=false;}
+
+                if(string_time_big_up.equals("0")){empty_time=true;
+                    if(!empty_big & !empty_initial & !empty_name & !empty_players){
+                        AlertDialog.Builder builder= new AlertDialog.Builder(SetGameActivity.this);
+                        builder.setTitle(R.string.Frecuency);
+                        builder.setMessage(R.string.enterFreqRiseBig);      //añadido recurso
+                        builder.create().show();}
+                }
+                else {empty_time=false;}
+
+                if(string_change_value_big.equals("0")){empty_change=true;
+                    if(!empty_time & !empty_big & !empty_initial & !empty_name & !empty_players){
+                        AlertDialog.Builder builder= new AlertDialog.Builder(SetGameActivity.this);
+                        builder.setTitle(R.string.Rise_value);
+                        builder.setMessage(R.string.enterBigRiseValue);     //añadido recurso
+                        builder.create().show();}
+                }
+                else {empty_change=false;}
+
+                if (number_players>10){
+                    max_players=true;
+                    AlertDialog.Builder builder= new AlertDialog.Builder(SetGameActivity.this);
+                    builder.setTitle(R.string.players);
+                    builder.setMessage(getString(R.string.maximPlayers));   //añadido recurso
+                    builder.create().show();}
+
+                else{max_players=false;}
+
+                //hasta que todos los campos no esten llenos no podemos cambiar de pantalla
+                if(!empty_time & !empty_big & !empty_initial & !empty_name & !empty_players & !empty_change & !max_players){
+                    Intent localgame= new Intent(getApplicationContext(), SingleDeviceGameActivity.class);
+                    localgame.putExtra("code",code);
+                    localgame.putExtra("name",name);
+                    localgame.putExtra("playersnumber",number_players);
+                    localgame.putExtra("initial_chips",initial_chips);
+                    localgame.putExtra("bigblind",big);
+                    localgame.putExtra("frecuency",time_big_up);
+                    localgame.putExtra("change",change_value_big);
+                    startActivity(localgame);}
+            }
+        });
 
         //hago clic y se abre el layout ShowCode
         btn_done_gotoqr.setOnClickListener(new View.OnClickListener() {
