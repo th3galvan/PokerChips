@@ -30,6 +30,7 @@ public class WaitActivity extends AppCompatActivity {
     private DatabaseReference players_join_ref;
     private Integer players_join;
     private DatabaseReference game_ref;
+    private boolean inside = true;
 
 
     @Override
@@ -41,8 +42,92 @@ public class WaitActivity extends AppCompatActivity {
         game_id = code_receive.getString("game_id");
         name_guest = code_receive.getString("name_guest");
 
+        players_join++;
+        players_join_ref.setValue(players_join);
+
 
         database = FirebaseDatabase.getInstance();
+
+        players_join_ref = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.PLAYERS_JOIN_REFERENCE);
+        players_join_ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                players_join = dataSnapshot.getValue(Integer.class);
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        while(inside){
+
+            game_ref = database.getReference(FirebaseReferences.GAME_REFERENCE);
+
+        switch (players_join) {
+
+            case 1:
+
+                game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE1).setValue(name_guest);
+                inside = false;
+                break;
+
+            case 2:
+
+                game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE2).setValue(name_guest);
+                inside = false;
+                break;
+
+            case 3:
+
+                game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE3).setValue(name_guest);
+                inside = false;
+                break;
+
+            case 4:
+
+                game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE4).setValue(name_guest);
+                inside = false;
+                break;
+
+            case 5:
+
+                game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE5).setValue(name_guest);
+                inside = false;
+                break;
+
+            case 6:
+
+                game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE6).setValue(name_guest);
+                inside = false;
+                break;
+
+            case 7:
+
+                game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE7).setValue(name_guest);
+                inside = false;
+                break;
+
+            case 8:
+
+                game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE8).setValue(name_guest);
+                inside = false;
+                break;
+
+            case 9:
+
+                game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE9).setValue(name_guest);
+                inside = false;
+                break;
+
+
+
+        }}
+
+
 
 
         host_ready_ref = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.HOST_READY_REFERENCE);
@@ -62,74 +147,7 @@ public class WaitActivity extends AppCompatActivity {
             }
         });
 
-        players_join_ref = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.PLAYERS_JOIN_REFERENCE);
-        players_join_ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                players_join = dataSnapshot.getValue(Integer.class);
-                game_ref = database.getReference(FirebaseReferences.GAME_REFERENCE);
 
-                switch (players_join) {
-
-                    case 1:
-
-                        game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE1).setValue(name_guest);
-                        break;
-
-                    case 2:
-
-                        game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE2).setValue(name_guest);
-                        break;
-
-                    case 3:
-
-                        game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE3).setValue(name_guest);
-                        break;
-
-                    case 4:
-
-                        game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE4).setValue(name_guest);
-                        break;
-
-                    case 5:
-
-                        game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE5).setValue(name_guest);
-                        break;
-
-                    case 6:
-
-                        game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE6).setValue(name_guest);
-                        break;
-
-                    case 7:
-
-                        game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE7).setValue(name_guest);
-                        break;
-
-                    case 8:
-
-                        game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE8).setValue(name_guest);
-                        break;
-
-                    case 9:
-
-                        game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE9).setValue(name_guest);
-                        break;
-
-
-
-                }
-
-                players_join++;
-                players_join_ref.child(game_id).setValue(players_join);
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
 
 
 

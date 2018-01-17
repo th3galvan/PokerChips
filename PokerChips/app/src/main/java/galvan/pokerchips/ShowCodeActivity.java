@@ -42,7 +42,7 @@ public class ShowCodeActivity extends AppCompatActivity {
     private int big;
     private int time_big_up;
     private int change_value_big;
-    private int players_join=1;
+    private int players_join=0;
 
     private String name;
     private ImageView image;
@@ -82,7 +82,8 @@ public class ShowCodeActivity extends AppCompatActivity {
         //todo saco id fuera para poder usarla
         game_reference = database.getReference(FirebaseReferences.GAME_REFERENCE);
         //game_reference.child(game_id).child(FirebaseReferences.GAME_ID_REFERENCE).setValue(game_id);
-        game_reference.child(game_id).child(FirebaseReferences.PLAYERS_JOIN_REFERENCE).setValue(players_join);
+        players_join_ref = game_reference.child(game_id).child(FirebaseReferences.PLAYERS_JOIN_REFERENCE);
+        players_join_ref.setValue(players_join);
 
         //listener para captar cuando se van introduciendo diferentes jugadores
         //metemos dentro el intent para que sea automatico
@@ -93,12 +94,14 @@ public class ShowCodeActivity extends AppCompatActivity {
         host_ready_ref = database.getReference(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.HOST_READY_REFERENCE);
         host_ready_ref.setValue(host_ready);
 
-        players_join_ref = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.PLAYERS_JOIN_REFERENCE);
+       // players_join_ref = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.PLAYERS_JOIN_REFERENCE);
         players_join_ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 //cojemos el valor de base de datos
                 players_join = dataSnapshot.getValue(Integer.class);
+                players_join_ref.removeValue();
+                players_join_ref.setValue(players_join);
 
                 //hasta que no se hayan incorporado todos los jugadores no se pasa a la siguiente pantalla
                 Log.i("Xavi",String.format("players_join %d // number_players %d",players_join,number_players));
