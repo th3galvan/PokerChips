@@ -61,7 +61,7 @@ public class ModeGameActivity extends AppCompatActivity {
         final RadioButton rb_fast = (RadioButton)findViewById(R.id.rb_fast);
         final RadioButton rb_custom = (RadioButton)findViewById(R.id.rb_custom);
         Button btn_finish = (Button)findViewById(R.id.btn_finish2);
-
+        Button btn_local =(Button)findViewById(R.id.btn_single);
         final TextView txt_title_name = (TextView)findViewById(R.id.txt_title_name);
         final TextView txt_title_players = (TextView)findViewById(R.id.txt_title_players);
         edit_players_fast = (EditText)findViewById(R.id.edit_players_fast);
@@ -101,6 +101,68 @@ public class ModeGameActivity extends AppCompatActivity {
                 edit_name_fast.setVisibility(View.INVISIBLE);
                 edit_players_fast.setVisibility(View.INVISIBLE);
 
+            }
+        });
+        btn_local.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(rb_fast.isChecked()){
+
+                    GetEdit();
+                    if(name.equals("")){empty_name=true;
+                        AlertDialog.Builder builder= new AlertDialog.Builder(ModeGameActivity.this);
+                        builder.setTitle(R.string.Name);
+                        builder.setMessage(getString(R.string.enterName));  //añadido recurso
+                        builder.create().show();
+                    }
+                    else {empty_name=false;}
+
+                    if(string_players_fast.equals("0")){empty_players=true;
+                        if(!empty_name){
+                            AlertDialog.Builder builder= new AlertDialog.Builder(ModeGameActivity.this);
+                            builder.setTitle(R.string.players);
+                            builder.setMessage(R.string.enterPlayers);  //añadido recurso
+                            builder.create().show();}
+                    }
+                    else{empty_players=false;}
+
+                    if (number_players>10){
+                        max_players=true;
+                        AlertDialog.Builder builder= new AlertDialog.Builder(ModeGameActivity.this);
+                        builder.setTitle(R.string.players);
+                        builder.setMessage(R.string.maximPlayers);  //añadido recurso
+                        builder.create().show();}
+
+                    else{max_players=false;}
+
+                    if (!empty_players & !empty_name  & !max_players){
+
+                        initial_chips=1500;
+                        big=10;
+                        time_big_up=10;
+                        change_value_big=10;
+
+
+                        Intent fastgame = new Intent(getApplicationContext(), SingleDeviceGameActivity.class);
+                        fastgame.putExtra("code",code);
+                        fastgame.putExtra("name",name);
+                        fastgame.putExtra("playersnumber",number_players);
+                        fastgame.putExtra("initial_chips",initial_chips);
+                        fastgame.putExtra("bigblind",big);
+                        fastgame.putExtra("frecuency",time_big_up);
+                        fastgame.putExtra("change",change_value_big);
+                        fastgame.putExtra("game_id",game_id);
+                        startActivity(fastgame);
+
+                    }}
+
+                if(rb_custom.isChecked()){
+
+                    Intent customgame = new Intent(getApplicationContext(), SetGameActivity.class);
+                    customgame.putExtra("code",code);
+                    customgame.putExtra("game_id",game_id);
+                    startActivity(customgame);
+                }
             }
         });
         btn_finish.setOnClickListener(new View.OnClickListener() {

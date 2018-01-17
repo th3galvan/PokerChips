@@ -79,6 +79,7 @@ public class ShowCodeActivity extends AppCompatActivity {
         game_id_ref = database.getReference(FirebaseReferences.GAME_ID_REFERENCE);
         game_id_ref.removeValue();
         game_id_ref.setValue(game_id);
+        game_reference = database.getReference(FirebaseReferences.GAME_REFERENCE);
 
         //todo saco id fuera para poder usarla
         game_reference = database.getReference(FirebaseReferences.GAME_REFERENCE);
