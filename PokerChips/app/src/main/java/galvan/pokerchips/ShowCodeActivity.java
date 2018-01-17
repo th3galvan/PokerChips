@@ -54,6 +54,7 @@ public class ShowCodeActivity extends AppCompatActivity {
     private DatabaseReference Scan_notify_ref;
 
     private boolean Scan_notify;
+    private boolean players_join_change=false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -100,8 +101,8 @@ public class ShowCodeActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 //cojemos el valor de base de datos
                 players_join = dataSnapshot.getValue(Integer.class);
-                players_join_ref.removeValue();
-                players_join_ref.setValue(players_join);
+                players_join_change = true;
+
 
                 //hasta que no se hayan incorporado todos los jugadores no se pasa a la siguiente pantalla
                 Log.i("Xavi",String.format("players_join %d // number_players %d",players_join,number_players));
@@ -128,6 +129,13 @@ public class ShowCodeActivity extends AppCompatActivity {
 
             }
         });
+
+        while (players_join_change){
+
+            players_join_ref.removeValue();
+            players_join_ref.setValue(players_join);
+            players_join_change=false;
+        }
 
         Button btn_code = (Button)findViewById(R.id.btn_generate_code);
         txt_code = (TextView)findViewById(R.id.txt_code);
