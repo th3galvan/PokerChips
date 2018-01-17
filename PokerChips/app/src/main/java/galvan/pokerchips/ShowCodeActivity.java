@@ -74,6 +74,7 @@ public class ShowCodeActivity extends AppCompatActivity {
 
         //todo saco id fuera para poder usarla
         //game_reference.child(game_id).child(FirebaseReferences.GAME_ID_REFERENCE).setValue(game_id);
+        game_reference.child(FirebaseReferences.GAME_ID_REFERENCE).child(game_id).setValue(game_id);
         game_reference.child(FirebaseReferences.GAME_ID_REFERENCE).setValue(game_id);
         game_reference.child(game_id).child(FirebaseReferences.PLAYERS_JOIN_REFERENCE).setValue(players_join);
 

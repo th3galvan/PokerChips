@@ -65,7 +65,7 @@ public class ScanQRActivity extends AppCompatActivity implements ZXingScannerVie
 
             }
         });
-        
+
         players_join_ref = database.getReference(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.PLAYERS_JOIN_REFERENCE);
         players_join_ref.addValueEventListener(new ValueEventListener() {
             @Override

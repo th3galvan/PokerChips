@@ -229,10 +229,17 @@ public class GameActivity extends AppCompatActivity {
     private DatabaseReference PlayerItemRef7;
     private DatabaseReference PlayerItemRef8;
     private DatabaseReference PlayerItemRef9;
-    private DatabaseReference ListOfPlayerReferences[]={
-            PlayerItemRef,PlayerItemRef1,PlayerItemRef2,PlayerItemRef3,
-            PlayerItemRef4,PlayerItemRef5,PlayerItemRef6,PlayerItemRef7,
-            PlayerItemRef8,PlayerItemRef9};
+    private String ListOfPlayerReferences[]={FirebaseReferences.PLAYER_ITEM_REFERENCE,
+            FirebaseReferences.PLAYER_ITEM_REFERENCE1,
+            FirebaseReferences.PLAYER_ITEM_REFERENCE2,
+            FirebaseReferences.PLAYER_ITEM_REFERENCE3,
+            FirebaseReferences.PLAYER_ITEM_REFERENCE4,
+            FirebaseReferences.PLAYER_ITEM_REFERENCE5,
+            FirebaseReferences.PLAYER_ITEM_REFERENCE6,
+            FirebaseReferences.PLAYER_ITEM_REFERENCE7,
+            FirebaseReferences.PLAYER_ITEM_REFERENCE8,
+            FirebaseReferences.PLAYER_ITEM_REFERENCE9,};
+
     private String game_id;
     private DatabaseReference game_reference;
 
@@ -976,9 +983,13 @@ public class GameActivity extends AppCompatActivity {
 
 
         //Players
+        for(int i =0; i<number_players;i++){
 
-        game_reference.child(game_id).child(FirebaseReferences.LIST_REFERENCE).child(FirebaseReferences.PLAYER_ITEM_REFERENCE).setValue(PlayerDataBase[0]);
+            game_reference.child(game_id).child(FirebaseReferences.LIST_REFERENCE).child(ListOfPlayerReferences[i]).setValue(PlayerDataBase[i]);
+        }
 
+
+/*
         game_reference.child(game_id).child(FirebaseReferences.LIST_REFERENCE).child(FirebaseReferences.PLAYER_ITEM_REFERENCE1).setValue(PlayerDataBase[1]);
 
         game_reference.child(game_id).child(FirebaseReferences.LIST_REFERENCE).child(FirebaseReferences.PLAYER_ITEM_REFERENCE2).setValue(PlayerDataBase[2]);
@@ -996,7 +1007,7 @@ public class GameActivity extends AppCompatActivity {
         game_reference.child(game_id).child(FirebaseReferences.LIST_REFERENCE).child(FirebaseReferences.PLAYER_ITEM_REFERENCE8).setValue(PlayerDataBase[8]);
 
         game_reference.child(game_id).child(FirebaseReferences.LIST_REFERENCE).child(FirebaseReferences.PLAYER_ITEM_REFERENCE9).setValue(PlayerDataBase[9]);
-
+*/
         /*
         PlayerItemRef1 = database.getReference(FirebaseReferences.LIST_REFERENCE);
         PlayerItemRef1.child(game_id).push().setValue(PlayerDataBase[1]);
@@ -2489,8 +2500,8 @@ private void Message0bet() {
 
             else if(playersalive<=3){
 
-            //y ahora reorganizamos los estados
-//si temenos mas de 3 jugadores vivos
+                 //y ahora reorganizamos los estados
+                 //si temenos mas de 3 jugadores vivos
                 Log.i("Aniquilador",String.format("PlayersAlive =%d",playersalive));
 
 
