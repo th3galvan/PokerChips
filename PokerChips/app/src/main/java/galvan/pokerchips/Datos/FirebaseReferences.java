@@ -27,7 +27,6 @@ public class FirebaseReferences {
 
     //referencia lista
     final public static String LIST_REFERENCE = "list";
-    final public static String NAME_GUEST_REFERENCE ="name_guest0";
     final public static String NAME_GUEST_REFERENCE1 ="name_guest1";
     final public static String NAME_GUEST_REFERENCE2 ="name_guest2";
     final public static String NAME_GUEST_REFERENCE3 ="name_guest3";
@@ -94,6 +93,9 @@ public class FirebaseReferences {
     //Game
     final public static String GAME_REFERENCE = "Game";
     final public static String GAME_ID_REFERENCE ="Game_id";
+
+    //PlayerListActivity
+    final public static String HOST_READY_REFERENCE ="host_ready";
 
 
 }

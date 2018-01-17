@@ -50,10 +50,10 @@ public class ScanQRActivity extends AppCompatActivity implements ZXingScannerVie
 
         database = FirebaseDatabase.getInstance();
         game_ref = database.getReference(FirebaseReferences.GAME_REFERENCE);
-        players_join_ref = database.getReference(FirebaseReferences.PLAYERS_JOIN_REFERENCE);
+
 
         //Cojo id de la partida
-        game_id_ref = database.getReference(FirebaseReferences.GAME_ID_REFERENCE);
+        game_id_ref = database.getReference(FirebaseReferences.GAME_REFERENCE).child("game_id");
         game_id_ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -65,7 +65,8 @@ public class ScanQRActivity extends AppCompatActivity implements ZXingScannerVie
 
             }
         });
-
+        
+        players_join_ref = database.getReference(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.PLAYERS_JOIN_REFERENCE);
         players_join_ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -77,6 +78,67 @@ public class ScanQRActivity extends AppCompatActivity implements ZXingScannerVie
 
             }
         });
+
+
+        //segun el nombre de jugadores guardo en una referencia o en otra
+
+        switch (players_join){
+
+            case 1:
+
+                game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE1).setValue(name_guest);
+                break;
+
+            case 2:
+
+                game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE2).setValue(name_guest);
+                break;
+
+            case 3:
+
+                game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE3).setValue(name_guest);
+                break;
+
+            case 4:
+
+                game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE4).setValue(name_guest);
+                break;
+
+            case 5:
+
+                game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE5).setValue(name_guest);
+                break;
+
+            case 6:
+
+                game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE6).setValue(name_guest);
+                break;
+
+            case 7:
+
+                game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE7).setValue(name_guest);
+                break;
+
+            case 8:
+
+                game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE8).setValue(name_guest);
+                break;
+
+            case 9:
+
+                game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE9).setValue(name_guest);
+                break;
+
+        }
+
+        players_join++;
+        players_join_ref.child(game_id).setValue(players_join);
+
+
+        Intent intent_wait = new Intent(getApplicationContext(), WaitActivity.class);
+        intent_wait.putExtra("players_join",players_join);
+        intent_wait.putExtra("game_id",game_id);
+        startActivity(intent_wait);
 
     }
 /*
@@ -91,9 +153,8 @@ public class ScanQRActivity extends AppCompatActivity implements ZXingScannerVie
     public void handleResult(Result result) {
 
         Log.i("Result",result.getText());
-        if (result.getText().equals(Integer.toString(code))){
-
-            players_join_ref.child(game_id).setValue(players_join);
+        boolean go=true;
+        if (result.getText().equals(Integer.toString(code)) || go){
 
             //segun el nombre de jugadores guardo en una referencia o en otra
 
@@ -147,6 +208,7 @@ public class ScanQRActivity extends AppCompatActivity implements ZXingScannerVie
             }
 
             players_join++;
+            players_join_ref.child(game_id).setValue(players_join);
 
 
         Intent intent_wait = new Intent(getApplicationContext(), WaitActivity.class);

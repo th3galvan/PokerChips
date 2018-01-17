@@ -55,6 +55,7 @@ public class PlayersListActivity extends AppCompatActivity {
     private DatabaseReference name_guest_ref7;
     private DatabaseReference name_guest_ref8;
     private DatabaseReference name_guest_ref9;
+    private DatabaseReference host_ready_ref;
 
 
     @Override
@@ -75,9 +76,9 @@ public class PlayersListActivity extends AppCompatActivity {
 
         //Cojo los valores que hay en firebase de los nombres de los jugadores y creo la lista
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
 
-        name_guest_ref1 = database.getReference(FirebaseReferences.NAME_GUEST_REFERENCE1);
+        name_guest_ref1 = database.getReference(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE1);
         name_guest_ref1.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -90,7 +91,7 @@ public class PlayersListActivity extends AppCompatActivity {
             }
         });
 
-        name_guest_ref2 = database.getReference(FirebaseReferences.NAME_GUEST_REFERENCE2);
+        name_guest_ref2 =  database.getReference(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE2);
         name_guest_ref2.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -103,7 +104,7 @@ public class PlayersListActivity extends AppCompatActivity {
             }
         });
 
-        name_guest_ref3 = database.getReference(FirebaseReferences.NAME_GUEST_REFERENCE3);
+        name_guest_ref3 =  database.getReference(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE3);
         name_guest_ref3.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -116,7 +117,7 @@ public class PlayersListActivity extends AppCompatActivity {
             }
         });
 
-        name_guest_ref4 = database.getReference(FirebaseReferences.NAME_GUEST_REFERENCE4);
+        name_guest_ref4 =  database.getReference(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE4);
         name_guest_ref4.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -129,7 +130,7 @@ public class PlayersListActivity extends AppCompatActivity {
             }
         });
 
-        name_guest_ref5 = database.getReference(FirebaseReferences.NAME_GUEST_REFERENCE5);
+        name_guest_ref5 =  database.getReference(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE5);
         name_guest_ref5.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -142,7 +143,7 @@ public class PlayersListActivity extends AppCompatActivity {
             }
         });
 
-        name_guest_ref6 = database.getReference(FirebaseReferences.NAME_GUEST_REFERENCE6);
+        name_guest_ref6 =  database.getReference(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE6);
         name_guest_ref6.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -155,7 +156,7 @@ public class PlayersListActivity extends AppCompatActivity {
             }
         });
 
-        name_guest_ref7 = database.getReference(FirebaseReferences.NAME_GUEST_REFERENCE7);
+        name_guest_ref7 = database.getReference(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE7);
         name_guest_ref7.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -168,7 +169,7 @@ public class PlayersListActivity extends AppCompatActivity {
             }
         });
 
-        name_guest_ref8 = database.getReference(FirebaseReferences.NAME_GUEST_REFERENCE8);
+        name_guest_ref8 = database.getReference(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE8);
         name_guest_ref8.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -181,7 +182,7 @@ public class PlayersListActivity extends AppCompatActivity {
             }
         });
 
-        name_guest_ref9 = database.getReference(FirebaseReferences.NAME_GUEST_REFERENCE9);
+        name_guest_ref9 = database.getReference(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE9);
         name_guest_ref9.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -221,6 +222,12 @@ public class PlayersListActivity extends AppCompatActivity {
        btn_finish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                boolean host_ready = true;
+
+                host_ready_ref = database.getReference(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.HOST_READY_REFERENCE);
+                host_ready_ref.setValue(host_ready);
+
 
                 Intent intent_game = new Intent(PlayersListActivity.this, GameActivity.class);
                 intent_game.putExtra("name",name);

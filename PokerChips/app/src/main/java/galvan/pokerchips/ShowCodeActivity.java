@@ -72,7 +72,9 @@ public class ShowCodeActivity extends AppCompatActivity {
         game_id = game_reference.push().getKey();
         //subimos la id a firebase para poder usarla
 
-        game_reference.child(game_id).child(FirebaseReferences.GAME_ID_REFERENCE).setValue(game_id);
+        //todo saco id fuera para poder usarla
+        //game_reference.child(game_id).child(FirebaseReferences.GAME_ID_REFERENCE).setValue(game_id);
+        game_reference.child(FirebaseReferences.GAME_ID_REFERENCE).setValue(game_id);
         game_reference.child(game_id).child(FirebaseReferences.PLAYERS_JOIN_REFERENCE).setValue(players_join);
 
         //listener para captar cuando se van introduciendo diferentes jugadores
@@ -86,9 +88,6 @@ public class ShowCodeActivity extends AppCompatActivity {
                 players_join = dataSnapshot.getValue(Integer.class);
 
                 //hasta que no se hayan incorporado todos los jugadores no se pasa a la siguiente pantalla
-                boolean go=true;
-                //todo incorporado boton para poder seguir adelante
-
                 Log.i("Xavi",String.format("players_join %d // number_players %d",players_join,number_players));
                 if (players_join==number_players){
 
