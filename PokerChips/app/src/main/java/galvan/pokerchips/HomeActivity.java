@@ -54,6 +54,7 @@ public class HomeActivity extends AppCompatActivity {
         code_reference.setValue(code);
         Button btn_new_game =(Button)findViewById(R.id.btn_new_game);
         Button btn_join_game=(Button)findViewById(R.id.btn_join_game);
+        Button btn_offline = (Button)findViewById(R.id.btn_offline);
 
         btn_new_game.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,6 +74,15 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent_join_game);
             }
         });
+        /*
+        btn_offline.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent_join_game2 = new Intent (HomeActivity.this, JoinGameActivity2.class);
+                startActivity(intent_join_game2);
+            }
+        });*/
+
 
 
     }

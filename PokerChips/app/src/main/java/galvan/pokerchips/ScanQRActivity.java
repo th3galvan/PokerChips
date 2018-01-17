@@ -26,14 +26,12 @@ public class ScanQRActivity extends AppCompatActivity implements ZXingScannerVie
 
     private ZXingScannerView scannerView;
     private FirebaseDatabase database;
-    private DatabaseReference players_join_ref;
     private int code;
     private String name_guest;
     private DatabaseReference game_id_ref;
     private String game_id="";
     private DatabaseReference game_ref;
-    private boolean Scan_notify;
-    private DatabaseReference Scan_notify_ref;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,6 +56,7 @@ public class ScanQRActivity extends AppCompatActivity implements ZXingScannerVie
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 game_id = dataSnapshot.getValue(String.class);
+                Log.i("Xavi",String.format("%s",game_id));
             }
 
             @Override
@@ -66,104 +65,21 @@ public class ScanQRActivity extends AppCompatActivity implements ZXingScannerVie
             }
         });
 
+        Log.i("Xavi",String.format("%s",game_id));
 
-        players_join_ref = database.getReference(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.PLAYERS_JOIN_REFERENCE);
-        players_join_ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                players_join = dataSnapshot.getValue(Integer.class);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-        //segun el nombre de jugadores guardo en una referencia o en otra
 
 
     }
-/*
-    @Override
-    protected void onPause() {
-        super.onPause();
 
-        scannerView.stopCamera();
-    }*/
 
     @Override
     public void handleResult(Result result) {
 
-        //Cojo id de la partida
-
-
-
-        Log.i("Result",result.getText());
-        boolean go=true;
-        if (result.getText().equals(Integer.toString(code))){
-
-            //segun el nombre de jugadores guardo en una referencia o en otra
-
-            switch (players_join){
-
-                case 1:
-
-                    game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE1).setValue(name_guest);
-                    break;
-
-                case 2:
-
-                    game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE2).setValue(name_guest);
-                    break;
-
-                case 3:
-
-                    game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE3).setValue(name_guest);
-                    break;
-
-                case 4:
-
-                    game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE4).setValue(name_guest);
-                    break;
-
-                case 5:
-
-                    game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE5).setValue(name_guest);
-                    break;
-
-                case 6:
-
-                    game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE6).setValue(name_guest);
-                    break;
-
-                case 7:
-
-                    game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE7).setValue(name_guest);
-                    break;
-
-                case 8:
-
-                    game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE8).setValue(name_guest);
-                    break;
-
-                case 9:
-
-                    game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE9).setValue(name_guest);
-                    break;
-
-            }
-
-            players_join++;
-            players_join_ref.child(game_id).setValue(players_join);
-
 
         Intent intent_wait = new Intent(getApplicationContext(), WaitActivity.class);
-            intent_wait.putExtra("players_join",players_join);
+            intent_wait.putExtra("game_id",game_id);
+            intent_wait.putExtra("name_guest",name_guest);
         startActivity(intent_wait);}
-        /*
-        else{
-            scannerView.startCamera();
-        }*/
-    }
+
+
 }

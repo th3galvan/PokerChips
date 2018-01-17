@@ -106,6 +106,14 @@ public class GameActivity extends AppCompatActivity {
     //private PlayerItemAdapter adapter; lo sustituimos por firebase adapter
     private FirebaseListAdapter<PlayerItems> adapter;
     private ListView playerlist;
+/*
+    //En el manifest
+    <uses-permission android:name="android.permission.VIBRATE"/>
+
+    //donde tenga que zumbar (vibracion simple)
+    Vibrator v = (Vibrator)getSystemService(VIBRATOR_SERVICE);
+    v.vibrate(3000);*/
+
 
    /* public PlayerItems(int i,
                        String name,         int chips,      boolean dealer,

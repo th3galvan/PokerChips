@@ -80,6 +80,7 @@ public class ShowCodeActivity extends AppCompatActivity {
         game_id_ref.setValue(game_id);
 
         //todo saco id fuera para poder usarla
+        game_reference = database.getReference(FirebaseReferences.GAME_REFERENCE);
         //game_reference.child(game_id).child(FirebaseReferences.GAME_ID_REFERENCE).setValue(game_id);
         game_reference.child(game_id).child(FirebaseReferences.PLAYERS_JOIN_REFERENCE).setValue(players_join);
 
@@ -87,6 +88,7 @@ public class ShowCodeActivity extends AppCompatActivity {
         //metemos dentro el intent para que sea automatico
 
         //todo para salir del paso
+
         boolean host_ready = false;
         host_ready_ref = database.getReference(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.HOST_READY_REFERENCE);
         host_ready_ref.setValue(host_ready);
@@ -101,6 +103,10 @@ public class ShowCodeActivity extends AppCompatActivity {
                 //hasta que no se hayan incorporado todos los jugadores no se pasa a la siguiente pantalla
                 Log.i("Xavi",String.format("players_join %d // number_players %d",players_join,number_players));
                 if (players_join==number_players){
+
+                    //renuevo para que todos los jugadores obtengan el valor
+                    players_join_ref.removeValue();
+                    players_join_ref.setValue(number_players);
 
                     Intent intent_list = new Intent(ShowCodeActivity.this, PlayersListActivity.class);
                     intent_list.putExtra("name", name);

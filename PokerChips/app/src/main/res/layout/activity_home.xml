@@ -7,13 +7,13 @@
         android:id="@+id/btn_new_game"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/btn_join_game"
-        android:layout_alignEnd="@+id/btn_join_game"
-        android:layout_alignLeft="@+id/btn_join_game"
-        android:layout_alignRight="@+id/btn_join_game"
-        android:layout_alignStart="@+id/btn_join_game"
         android:layout_marginBottom="45dp"
-        android:text="@string/NewGame" />
+        android:text="@string/NewGame"
+        android:layout_above="@+id/btn_join_game"
+        android:layout_alignRight="@+id/btn_join_game"
+        android:layout_alignEnd="@+id/btn_join_game"
+        android:layout_marginRight="76dp"
+        android:layout_marginEnd="76dp" />
 
     <Button
         android:id="@+id/btn_join_game"
@@ -23,5 +23,15 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="82dp"
         android:text="@string/JoinGame" />
+
+    <Button
+        android:id="@+id/btn_offline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/btn_new_game"
+        android:layout_alignBottom="@+id/btn_new_game"
+        android:layout_toEndOf="@+id/btn_join_game"
+        android:layout_toRightOf="@+id/btn_join_game"
+        android:text="Button" />
 
 </RelativeLayout>
