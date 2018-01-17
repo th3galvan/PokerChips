@@ -1696,8 +1696,8 @@ private void Message0bet() {
 
                 Log.i("XaviVilaseca",String.format("%d // %d", playersin, playerscall));
                 if (playersin== playerscall){nState=2;}
-                else {}
-                break;
+                else {break;}
+
                 //RESTART
             case 2:
 
@@ -1715,8 +1715,8 @@ private void Message0bet() {
                 Log.i("Players",String.format("%d // %d", playersin, playerscall));
                 Log.i("XaviVilaseca","3");
                 if (playersin == playerscall){nState=4;}
-                else {}
-                break;
+                else {break;}
+
                 //RESTART
             case 4:
 
@@ -1736,8 +1736,8 @@ private void Message0bet() {
                 //Log.i("XaviVilaseca",String.format("%d // %d", playersin, playerscall));
                 Log.i("XaviVilaseca","5");
                 if (playersin== playerscall){nState=6;}
-                else {}
-                break;
+                else {break;}
+
                 //RESTART
             case 6:
 
@@ -1875,6 +1875,7 @@ private void Message0bet() {
                     builder4.create().show();
                     cont_playersin++;
                     setDataBaseChanges();
+                    break;
                     }
 
                 else {
@@ -1882,7 +1883,6 @@ private void Message0bet() {
                     winner2++;
                     setDataBaseChanges();
                 }
-                break;
             case 6:
                 if(PlayerDataBase[6].isIn() & !(playersin==cont_playersin)){
                     AlertDialog.Builder builder4= new AlertDialog.Builder(this);
@@ -1890,6 +1890,7 @@ private void Message0bet() {
                     builder4.create().show();
                     cont_playersin++;
                     setDataBaseChanges();
+                    break;
                     }
 
                 else {
@@ -1897,7 +1898,7 @@ private void Message0bet() {
                     winner2++;
                     setDataBaseChanges();
                 }
-                break;
+
             case 7:
 
                 if(PlayerDataBase[7].isIn() & !(playersin==cont_playersin)){
@@ -1906,6 +1907,7 @@ private void Message0bet() {
                     builder4.create().show();
                     cont_playersin++;
                     setDataBaseChanges();
+                    break;
                     }
 
                 else {
@@ -1914,7 +1916,7 @@ private void Message0bet() {
                     setDataBaseChanges();
                 }
 
-                break;
+
             case 8:
                 if(PlayerDataBase[8].isIn() & !(playersin==cont_playersin)){
                     AlertDialog.Builder builder4= new AlertDialog.Builder(this);
@@ -1922,6 +1924,7 @@ private void Message0bet() {
                     builder4.create().show();
                     cont_playersin++;
                     setDataBaseChanges();
+                    break;
                     }
 
                 else {
@@ -1929,7 +1932,6 @@ private void Message0bet() {
                     winner2++;
                     setDataBaseChanges();
                 }
-                break;
             case 9:
 
                 if(PlayerDataBase[9].isIn() & !(playersin==cont_playersin)){
@@ -1955,7 +1957,7 @@ private void Message0bet() {
 
                 }
                 setDataBaseChanges();
-                break;
+
 
         }
 

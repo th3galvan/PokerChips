@@ -9,6 +9,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import galvan.pokerchips.Datos.FirebaseReferences;
+
 /**
  * Created by xvilaseca on 09/01/2018.
  */
@@ -29,6 +34,8 @@ public class SetGameActivity extends AppCompatActivity {
     private String string_time_big_up;
     private String string_change_value_big;
 
+    private String game_id;
+
     private int code;
     private int number_players;
     private int initial_chips;
@@ -43,6 +50,8 @@ public class SetGameActivity extends AppCompatActivity {
     private boolean empty_time;
     private boolean empty_change;
     private boolean max_players;
+    private DatabaseReference game_id_ref;
+
 
 
     @Override
@@ -53,6 +62,14 @@ public class SetGameActivity extends AppCompatActivity {
 
         Bundle code_receive = getIntent().getExtras();
         code = code_receive.getInt("code");
+        game_id = code_receive.getString("game_id");
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+        game_id_ref = database.getReference(FirebaseReferences.GAME_ID_REFERENCE);
+        game_id_ref.removeValue();
+        game_id_ref.setValue(game_id);
+
 
         //Cogemos todos los edits
         edit_initial_chips = (EditText)findViewById(R.id.edit_initial_chips);

@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -49,6 +50,10 @@ public class ShowCodeActivity extends AppCompatActivity {
     private String game_id;
     private DatabaseReference players_join_ref;
     private DatabaseReference host_ready_ref;
+    private DatabaseReference game_id_ref;
+    private DatabaseReference Scan_notify_ref;
+
+    private boolean Scan_notify;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,25 +69,27 @@ public class ShowCodeActivity extends AppCompatActivity {
         time_big_up =code_receive.getInt("frecuency");
         change_value_big =code_receive.getInt("change");
         name =code_receive.getString("name");
+        game_id = code_receive.getString("game_id");
 
         //aqui genero una Key en firebase aleatoria y me la guardo en game_id, cada id correspondra con una partida diferente
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
-        game_reference = database.getReference(FirebaseReferences.GAME_REFERENCE);
-        //cojemos id aleatoria
-        game_id = game_reference.push().getKey();
-        //subimos la id a firebase para poder usarla
+
+        game_id_ref = database.getReference(FirebaseReferences.GAME_ID_REFERENCE);
+        game_id_ref.removeValue();
+        game_id_ref.setValue(game_id);
 
         //todo saco id fuera para poder usarla
         //game_reference.child(game_id).child(FirebaseReferences.GAME_ID_REFERENCE).setValue(game_id);
-        game_reference.child(FirebaseReferences.GAME_ID_REFERENCE).child(game_id).setValue(game_id);
-        game_reference.child(FirebaseReferences.GAME_ID_REFERENCE).setValue(game_id);
         game_reference.child(game_id).child(FirebaseReferences.PLAYERS_JOIN_REFERENCE).setValue(players_join);
+
+        //listener para captar cuando se van introduciendo diferentes jugadores
+        //metemos dentro el intent para que sea automatico
+
+        //todo para salir del paso
         boolean host_ready = false;
         host_ready_ref = database.getReference(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.HOST_READY_REFERENCE);
         host_ready_ref.setValue(host_ready);
-        //listener para captar cuando se van introduciendo diferentes jugadores
-        //metemos dentro el intent para que sea automatico
 
         players_join_ref = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.PLAYERS_JOIN_REFERENCE);
         players_join_ref.addValueEventListener(new ValueEventListener() {

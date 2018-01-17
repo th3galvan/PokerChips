@@ -3,6 +3,7 @@ package galvan.pokerchips;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -13,6 +14,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import galvan.pokerchips.Datos.FirebaseReferences;
@@ -27,6 +29,9 @@ public class JoinGameActivity extends AppCompatActivity {
     private String name_guest;
     private boolean empty=false;
     private int code;
+    private String game_id;
+    private DatabaseReference game_id_ref;
+    private FirebaseDatabase database;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,8 +40,24 @@ public class JoinGameActivity extends AppCompatActivity {
 
         Bundle code_receive = getIntent().getExtras();
         code = code_receive.getInt("code");
+        game_id = code_receive.getString("game_id");
 
         edit_name = (EditText)findViewById(R.id.editText_nombre);
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+        game_id_ref = database.getReference(FirebaseReferences.GAME_ID_REFERENCE);
+        game_id_ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                game_id = dataSnapshot.getValue(String.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         start();
 
@@ -63,9 +84,12 @@ public class JoinGameActivity extends AppCompatActivity {
 
                 if (!empty){
 
+
+
                 Intent intent_wait = new Intent(getApplicationContext(), ScanQRActivity.class);
                     intent_wait.putExtra("code",code);
                     intent_wait.putExtra("name_guest",name_guest);
+                    intent_wait.putExtra("game_id",game_id);
                 startActivity(intent_wait);}
 
             }

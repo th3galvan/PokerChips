@@ -35,6 +35,9 @@ public class ModeGameActivity extends AppCompatActivity {
     private EditText edit_players_fast;
     private EditText edit_name_fast;
     private boolean max_players;
+    private DatabaseReference game_reference;
+    private String game_id;
+    private DatabaseReference game_id_ref;
 
 
     @Override
@@ -68,6 +71,14 @@ public class ModeGameActivity extends AppCompatActivity {
         txt_title_players.setVisibility(View.INVISIBLE);
         edit_name_fast.setVisibility(View.INVISIBLE);
         edit_players_fast.setVisibility(View.INVISIBLE);
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+        game_reference = database.getReference(FirebaseReferences.GAME_REFERENCE);
+        //cojemos id aleatoria
+        game_id = game_reference.push().getKey();
+        game_id_ref = database.getReference(FirebaseReferences.GAME_ID_REFERENCE);
+        game_id_ref.setValue(game_id);
 
         rb_fast.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,6 +154,7 @@ public class ModeGameActivity extends AppCompatActivity {
                         fastgame.putExtra("bigblind",big);
                         fastgame.putExtra("frecuency",time_big_up);
                         fastgame.putExtra("change",change_value_big);
+                        fastgame.putExtra("game_id",game_id);
                         startActivity(fastgame);
 
                     }}
@@ -151,6 +163,7 @@ public class ModeGameActivity extends AppCompatActivity {
 
                     Intent customgame = new Intent(getApplicationContext(), SetGameActivity.class);
                     customgame.putExtra("code",code);
+                    customgame.putExtra("game_id",game_id);
                     startActivity(customgame);
                 }
             }

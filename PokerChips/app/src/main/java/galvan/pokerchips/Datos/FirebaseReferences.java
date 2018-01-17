@@ -97,5 +97,8 @@ public class FirebaseReferences {
     //PlayerListActivity
     final public static String HOST_READY_REFERENCE ="host_ready";
 
+    //ScanActivity
+    final public static String SCAN_NOTIFY_REFERENCE = "Scan_notify";
+
 
 }
