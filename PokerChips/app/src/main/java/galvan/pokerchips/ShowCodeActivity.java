@@ -76,10 +76,18 @@ public class ShowCodeActivity extends AppCompatActivity {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
 
+
         game_id_ref = database.getReference(FirebaseReferences.GAME_ID_REFERENCE);
         game_id_ref.removeValue();
         game_id_ref.setValue(game_id);
         game_reference = database.getReference(FirebaseReferences.GAME_REFERENCE);
+
+        game_reference.child(game_id).child(FirebaseReferences.NUMBER_PLAYERS_REFERENCE).setValue(number_players);
+        game_reference.child(game_id).child(FirebaseReferences.INITIAL_CHIPS_REFERENCE).setValue(initial_chips);
+        game_reference.child(game_id).child(FirebaseReferences.BIG_REFERENCE).setValue(big);
+        game_reference.child(game_id).child(FirebaseReferences.TIME_BIG_UP_REFERENCE).setValue(time_big_up);
+        game_reference.child(game_id).child(FirebaseReferences.CHANGE_VALUE_BIG_REFERENCE).setValue(change_value_big);
+        game_reference.child(game_id).child(FirebaseReferences.NAME_REFERENCE).setValue(name);
 
         //todo saco id fuera para poder usarla
         game_reference = database.getReference(FirebaseReferences.GAME_REFERENCE);
@@ -106,18 +114,18 @@ public class ShowCodeActivity extends AppCompatActivity {
 
                 //hasta que no se hayan incorporado todos los jugadores no se pasa a la siguiente pantalla
                 Log.i("Xavi",String.format("players_join %d // number_players %d",players_join,number_players));
-                if (players_join-1==number_players){
+                if (players_join==number_players-1){
 
                     //renuevo para que todos los jugadores obtengan el valor
 
 
                     Intent intent_list = new Intent(ShowCodeActivity.this, PlayersListActivity.class);
-                    intent_list.putExtra("name", name);
+                   /* intent_list.putExtra("name", name);
                     intent_list.putExtra("playersnumber", number_players);
                     intent_list.putExtra("initial_chips", initial_chips);
                     intent_list.putExtra("bigblind", big);
                     intent_list.putExtra("frecuency", time_big_up);
-                    intent_list.putExtra("change", change_value_big);
+                    intent_list.putExtra("change", change_value_big);*/
                     intent_list.putExtra("game_id",game_id);
                     startActivity(intent_list);}
                 else{players_join_change = true;}
@@ -129,7 +137,7 @@ public class ShowCodeActivity extends AppCompatActivity {
 
             }
         });
-
+//todo nose como ira esto, he puesto while para que no salte el add
         while (players_join_change){
 
             players_join_ref.removeValue();

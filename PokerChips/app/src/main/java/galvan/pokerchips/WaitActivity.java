@@ -31,6 +31,7 @@ public class WaitActivity extends AppCompatActivity {
     private Integer players_join;
     private DatabaseReference game_ref;
     private boolean inside = true;
+    private DatabaseReference inside_ref;
 
 
     @Override
@@ -63,6 +64,20 @@ public class WaitActivity extends AppCompatActivity {
 
             }
         });*/
+
+        inside_ref = database.getReference(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.INSIDE_REFERENCE);
+        inside_ref.setValue(inside);
+        inside_ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                inside = dataSnapshot.getValue(boolean.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         if (inside) {
             players_join=1;
@@ -139,6 +154,7 @@ public class WaitActivity extends AppCompatActivity {
                 host_ready = dataSnapshot.getValue(boolean.class);
                 if (host_ready) {
                     Intent intent_game = new Intent(getApplicationContext(), GameActivity.class);
+                    intent_game.putExtra("game_id",game_id);
                     startActivity(intent_game);
                 }
             }

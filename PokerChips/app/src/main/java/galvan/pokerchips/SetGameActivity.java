@@ -161,6 +161,7 @@ public class SetGameActivity extends AppCompatActivity {
                     localgame.putExtra("bigblind",big);
                     localgame.putExtra("frecuency",time_big_up);
                     localgame.putExtra("change",change_value_big);
+                    localgame.putExtra("game_id",game_id);
                     startActivity(localgame);}
             }
         });
@@ -245,6 +246,8 @@ public class SetGameActivity extends AppCompatActivity {
                     generateqr.putExtra("bigblind",big);
                     generateqr.putExtra("frecuency",time_big_up);
                     generateqr.putExtra("change",change_value_big);
+                    generateqr.putExtra("game_id",game_id);
+
                 startActivity(generateqr);}
             }
         });

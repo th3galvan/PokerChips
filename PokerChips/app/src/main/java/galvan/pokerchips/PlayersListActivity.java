@@ -56,6 +56,7 @@ public class PlayersListActivity extends AppCompatActivity {
     private DatabaseReference name_guest_ref8;
     private DatabaseReference name_guest_ref9;
     private DatabaseReference host_ready_ref;
+    private DatabaseReference inside_ref;
 
 
     @Override
@@ -77,6 +78,8 @@ public class PlayersListActivity extends AppCompatActivity {
         //Cojo los valores que hay en firebase de los nombres de los jugadores y creo la lista
 
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        inside_ref = database.getReference(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.INSIDE_REFERENCE);
+        inside_ref.setValue(true);
 
         name_guest_ref1 = database.getReference(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE1);
         name_guest_ref1.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -230,12 +233,12 @@ public class PlayersListActivity extends AppCompatActivity {
 
 
                 Intent intent_game = new Intent(PlayersListActivity.this, GameActivity.class);
-                intent_game.putExtra("name",name);
+                /*intent_game.putExtra("name",name);
                 intent_game.putExtra("playersnumber",number_players);
                 intent_game.putExtra("initial_chips",initial_chips);
                 intent_game.putExtra("bigblind",big);
                 intent_game.putExtra("frecuency",time_big_up);
-                intent_game.putExtra("change",change_value_big);
+                intent_game.putExtra("change",change_value_big);*/
                 intent_game.putExtra("game_id",game_id);
                 startActivity(intent_game);
             }

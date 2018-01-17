@@ -315,12 +315,12 @@ public class GameActivity extends AppCompatActivity {
         setContentView(R.layout.activity_game);
 
         Bundle code_receive = getIntent().getExtras();
-        number_players =code_receive.getInt("playersnumber");
+        /*number_players =code_receive.getInt("playersnumber");
         initial_chips =code_receive.getInt("initial_chips");
         big =code_receive.getInt("bigblind");
         time_big_up =code_receive.getInt("frecuency");
         change_value_big =code_receive.getInt("change");
-        name_host =code_receive.getString("name");
+        name_host =code_receive.getString("name");*/
         game_id=code_receive.getString("game_id");
 
 
@@ -958,6 +958,79 @@ public class GameActivity extends AppCompatActivity {
             }
         });
 
+
+        game_reference.child(game_id).child(FirebaseReferences.NUMBER_PLAYERS_REFERENCE).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                number_players = dataSnapshot.getValue(Integer.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        game_reference.child(game_id).child(FirebaseReferences.INITIAL_CHIPS_REFERENCE).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                initial_chips = dataSnapshot.getValue(Integer.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        game_reference.child(game_id).child(FirebaseReferences.BIG_REFERENCE).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                big = dataSnapshot.getValue(Integer.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        game_reference.child(game_id).child(FirebaseReferences.TIME_BIG_UP_REFERENCE).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                time_big_up = dataSnapshot.getValue(Integer.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        game_reference.child(game_id).child(FirebaseReferences.CHANGE_VALUE_BIG_REFERENCE).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                change_value_big = dataSnapshot.getValue(Integer.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        game_reference.child(game_id).child(FirebaseReferences.NAME_REFERENCE).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                name_host = dataSnapshot.getValue(String.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
         //hacmeos push de los datos dentro de la id de nuestra partida
 
         game_reference.child(game_id).child(FirebaseReferences.POS_REFERENCE).setValue(pos);
@@ -992,6 +1065,14 @@ public class GameActivity extends AppCompatActivity {
 
         game_reference.child(game_id).child(FirebaseReferences.STRING_BIG_REFERENCE).setValue(string_big);
         game_reference.child(game_id).child(FirebaseReferences.STRING_BET_REFERENCE).setValue(string_bet);
+
+        //Variables personalizadas por los jugadores
+        game_reference.child(game_id).child(FirebaseReferences.NUMBER_PLAYERS_REFERENCE).setValue(number_players);
+        game_reference.child(game_id).child(FirebaseReferences.INITIAL_CHIPS_REFERENCE).setValue(initial_chips);
+        game_reference.child(game_id).child(FirebaseReferences.BIG_REFERENCE).setValue(big);
+        game_reference.child(game_id).child(FirebaseReferences.TIME_BIG_UP_REFERENCE).setValue(time_big_up);
+        game_reference.child(game_id).child(FirebaseReferences.CHANGE_VALUE_BIG_REFERENCE).setValue(change_value_big);
+        game_reference.child(game_id).child(FirebaseReferences.NAME_REFERENCE).setValue(name_host);
 
 
         //Players
@@ -2338,6 +2419,13 @@ private void Message0bet() {
 
         game_reference.child(game_id).child(FirebaseReferences.STRING_BIG_REFERENCE).setValue(string_big);
         game_reference.child(game_id).child(FirebaseReferences.STRING_BET_REFERENCE).setValue(string_bet);
+
+        game_reference.child(game_id).child(FirebaseReferences.NUMBER_PLAYERS_REFERENCE).setValue(number_players);
+        game_reference.child(game_id).child(FirebaseReferences.INITIAL_CHIPS_REFERENCE).setValue(initial_chips);
+        game_reference.child(game_id).child(FirebaseReferences.BIG_REFERENCE).setValue(big);
+        game_reference.child(game_id).child(FirebaseReferences.TIME_BIG_UP_REFERENCE).setValue(time_big_up);
+        game_reference.child(game_id).child(FirebaseReferences.CHANGE_VALUE_BIG_REFERENCE).setValue(change_value_big);
+        game_reference.child(game_id).child(FirebaseReferences.NAME_REFERENCE).setValue(name_host);
 
 
         //Players

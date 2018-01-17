@@ -101,4 +101,5 @@ public class FirebaseReferences {
     final public static String SCAN_NOTIFY_REFERENCE = "Scan_notify";
 
 
+    public static final String INSIDE_REFERENCE = "inside";
 }
