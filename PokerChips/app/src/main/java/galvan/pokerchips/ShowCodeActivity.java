@@ -48,6 +48,7 @@ public class ShowCodeActivity extends AppCompatActivity {
     private DatabaseReference game_reference;
     private String game_id;
     private DatabaseReference players_join_ref;
+    private DatabaseReference host_ready_ref;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -77,7 +78,9 @@ public class ShowCodeActivity extends AppCompatActivity {
         game_reference.child(FirebaseReferences.GAME_ID_REFERENCE).child(game_id).setValue(game_id);
         game_reference.child(FirebaseReferences.GAME_ID_REFERENCE).setValue(game_id);
         game_reference.child(game_id).child(FirebaseReferences.PLAYERS_JOIN_REFERENCE).setValue(players_join);
-
+        boolean host_ready = false;
+        host_ready_ref = database.getReference(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.HOST_READY_REFERENCE);
+        host_ready_ref.setValue(host_ready);
         //listener para captar cuando se van introduciendo diferentes jugadores
         //metemos dentro el intent para que sea automatico
 

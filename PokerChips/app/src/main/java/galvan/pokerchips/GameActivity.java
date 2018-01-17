@@ -1066,125 +1066,129 @@ public class GameActivity extends AppCompatActivity {
 
             }
         });
-        PlayerItemRef2 = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.LIST_REFERENCE).child(FirebaseReferences.PLAYER_ITEM_REFERENCE2);
-        PlayerItemRef2.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                PlayerDataBase[2] = dataSnapshot.getValue(PlayerItems.class);
-                refresh();
+        if(playernumber>1) {
+            PlayerItemRef2 = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.LIST_REFERENCE).child(FirebaseReferences.PLAYER_ITEM_REFERENCE2);
+            PlayerItemRef2.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    PlayerDataBase[2] = dataSnapshot.getValue(PlayerItems.class);
+                    refresh();
 
-            }
+                }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
-        PlayerItemRef3 = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.LIST_REFERENCE).child(FirebaseReferences.PLAYER_ITEM_REFERENCE3);
-        PlayerItemRef3.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                PlayerDataBase[3] = dataSnapshot.getValue(PlayerItems.class);
-                refresh();
+                }
+            });
+            if(playernumber>2){
+            PlayerItemRef3 = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.LIST_REFERENCE).child(FirebaseReferences.PLAYER_ITEM_REFERENCE3);
+            PlayerItemRef3.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    PlayerDataBase[3] = dataSnapshot.getValue(PlayerItems.class);
+                    refresh();
 
-            }
+                }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+            if(playernumber>3){
+            PlayerItemRef4 = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.LIST_REFERENCE).child(FirebaseReferences.PLAYER_ITEM_REFERENCE4);
+            PlayerItemRef4.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    PlayerDataBase[4] = dataSnapshot.getValue(PlayerItems.class);
+                    refresh();
 
-        PlayerItemRef4 = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.LIST_REFERENCE).child(FirebaseReferences.PLAYER_ITEM_REFERENCE4);
-        PlayerItemRef4.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                PlayerDataBase[4] = dataSnapshot.getValue(PlayerItems.class);
-                refresh();
+                }
 
-            }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                }
+            });
+                if(playernumber>4){
+            PlayerItemRef5 = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.LIST_REFERENCE).child(FirebaseReferences.PLAYER_ITEM_REFERENCE5);
+            PlayerItemRef5.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    PlayerDataBase[5] = dataSnapshot.getValue(PlayerItems.class);
+                    refresh();
 
-            }
-        });
+                }
 
-        PlayerItemRef5 = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.LIST_REFERENCE).child(FirebaseReferences.PLAYER_ITEM_REFERENCE5);
-        PlayerItemRef5.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                PlayerDataBase[5] = dataSnapshot.getValue(PlayerItems.class);
-                refresh();
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
+                }
+            });
+            if(playernumber>5)
+            PlayerItemRef6 = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.LIST_REFERENCE).child(FirebaseReferences.PLAYER_ITEM_REFERENCE6);
+            PlayerItemRef6.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    PlayerDataBase[6] = dataSnapshot.getValue(PlayerItems.class);
+                    refresh();
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                }
 
-            }
-        });
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-        PlayerItemRef6 = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.LIST_REFERENCE).child(FirebaseReferences.PLAYER_ITEM_REFERENCE6);
-        PlayerItemRef6.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                PlayerDataBase[6] = dataSnapshot.getValue(PlayerItems.class);
-                refresh();
+                }
+            });
+            if(playernumber>6){
+            PlayerItemRef7 = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.LIST_REFERENCE).child(FirebaseReferences.PLAYER_ITEM_REFERENCE7);
+            PlayerItemRef7.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    PlayerDataBase[7] = dataSnapshot.getValue(PlayerItems.class);
+                    refresh();
 
-            }
+                }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+            if(playernumber>7){
+            PlayerItemRef8 = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.LIST_REFERENCE).child(FirebaseReferences.PLAYER_ITEM_REFERENCE8);
+            PlayerItemRef8.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    PlayerDataBase[8] = dataSnapshot.getValue(PlayerItems.class);
+                    refresh();
 
-        PlayerItemRef7 = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.LIST_REFERENCE).child(FirebaseReferences.PLAYER_ITEM_REFERENCE7);
-        PlayerItemRef7.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                PlayerDataBase[7] = dataSnapshot.getValue(PlayerItems.class);
-                refresh();
+                }
 
-            }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                }
+            });
+            if(playernumber>8){
+            PlayerItemRef9 = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.LIST_REFERENCE).child(FirebaseReferences.PLAYER_ITEM_REFERENCE9);
+            PlayerItemRef9.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    PlayerDataBase[9] = dataSnapshot.getValue(PlayerItems.class);
+                    refresh();
 
-            }
-        });
+                }
 
-        PlayerItemRef8 = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.LIST_REFERENCE).child(FirebaseReferences.PLAYER_ITEM_REFERENCE8);
-        PlayerItemRef8.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                PlayerDataBase[8] = dataSnapshot.getValue(PlayerItems.class);
-                refresh();
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
+                }
+            });
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
-
-        PlayerItemRef9 = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.LIST_REFERENCE).child(FirebaseReferences.PLAYER_ITEM_REFERENCE9);
-        PlayerItemRef9.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                PlayerDataBase[9] = dataSnapshot.getValue(PlayerItems.class);
-                refresh();
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
+        }}}}}}}
 
 
         //BTN+ Chips
