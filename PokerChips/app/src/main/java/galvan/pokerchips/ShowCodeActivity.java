@@ -106,7 +106,7 @@ public class ShowCodeActivity extends AppCompatActivity {
 
                 //hasta que no se hayan incorporado todos los jugadores no se pasa a la siguiente pantalla
                 Log.i("Xavi",String.format("players_join %d // number_players %d",players_join,number_players));
-                if (players_join==number_players){
+                if (players_join-1==number_players){
 
                     //renuevo para que todos los jugadores obtengan el valor
 
