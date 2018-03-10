@@ -37,6 +37,7 @@ public class ModeGameActivity extends AppCompatActivity {
     private DatabaseReference game_reference;
     private String game_id;
     private DatabaseReference game_id_ref;
+    private boolean min_players;
 
 
     @Override
@@ -56,8 +57,8 @@ public class ModeGameActivity extends AppCompatActivity {
 
         final RadioButton rb_fast = (RadioButton)findViewById(R.id.rb_fast);
         final RadioButton rb_custom = (RadioButton)findViewById(R.id.rb_custom);
-        Button btn_finish = (Button)findViewById(R.id.btn_finish2);
-        Button btn_local =(Button)findViewById(R.id.btn_single);
+        final Button btn_finish = (Button)findViewById(R.id.btn_finish2);
+        final Button btn_local =(Button)findViewById(R.id.btn_single);
         final TextView txt_title_name = (TextView)findViewById(R.id.txt_title_name);
         final TextView txt_title_players = (TextView)findViewById(R.id.txt_title_players);
         edit_players_fast = (EditText)findViewById(R.id.edit_players_fast);
@@ -67,6 +68,9 @@ public class ModeGameActivity extends AppCompatActivity {
         txt_title_players.setVisibility(View.INVISIBLE);
         edit_name_fast.setVisibility(View.INVISIBLE);
         edit_players_fast.setVisibility(View.INVISIBLE);
+
+        btn_finish.setVisibility(View.INVISIBLE);
+        btn_local.setVisibility(View.INVISIBLE);
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
@@ -83,6 +87,10 @@ public class ModeGameActivity extends AppCompatActivity {
                 edit_name_fast.setVisibility(View.VISIBLE);
                 edit_players_fast.setVisibility(View.VISIBLE);
 
+                btn_finish.setVisibility(View.VISIBLE);
+                btn_finish.setText(R.string.ONLINE);
+                btn_local.setVisibility(View.VISIBLE);
+
             }
         });
         rb_custom.setOnClickListener(new View.OnClickListener() {
@@ -94,6 +102,10 @@ public class ModeGameActivity extends AppCompatActivity {
                 txt_title_players.setVisibility(View.INVISIBLE);
                 edit_name_fast.setVisibility(View.INVISIBLE);
                 edit_players_fast.setVisibility(View.INVISIBLE);
+
+                btn_finish.setVisibility(View.VISIBLE);
+                btn_finish.setText(R.string.next);
+                btn_local.setVisibility(View.INVISIBLE);
 
             }
         });
@@ -120,6 +132,7 @@ public class ModeGameActivity extends AppCompatActivity {
                     }
                     else{empty_players=false;}
 
+                    //si se selecciona mas de 10 jugadores no entra en partida y sale un mensaje de alerta
                     if (number_players>10){
                         max_players=true;
                         AlertDialog.Builder builder= new AlertDialog.Builder(ModeGameActivity.this);
@@ -129,7 +142,18 @@ public class ModeGameActivity extends AppCompatActivity {
 
                     else{max_players=false;}
 
-                    if (!empty_players & !empty_name  & !max_players){
+                    //si se selecciona menos de 2 jugadores no entra en partida y sale un mensaje de alerta
+                    if (number_players<=1){
+                        min_players=true;
+                        AlertDialog.Builder builder= new AlertDialog.Builder(ModeGameActivity.this);
+                        builder.setTitle(R.string.players);
+                        builder.setMessage(R.string.minPlayers);  //añadido recurso
+                        builder.create().show();}
+
+                    else{min_players=false;}
+
+
+                    if (!empty_players & !empty_name  & !max_players & !min_players){
 
                         initial_chips=1500;
                         big=10;
@@ -182,6 +206,7 @@ public class ModeGameActivity extends AppCompatActivity {
                     }
                     else{empty_players=false;}
 
+                    //si se selecciona mas de 10 jugadores no entra en partida y sale un mensaje de alerta
                     if (number_players>10){
                         max_players=true;
                         AlertDialog.Builder builder= new AlertDialog.Builder(ModeGameActivity.this);
@@ -191,14 +216,24 @@ public class ModeGameActivity extends AppCompatActivity {
 
                     else{max_players=false;}
 
-                    if (!empty_players & !empty_name  & !max_players){
+                    //si se selecciona menos de 2 jugadores no entra en partida y sale un mensaje de alerta
+                    if (number_players<=1){
+                        min_players=true;
+                        AlertDialog.Builder builder= new AlertDialog.Builder(ModeGameActivity.this);
+                        builder.setTitle(R.string.players);
+                        builder.setMessage(R.string.minPlayers);  //añadido recurso
+                        builder.create().show();}
+
+                    else{min_players=false;}
+
+                    if (!empty_players & !empty_name  & !max_players & !min_players){
 
                         initial_chips=1500;
                         big=10;
                         time_big_up=10;
                         change_value_big=10;
 
-                        
+
                         Intent fastgame = new Intent(getApplicationContext(), ShowCodeActivity.class);
                         fastgame.putExtra("name",name);
                         fastgame.putExtra("playersnumber",number_players);

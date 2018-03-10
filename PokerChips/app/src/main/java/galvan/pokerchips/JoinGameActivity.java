@@ -62,9 +62,9 @@ public class JoinGameActivity extends AppCompatActivity {
                 if (!empty){
 
 
-                Intent intent_wait = new Intent(getApplicationContext(), ScanQRActivity.class);
+                    Intent intent_wait = new Intent(getApplicationContext(), ScanQRActivity.class);
                     intent_wait.putExtra("name_guest",name_guest);
-                startActivity(intent_wait);}
+                    startActivity(intent_wait);}
 
             }
         });

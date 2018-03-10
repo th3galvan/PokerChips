@@ -15,7 +15,6 @@
     <string name="fold">NO ANAR</string>
     <string name="CustomGame">Partida Personalitzada</string>
     <string name="EnterGame">Entrar a partida</string>
-    <string name="Error"></string>
     <string name="GenerateCode">Generar Codi</string>
     <string name="JoinGame">Unir-te a una Partida</string>
     <string name="Name">Nom</string>
@@ -25,7 +24,7 @@
     <string name="Rise_value">Valor de pujada</string>
     <string name="ValueRiseBig">Valor pujada BID BLIND</string>
     <string name="WriteName">Escriu el teu nom</string>
-    <string name="allin"></string>
+    <string name="allin">All IN</string>
     <string name="code">CODI</string>
     <string name="freqRiseBig">Freqüència pujada BIG BLING</string>
     <string name="iniBigValue">Valor inicial BIG BLIND</string>
@@ -64,4 +63,16 @@
     <string name="enterInitialChips">Si us plau posi les fitxes inicials</string>
     <string name="scanQR">Escanejar QR</string>
     <string name="BigChangeMessage">Pujem les cegues</string>
+    <string name="minPlayers">El nombre mínim de jugadors es 2</string>
+    <string name="Error">Error</string>
+
+    <string name="SecondPlayer">Write second player\'s name</string>
+    <string name="ThirdPlayer">Write third player\'s name</string>
+    <string name="FourthPlayer">Write fourth player\'s name</string>
+    <string name="FifthPlayer">Write fifth player\'s name</string>
+    <string name="SixthPlayer">Write sixth player\'s name</string>
+    <string name="SeventhPlayer">Write seventh player\'s name</string>
+    <string name="EightPlayer">Write eighth player\'s name</string>
+    <string name="NinethPlayer">Write nineth player\'s name</string>
+    <string name="TenthPlayer">Write tenth player\'s name</string>
 </resources>

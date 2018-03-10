@@ -50,8 +50,7 @@ public class SetGameActivity extends AppCompatActivity {
     private boolean empty_time;
     private boolean empty_change;
     private boolean max_players;
-
-
+    private boolean min_players;
 
 
     @Override
@@ -134,6 +133,7 @@ public class SetGameActivity extends AppCompatActivity {
                 }
                 else {empty_change=false;}
 
+                //si se selecciona mas de 10 jugadores no entra en partida y sale un mensaje de alerta
                 if (number_players>10){
                     max_players=true;
                     AlertDialog.Builder builder= new AlertDialog.Builder(SetGameActivity.this);
@@ -143,8 +143,18 @@ public class SetGameActivity extends AppCompatActivity {
 
                 else{max_players=false;}
 
+                //si se selecciona menos de 2 jugadores no entra en partida y sale un mensaje de alerta
+                if (number_players<=1){
+                    min_players=true;
+                    AlertDialog.Builder builder= new AlertDialog.Builder(SetGameActivity.this);
+                    builder.setTitle(R.string.players);
+                    builder.setMessage(R.string.minPlayers);  //añadido recurso
+                    builder.create().show();}
+
+                else{min_players=false;}
+
                 //hasta que todos los campos no esten llenos no podemos cambiar de pantalla
-                if(!empty_time & !empty_big & !empty_initial & !empty_name & !empty_players & !empty_change & !max_players){
+                if(!empty_time & !empty_big & !empty_initial & !empty_name & !empty_players & !empty_change & !max_players & !min_players){
                     Intent localgame= new Intent(getApplicationContext(), SingleDeviceGameActivity.class);
                     localgame.putExtra("name",name);
                     localgame.putExtra("playersnumber",number_players);
@@ -218,6 +228,8 @@ public class SetGameActivity extends AppCompatActivity {
                 }
                 else {empty_change=false;}
 
+
+                //si se selecciona mas de 10 jugadores no entra en partida y sale un mensaje de alerta
                 if (number_players>10){
                     max_players=true;
                     AlertDialog.Builder builder= new AlertDialog.Builder(SetGameActivity.this);
@@ -227,9 +239,19 @@ public class SetGameActivity extends AppCompatActivity {
 
                 else{max_players=false;}
 
-            //hasta que todos los campos no esten llenos no podemos cambiar de pantalla
-                if(!empty_time & !empty_big & !empty_initial & !empty_name & !empty_players & !empty_change & !max_players){
-                Intent generateqr = new Intent(getApplicationContext(), ShowCodeActivity.class);
+                //si se selecciona menos de 2 jugadores no entra en partida y sale un mensaje de alerta
+                if (number_players<=1){
+                    min_players=true;
+                    AlertDialog.Builder builder= new AlertDialog.Builder(SetGameActivity.this);
+                    builder.setTitle(R.string.players);
+                    builder.setMessage(R.string.minPlayers);  //añadido recurso
+                    builder.create().show();}
+
+                else{min_players=false;}
+
+                //hasta que todos los campos no esten llenos no podemos cambiar de pantalla
+                if(!empty_time & !empty_big & !empty_initial & !empty_name & !empty_players & !empty_change & !max_players & !min_players){
+                    Intent generateqr = new Intent(getApplicationContext(), ShowCodeActivity.class);
                     generateqr.putExtra("name",name);
                     generateqr.putExtra("playersnumber",number_players);
                     generateqr.putExtra("initial_chips",initial_chips);
@@ -238,7 +260,7 @@ public class SetGameActivity extends AppCompatActivity {
                     generateqr.putExtra("change",change_value_big);
                     generateqr.putExtra("game_id",game_id);
 
-                startActivity(generateqr);}
+                    startActivity(generateqr);}
             }
         });
 

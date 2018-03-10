@@ -7,7 +7,7 @@
     android:paddingTop="2dp"
     tools:context="galvan.pokerchips.GameActivity">
 
-    <!---->
+
 
 
     <RelativeLayout
@@ -265,6 +265,16 @@
             android:layout_marginBottom="10dp"
             android:text="@string/bet"
             android:textSize="14dp" />
+
+        <ImageButton
+            android:id="@+id/btn_inf"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_above="@+id/btn_check"
+            android:layout_alignEnd="@+id/btn_check"
+            android:layout_alignRight="@+id/btn_check"
+            android:layout_marginBottom="5dp"
+            app:srcCompat="@android:drawable/ic_menu_info_details" />
 
     </RelativeLayout>
 

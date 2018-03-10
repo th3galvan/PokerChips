@@ -2,14 +2,17 @@ package galvan.pokerchips;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.CountDownTimer;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -505,6 +508,22 @@ public class SingleDeviceGameActivity extends AppCompatActivity {
                 }}
         });
 
+        //Boton de información parar mostrar el orden de cartas
+        ImageButton btn_inf = (ImageButton)findViewById(R.id.btn_inf);
+        btn_inf.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //al clicar hacemos una llamada a imagen
+                LayoutInflater imagen_alert = LayoutInflater.from(SingleDeviceGameActivity.this);
+                final View vista = imagen_alert.inflate(R.layout.activity_image, null);
+
+                AlertDialog.Builder inf = new AlertDialog.Builder(SingleDeviceGameActivity.this);
+                inf.setView(vista);
+                inf.show();
+            }
+        });
+
+
         list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> list, View item, int pos, long id) {
@@ -667,8 +686,10 @@ public class SingleDeviceGameActivity extends AppCompatActivity {
                     if (first_allin){
                         first_allin=false;
                         all_in_value=PlayerDataBase[playernumber].getBet()+PlayerDataBase[playernumber].getChips();
+
                     }
-                    if (PlayerDataBase[playernumber].getBet()==newownChips){
+                    Log.i("all-in",String.format("%d,%d",newownChips,PlayerDataBase[playernumber].getBet()));
+                    /*if (PlayerDataBase[playernumber].getBet()==newownChips){
                         ownChips=0;
                         //REFRESCAR TXT_OWNCHIPS EN PANTALLA
                         String SownChips= Integer.toString(ownChips);
@@ -678,9 +699,28 @@ public class SingleDeviceGameActivity extends AppCompatActivity {
                         ownChips=newownChips;
                         //REFRESCAR TXT_OWNCHIPS EN PANTALLA
                         String SownChips= Integer.toString(ownChips);
-                        txt_ownChips.setText(SownChips);}
-                    //sumo bet tambien
-                    Log.i("Value",String.format("%d",all_in_value));
+                        txt_ownChips.setText(SownChips);}*/
+                    ownChips=PlayerDataBase[playernumber].getChips()+PlayerDataBase[playernumber].getBet();
+                    Log.i("Value1",String.format("%d",ownChips));
+                    //Miramos si el jugador tiene las mismas fichas que el allin o tiene mas
+                    if(all_in_value == ownChips ){
+                        //tiene las mismas fichas que el allin ponemos sus fichas a 0
+                        ownChips=0;
+                        Log.i("Value2",String.format("%d",ownChips));
+                        //REFRESCAR TXT_OWNCHIPS EN PANTALLA
+                        String SownChips= Integer.toString(ownChips);
+                        txt_ownChips.setText(SownChips);
+                        PlayerDataBase[playernumber].setChips(0);
+                    }
+                    else{
+                        //tiene mas fichas que el all-in calculamos cuantas le sobran y actualizamos CHIPS
+                        Log.i("Value3",String.format("%d",ownChips));
+                        ownChips=PlayerDataBase[playernumber].getChips()+PlayerDataBase[playernumber].getBet()-all_in_value;
+                        PlayerDataBase[playernumber].setChips(ownChips);
+                        String SownChips= Integer.toString(ownChips);
+                        txt_ownChips.setText(SownChips);
+                        PlayerDataBase[playernumber].setChips(ownChips);
+                    }
 
                     //ACTUALIZACION CURRENT TOTAL BET
                     current_total_bet=current_total_bet+all_in_value-PlayerDataBase[playernumber].getBet();                               //actualiza el valor de current total bet
@@ -692,7 +732,6 @@ public class SingleDeviceGameActivity extends AppCompatActivity {
                     PlayerDataBase[playernumber].setBet(all_in_value);
                     //CAMBIO APUESTA ACTUAL INDIVIDUAL
                     higherBet(all_in_value);
-                    PlayerDataBase[playernumber].setChips(0);
                     PlayerDataBase[playernumber].setAllin(true);
                     PlayerDataBase[playernumber].setCall(true);
                     PlayerDataBase[playernumber].setIn(true);
@@ -706,7 +745,7 @@ public class SingleDeviceGameActivity extends AppCompatActivity {
                     Log.i("Galvan","siguiente");
                     Log.i("Galvan",String.format("Player %s",Integer.toString(playernumber)));
                     //todo he comentado esto porque abajo tambien se llama a esto y creo que es innecesario
-                    //turnALLIN(); turnState();
+                    turnALLIN(); turnState();
                 }
 
             });
@@ -1193,7 +1232,7 @@ public class SingleDeviceGameActivity extends AppCompatActivity {
                 }
                 if (all_in){
                     for (int i=0; i<PlayerDataBase.length;i++){
-                        if (PlayerDataBase[i].isIn() & !PlayerDataBase[i].isWin()){
+                        if (PlayerDataBase[i].isIn() & !PlayerDataBase[i].isWin() & PlayerDataBase[i].getChips()==0){
                             PlayerDataBase[i].setAnnihilated(true);
                         }
                     }

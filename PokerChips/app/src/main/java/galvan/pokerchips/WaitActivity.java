@@ -46,11 +46,11 @@ public class WaitActivity extends AppCompatActivity {
         if (!finish){
             database = FirebaseDatabase.getInstance();
 
-        inside_ref = database.getReference(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.INSIDE_REFERENCE);
-        inside_ref.setValue(inside);
+            inside_ref = database.getReference(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.INSIDE_REFERENCE);
+            inside_ref.setValue(inside);
 
-        players_join_change_ref = database.getReference(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.PLAYERS_JOIN_CHANGE_REFERENCE);
-        players_join_change_ref.setValue(false);
+            players_join_change_ref = database.getReference(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.PLAYERS_JOIN_CHANGE_REFERENCE);
+            players_join_change_ref.setValue(false);
 
         }
 
@@ -61,73 +61,73 @@ public class WaitActivity extends AppCompatActivity {
 
                 Log.i("Finish",String.format("%b",finish));
                 if(!finish){
-                players_join=dataSnapshot.getValue(Integer.class);
+                    players_join=dataSnapshot.getValue(Integer.class);
                     players_join++;
 
-                game_ref = database.getReference(FirebaseReferences.GAME_REFERENCE);
-                players_join_change_ref.setValue(true);
+                    game_ref = database.getReference(FirebaseReferences.GAME_REFERENCE);
+                    players_join_change_ref.setValue(true);
 
-                if(players_join==1 & inside){
+                    if(players_join==1 & inside){
 
-                    game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE1).setValue(name_guest);
-                    inside = false;
-                    inside_ref.setValue(inside);
-                }
-
-
-                else if (players_join==2 & inside){
-
-                    game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE2).setValue(name_guest);
-                    inside = false;
-                    inside_ref.setValue(inside);}
+                        game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE1).setValue(name_guest);
+                        inside = false;
+                        inside_ref.setValue(inside);
+                    }
 
 
-                else if (players_join==3 & inside){
+                    else if (players_join==2 & inside){
 
-                    game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE3).setValue(name_guest);
-                    inside = false;
-                    inside_ref.setValue(inside);}
-
-
-                else if (players_join==4 & inside){
-
-                    game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE4).setValue(name_guest);
-                    inside = false;
-                    inside_ref.setValue(inside);}
+                        game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE2).setValue(name_guest);
+                        inside = false;
+                        inside_ref.setValue(inside);}
 
 
-                else if (players_join==5 & inside){
+                    else if (players_join==3 & inside){
 
-                    game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE5).setValue(name_guest);
-                    inside = false;
-                    inside_ref.setValue(inside);}
-
-
-                else if (players_join==6 & inside){
-
-                    game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE6).setValue(name_guest);
-                    inside = false;
-                    inside_ref.setValue(inside);}
+                        game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE3).setValue(name_guest);
+                        inside = false;
+                        inside_ref.setValue(inside);}
 
 
-                else if (players_join==7 & inside){
+                    else if (players_join==4 & inside){
 
-                    game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE7).setValue(name_guest);
-                    inside = false;
-                    inside_ref.setValue(inside);}
-
-                else if (players_join==8 & inside){
-
-                    game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE8).setValue(name_guest);
-                    inside = false;
-                    inside_ref.setValue(inside);}
+                        game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE4).setValue(name_guest);
+                        inside = false;
+                        inside_ref.setValue(inside);}
 
 
-                else if (players_join==9 & inside){
+                    else if (players_join==5 & inside){
 
-                    game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE9).setValue(name_guest);
-                    inside = false;
-                    inside_ref.setValue(inside);}
+                        game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE5).setValue(name_guest);
+                        inside = false;
+                        inside_ref.setValue(inside);}
+
+
+                    else if (players_join==6 & inside){
+
+                        game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE6).setValue(name_guest);
+                        inside = false;
+                        inside_ref.setValue(inside);}
+
+
+                    else if (players_join==7 & inside){
+
+                        game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE7).setValue(name_guest);
+                        inside = false;
+                        inside_ref.setValue(inside);}
+
+                    else if (players_join==8 & inside){
+
+                        game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE8).setValue(name_guest);
+                        inside = false;
+                        inside_ref.setValue(inside);}
+
+
+                    else if (players_join==9 & inside){
+
+                        game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE9).setValue(name_guest);
+                        inside = false;
+                        inside_ref.setValue(inside);}
                     finish = true;
 
                     Intent intent_wait3 = new Intent(getApplicationContext(), WaitActivity3.class);
@@ -147,6 +147,6 @@ public class WaitActivity extends AppCompatActivity {
 
 
 
-        }
     }
+}
 
