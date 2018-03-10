@@ -233,12 +233,12 @@ public class PlayersListActivity extends AppCompatActivity {
 
 
                 Intent intent_game = new Intent(PlayersListActivity.this, GameActivity.class);
-                /*intent_game.putExtra("name",name);
+                intent_game.putExtra("name",name);
                 intent_game.putExtra("playersnumber",number_players);
                 intent_game.putExtra("initial_chips",initial_chips);
                 intent_game.putExtra("bigblind",big);
                 intent_game.putExtra("frecuency",time_big_up);
-                intent_game.putExtra("change",change_value_big);*/
+                intent_game.putExtra("change",change_value_big);
                 intent_game.putExtra("game_id",game_id);
                 startActivity(intent_game);
             }

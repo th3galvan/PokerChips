@@ -23,16 +23,16 @@ public class WaitActivity extends AppCompatActivity {
 
     private String game_id;
     private DatabaseReference host_ready_ref;
-    private Boolean host_ready;
-    private DatabaseReference game_id_ref;
+    private boolean host_ready=false;
     private String name_guest;
     private FirebaseDatabase database;
     private DatabaseReference players_join_ref;
-    private Integer players_join;
+    private Integer players_join=0;
     private DatabaseReference game_ref;
     private boolean inside = true;
     private DatabaseReference inside_ref;
-
+    private DatabaseReference players_join_change_ref;
+    private boolean finish=false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,121 +42,101 @@ public class WaitActivity extends AppCompatActivity {
         Bundle code_receive = getIntent().getExtras();
         game_id = code_receive.getString("game_id");
         name_guest = code_receive.getString("name_guest");
-        players_join = code_receive.getInt("players_join");
 
-
-        database = FirebaseDatabase.getInstance();
-
-
-
-
-        players_join_ref = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.PLAYERS_JOIN_REFERENCE);
-        /*players_join_ref.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                players_join = dataSnapshot.getValue(Integer.class);
-
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });*/
+        if (!finish){
+            database = FirebaseDatabase.getInstance();
 
         inside_ref = database.getReference(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.INSIDE_REFERENCE);
         inside_ref.setValue(inside);
-        inside_ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                inside = dataSnapshot.getValue(boolean.class);
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+        players_join_change_ref = database.getReference(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.PLAYERS_JOIN_CHANGE_REFERENCE);
+        players_join_change_ref.setValue(false);
 
-            }
-        });
-
-        if (inside) {
-            players_join=1;
-            players_join_ref.setValue(players_join);
         }
 
-            game_ref = database.getReference(FirebaseReferences.GAME_REFERENCE);
+        players_join_ref = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.PLAYERS_JOIN_REFERENCE);
+        players_join_ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
 
+                Log.i("Finish",String.format("%b",finish));
+                if(!finish){
+                players_join=dataSnapshot.getValue(Integer.class);
+                    players_join++;
 
+                game_ref = database.getReference(FirebaseReferences.GAME_REFERENCE);
+                players_join_change_ref.setValue(true);
 
                 if(players_join==1 & inside){
 
-                game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE1).setValue(name_guest);
-                inside = false;}
+                    game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE1).setValue(name_guest);
+                    inside = false;
+                    inside_ref.setValue(inside);
+                }
 
 
                 else if (players_join==2 & inside){
 
-                game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE2).setValue(name_guest);
-                inside = false;}
+                    game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE2).setValue(name_guest);
+                    inside = false;
+                    inside_ref.setValue(inside);}
 
 
                 else if (players_join==3 & inside){
 
-                game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE3).setValue(name_guest);
-                inside = false;}
+                    game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE3).setValue(name_guest);
+                    inside = false;
+                    inside_ref.setValue(inside);}
 
 
                 else if (players_join==4 & inside){
 
-                game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE4).setValue(name_guest);
-                inside = false;}
+                    game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE4).setValue(name_guest);
+                    inside = false;
+                    inside_ref.setValue(inside);}
 
 
                 else if (players_join==5 & inside){
 
-                game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE5).setValue(name_guest);
-                inside = false;}
+                    game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE5).setValue(name_guest);
+                    inside = false;
+                    inside_ref.setValue(inside);}
 
 
                 else if (players_join==6 & inside){
 
-                game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE6).setValue(name_guest);
-                inside = false;}
+                    game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE6).setValue(name_guest);
+                    inside = false;
+                    inside_ref.setValue(inside);}
 
 
                 else if (players_join==7 & inside){
 
-                game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE7).setValue(name_guest);
-                inside = false;}
+                    game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE7).setValue(name_guest);
+                    inside = false;
+                    inside_ref.setValue(inside);}
 
                 else if (players_join==8 & inside){
 
-                game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE8).setValue(name_guest);
-                inside = false;}
+                    game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE8).setValue(name_guest);
+                    inside = false;
+                    inside_ref.setValue(inside);}
 
 
                 else if (players_join==9 & inside){
 
-                game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE9).setValue(name_guest);
-                inside = false;}
+                    game_ref.child(game_id).child(FirebaseReferences.NAME_GUEST_REFERENCE9).setValue(name_guest);
+                    inside = false;
+                    inside_ref.setValue(inside);}
+                    finish = true;
 
+                    Intent intent_wait3 = new Intent(getApplicationContext(), WaitActivity3.class);
+                    intent_wait3.putExtra("game_id", game_id);
+                    intent_wait3.putExtra("players_join",players_join);
+                    startActivity(intent_wait3);
 
-
-
-
-
-
-
-        host_ready_ref = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.HOST_READY_REFERENCE);
-        host_ready_ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                host_ready = dataSnapshot.getValue(boolean.class);
-                if (host_ready) {
-                    Intent intent_game = new Intent(getApplicationContext(), GameActivity.class);
-                    intent_game.putExtra("game_id",game_id);
-                    startActivity(intent_game);
                 }
+
             }
 
             @Override
@@ -164,8 +144,6 @@ public class WaitActivity extends AppCompatActivity {
 
             }
         });
-
-
 
 
 

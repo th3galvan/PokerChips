@@ -40,6 +40,7 @@ public class FirebaseReferences {
     //ReferenciaScanActivity
 
     final public static String PLAYERS_JOIN_REFERENCE = "Players_join";
+    final public static String PLAYERS_JOIN_CHANGE_REFERENCE="Players_join_change";
 
 
 
@@ -102,4 +103,5 @@ public class FirebaseReferences {
 
 
     public static final String INSIDE_REFERENCE = "inside";
+    public static final String FIRST_INSIDE_REFERENCE = "first_inside";
 }

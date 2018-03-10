@@ -28,36 +28,13 @@ public class JoinGameActivity extends AppCompatActivity {
     private EditText edit_name;
     private String name_guest;
     private boolean empty=false;
-    private int code;
-    private String game_id;
-    private DatabaseReference game_id_ref;
-    private FirebaseDatabase database;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_joingame);
 
-        Bundle code_receive = getIntent().getExtras();
-        code = code_receive.getInt("code");
-        game_id = code_receive.getString("game_id");
-
         edit_name = (EditText)findViewById(R.id.editText_nombre);
-
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-
-        game_id_ref = database.getReference(FirebaseReferences.GAME_ID_REFERENCE);
-        game_id_ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                game_id = dataSnapshot.getValue(String.class);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
 
         start();
 
@@ -85,11 +62,8 @@ public class JoinGameActivity extends AppCompatActivity {
                 if (!empty){
 
 
-
                 Intent intent_wait = new Intent(getApplicationContext(), ScanQRActivity.class);
-                    intent_wait.putExtra("code",code);
                     intent_wait.putExtra("name_guest",name_guest);
-                    intent_wait.putExtra("game_id",game_id);
                 startActivity(intent_wait);}
 
             }

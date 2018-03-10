@@ -10,6 +10,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.zxing.Result;
 
@@ -22,15 +23,10 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 public class ScanQRActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler{
 
-    private int players_join;
 
     private ZXingScannerView scannerView;
-    private FirebaseDatabase database;
-    private int code;
     private String name_guest;
-    private DatabaseReference game_id_ref;
-    private String game_id="";
-    private DatabaseReference game_ref;
+    private String game_id;
 
 
     @Override
@@ -38,8 +34,6 @@ public class ScanQRActivity extends AppCompatActivity implements ZXingScannerVie
         super.onCreate(savedInstanceState);
 
         Bundle code_receive = getIntent().getExtras();
-        players_join = code_receive.getInt("players_join");
-        code = code_receive.getInt("code");
         name_guest = code_receive.getString("name_guest");
 
 
@@ -48,38 +42,17 @@ public class ScanQRActivity extends AppCompatActivity implements ZXingScannerVie
         scannerView.setResultHandler(this);
         scannerView.startCamera();
 
-        database = FirebaseDatabase.getInstance();
-        game_ref = database.getReference(FirebaseReferences.GAME_REFERENCE);
-
-        game_id_ref = database.getReference(FirebaseReferences.GAME_ID_REFERENCE);
-        game_id_ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                game_id = dataSnapshot.getValue(String.class);
-                Log.i("Xavi",String.format("%s",game_id));
             }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-        Log.i("Xavi",String.format("%s",game_id));
-
-
-
-    }
-
 
     @Override
     public void handleResult(Result result) {
 
+        game_id = result.getText();
 
-        Intent intent_wait = new Intent(getApplicationContext(), WaitActivity2.class);
-            intent_wait.putExtra("game_id",game_id);
-            intent_wait.putExtra("name_guest",name_guest);
-        startActivity(intent_wait);}
+        Intent intent_wait2 = new Intent(getApplicationContext(), WaitActivity2.class);
+            intent_wait2.putExtra("game_id",game_id);
+            intent_wait2.putExtra("name_guest",name_guest);
+        startActivity(intent_wait2);}
 
 
 }

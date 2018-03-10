@@ -3,6 +3,7 @@ package galvan.pokerchips;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -36,8 +38,7 @@ public class ShowCodeActivity extends AppCompatActivity {
 
     private TextView txt_code;
 
-    private int code;
-    private int number_players;
+     private int number_players;
     private int initial_chips;
     private int big;
     private int time_big_up;
@@ -50,11 +51,13 @@ public class ShowCodeActivity extends AppCompatActivity {
     private String game_id;
     private DatabaseReference players_join_ref;
     private DatabaseReference host_ready_ref;
-    private DatabaseReference game_id_ref;
-    private DatabaseReference Scan_notify_ref;
 
-    private boolean Scan_notify;
-    private boolean players_join_change=false;
+    private DatabaseReference players_join_change_ref;
+    private boolean not_now=true;
+    private boolean players_join_change;
+    private boolean host_ready;
+    private boolean stop=false;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,7 +66,6 @@ public class ShowCodeActivity extends AppCompatActivity {
 
 
         Bundle code_receive = getIntent().getExtras();
-        code = code_receive.getInt("code");
         number_players =code_receive.getInt("playersnumber");
         initial_chips =code_receive.getInt("initial_chips");
         big =code_receive.getInt("bigblind");
@@ -73,14 +75,13 @@ public class ShowCodeActivity extends AppCompatActivity {
         game_id = code_receive.getString("game_id");
 
         //aqui genero una Key en firebase aleatoria y me la guardo en game_id, cada id correspondra con una partida diferente
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
 
-
-
-        game_id_ref = database.getReference(FirebaseReferences.GAME_ID_REFERENCE);
-        game_id_ref.removeValue();
-        game_id_ref.setValue(game_id);
+        //todo saco id fuera para poder usarla
         game_reference = database.getReference(FirebaseReferences.GAME_REFERENCE);
+        //game_reference.child(game_id).child(FirebaseReferences.GAME_ID_REFERENCE).setValue(game_id);
+        players_join_ref = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.PLAYERS_JOIN_REFERENCE);
+        players_join_ref.setValue(players_join);
 
         game_reference.child(game_id).child(FirebaseReferences.NUMBER_PLAYERS_REFERENCE).setValue(number_players);
         game_reference.child(game_id).child(FirebaseReferences.INITIAL_CHIPS_REFERENCE).setValue(initial_chips);
@@ -89,27 +90,24 @@ public class ShowCodeActivity extends AppCompatActivity {
         game_reference.child(game_id).child(FirebaseReferences.CHANGE_VALUE_BIG_REFERENCE).setValue(change_value_big);
         game_reference.child(game_id).child(FirebaseReferences.NAME_REFERENCE).setValue(name);
 
-        //todo saco id fuera para poder usarla
-        game_reference = database.getReference(FirebaseReferences.GAME_REFERENCE);
-        //game_reference.child(game_id).child(FirebaseReferences.GAME_ID_REFERENCE).setValue(game_id);
-        players_join_ref = game_reference.child(game_id).child(FirebaseReferences.PLAYERS_JOIN_REFERENCE);
-        players_join_ref.setValue(players_join);
+
 
         //listener para captar cuando se van introduciendo diferentes jugadores
         //metemos dentro el intent para que sea automatico
 
         //todo para salir del paso
 
-        boolean host_ready = false;
+        host_ready = false;
         host_ready_ref = database.getReference(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.HOST_READY_REFERENCE);
         host_ready_ref.setValue(host_ready);
 
-       // players_join_ref = database.getReference().child(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.PLAYERS_JOIN_REFERENCE);
+
         players_join_ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 //cojemos el valor de base de datos
-                players_join = dataSnapshot.getValue(Integer.class);
+                if (players_join_change & !stop ){
+                players_join=dataSnapshot.getValue(Integer.class);
 
 
                 //hasta que no se hayan incorporado todos los jugadores no se pasa a la siguiente pantalla
@@ -118,35 +116,50 @@ public class ShowCodeActivity extends AppCompatActivity {
 
                     //renuevo para que todos los jugadores obtengan el valor
 
-
+                    stop=true;
                     Intent intent_list = new Intent(ShowCodeActivity.this, PlayersListActivity.class);
-                   /* intent_list.putExtra("name", name);
+                    intent_list.putExtra("name", name);
                     intent_list.putExtra("playersnumber", number_players);
                     intent_list.putExtra("initial_chips", initial_chips);
                     intent_list.putExtra("bigblind", big);
                     intent_list.putExtra("frecuency", time_big_up);
-                    intent_list.putExtra("change", change_value_big);*/
+                    intent_list.putExtra("change", change_value_big);
                     intent_list.putExtra("game_id",game_id);
                     startActivity(intent_list);}
-                else{players_join_change = true;}
 
-            }
+            }}
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
         });
-//todo nose como ira esto, he puesto while para que no salte el add
-        while (players_join_change){
 
-            players_join_ref.removeValue();
-            players_join_ref.setValue(players_join);
-            players_join_change=false;
-        }
+            players_join_change_ref = database.getReference(FirebaseReferences.GAME_REFERENCE).child(game_id).child(FirebaseReferences.PLAYERS_JOIN_CHANGE_REFERENCE);
+            if (players_join==0){
+            players_join_change_ref.setValue(false);}
+            players_join_change_ref.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    players_join_change = dataSnapshot.getValue(boolean.class);
+
+                    if (!players_join_change){
+                    players_join_ref.removeValue();
+                    players_join_ref.setValue(players_join);}
+
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
 
         Button btn_code = (Button)findViewById(R.id.btn_generate_code);
         txt_code = (TextView)findViewById(R.id.txt_code);
+        txt_code.setText(game_id);
         image = (ImageView) findViewById(R.id.image);
 
 
@@ -156,13 +169,10 @@ public class ShowCodeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                String string_code = Integer.toString(code);
-                txt_code.setText(string_code);
-
                 //funcion de generar QR
                 MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
                 try {
-                    BitMatrix bitMatrix = multiFormatWriter.encode(string_code, BarcodeFormat.QR_CODE, 300, 300);
+                    BitMatrix bitMatrix = multiFormatWriter.encode(game_id, BarcodeFormat.QR_CODE, 300, 300);
                     BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
                     Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
                     image.setImageBitmap(bitmap);

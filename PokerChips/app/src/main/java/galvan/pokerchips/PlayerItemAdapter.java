@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import galvan.pokerchips.Datos.PlayerItems;
+import galvan.pokerchips.PlayerItems;
 
 import static android.graphics.Color.rgb;
 

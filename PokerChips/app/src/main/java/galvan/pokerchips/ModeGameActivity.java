@@ -19,7 +19,6 @@ import galvan.pokerchips.Datos.FirebaseReferences;
 
 public class ModeGameActivity extends AppCompatActivity {
 
-    private int code;
     private int number_players;
     private int initial_chips;
     private int big;
@@ -55,9 +54,6 @@ public class ModeGameActivity extends AppCompatActivity {
         DatabaseReference name_ref = database.getReference(FirebaseReferences.NAME_REFERENCE);*/
 
 
-        Bundle code_receive = getIntent().getExtras();
-        code = code_receive.getInt("code");
-
         final RadioButton rb_fast = (RadioButton)findViewById(R.id.rb_fast);
         final RadioButton rb_custom = (RadioButton)findViewById(R.id.rb_custom);
         Button btn_finish = (Button)findViewById(R.id.btn_finish2);
@@ -77,8 +73,6 @@ public class ModeGameActivity extends AppCompatActivity {
         game_reference = database.getReference(FirebaseReferences.GAME_REFERENCE);
         //cojemos id aleatoria
         game_id = game_reference.push().getKey();
-        game_id_ref = database.getReference(FirebaseReferences.GAME_ID_REFERENCE);
-        game_id_ref.setValue(game_id);
 
         rb_fast.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,14 +138,12 @@ public class ModeGameActivity extends AppCompatActivity {
 
 
                         Intent fastgame = new Intent(getApplicationContext(), SingleDeviceGameActivity.class);
-                        fastgame.putExtra("code",code);
                         fastgame.putExtra("name",name);
                         fastgame.putExtra("playersnumber",number_players);
                         fastgame.putExtra("initial_chips",initial_chips);
                         fastgame.putExtra("bigblind",big);
                         fastgame.putExtra("frecuency",time_big_up);
                         fastgame.putExtra("change",change_value_big);
-                        fastgame.putExtra("game_id",game_id);
                         startActivity(fastgame);
 
                     }}
@@ -159,7 +151,6 @@ public class ModeGameActivity extends AppCompatActivity {
                 if(rb_custom.isChecked()){
 
                     Intent localgame = new Intent(getApplicationContext(), SetGameActivity.class);
-                    localgame.putExtra("code",code);
                     localgame.putExtra("game_id",game_id);
                     startActivity(localgame);
                 }
@@ -209,7 +200,6 @@ public class ModeGameActivity extends AppCompatActivity {
 
                         
                         Intent fastgame = new Intent(getApplicationContext(), ShowCodeActivity.class);
-                        fastgame.putExtra("code",code);
                         fastgame.putExtra("name",name);
                         fastgame.putExtra("playersnumber",number_players);
                         fastgame.putExtra("initial_chips",initial_chips);
@@ -224,7 +214,6 @@ public class ModeGameActivity extends AppCompatActivity {
                 if(rb_custom.isChecked()){
 
                     Intent customgame = new Intent(getApplicationContext(), SetGameActivity.class);
-                    customgame.putExtra("code",code);
                     customgame.putExtra("game_id",game_id);
                     startActivity(customgame);
                 }

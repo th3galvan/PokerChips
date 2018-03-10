@@ -13,7 +13,7 @@ import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import galvan.pokerchips.Datos.PlayerItems;
+import galvan.pokerchips.PlayerItems;
 
 /**
  * Created by Xavi on 16/01/2018.

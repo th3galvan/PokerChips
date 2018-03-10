@@ -37,7 +37,6 @@ public class SetGameActivity extends AppCompatActivity {
 
     private String game_id;
 
-    private int code;
     private int number_players;
     private int initial_chips;
     private int big;
@@ -51,7 +50,7 @@ public class SetGameActivity extends AppCompatActivity {
     private boolean empty_time;
     private boolean empty_change;
     private boolean max_players;
-    private DatabaseReference game_id_ref;
+
 
 
 
@@ -62,14 +61,7 @@ public class SetGameActivity extends AppCompatActivity {
 
 
         Bundle code_receive = getIntent().getExtras();
-        code = code_receive.getInt("code");
         game_id = code_receive.getString("game_id");
-
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-
-        game_id_ref = database.getReference(FirebaseReferences.GAME_ID_REFERENCE);
-        game_id_ref.removeValue();
-        game_id_ref.setValue(game_id);
 
 
         //Cogemos todos los edits
@@ -154,7 +146,6 @@ public class SetGameActivity extends AppCompatActivity {
                 //hasta que todos los campos no esten llenos no podemos cambiar de pantalla
                 if(!empty_time & !empty_big & !empty_initial & !empty_name & !empty_players & !empty_change & !max_players){
                     Intent localgame= new Intent(getApplicationContext(), SingleDeviceGameActivity.class);
-                    localgame.putExtra("code",code);
                     localgame.putExtra("name",name);
                     localgame.putExtra("playersnumber",number_players);
                     localgame.putExtra("initial_chips",initial_chips);
@@ -239,7 +230,6 @@ public class SetGameActivity extends AppCompatActivity {
             //hasta que todos los campos no esten llenos no podemos cambiar de pantalla
                 if(!empty_time & !empty_big & !empty_initial & !empty_name & !empty_players & !empty_change & !max_players){
                 Intent generateqr = new Intent(getApplicationContext(), ShowCodeActivity.class);
-                generateqr.putExtra("code",code);
                     generateqr.putExtra("name",name);
                     generateqr.putExtra("playersnumber",number_players);
                     generateqr.putExtra("initial_chips",initial_chips);
