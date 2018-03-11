@@ -174,6 +174,17 @@ public class SingleDeviceGameActivity extends AppCompatActivity {
     private int playersalive;
     private int dealerpos;
 
+    private String name_second;
+    private String name_third;
+    private String name_fourth;
+    private String name_fifth;
+    private String name_sixth;
+    private String name_seventh;
+    private String name_eighth;
+    private String name_nineth;
+    private String name_tenth;
+
+
 
     //salvar datos de la aplicacion si esta en segundo plano y hace onDestroy
     /*private TextView txt_current_individual_bet;
@@ -239,7 +250,18 @@ public class SingleDeviceGameActivity extends AppCompatActivity {
         time_big_up =code_receive.getInt("frecuency");
         change_value_big =code_receive.getInt("change");
         name_host =code_receive.getString("name");
+        name_second=code_receive.getString("second");
+        name_third=code_receive.getString("third");
+        name_fourth=code_receive.getString("fourth");
+        name_fifth=code_receive.getString("fifth");
+        name_sixth=code_receive.getString("sixth");
+        name_seventh=code_receive.getString("seventh");
+        name_eighth=code_receive.getString("eighth");
+        name_nineth=code_receive.getString("nineth");
+        name_tenth=code_receive.getString("tenth");
 
+        String Array_names[] = {name_second, name_third, name_fourth, name_fifth, name_sixth,
+                name_seventh, name_eighth, name_nineth, name_tenth};
 
         Log.i("Xavi",String.format("%d",number_players));
 
@@ -266,6 +288,13 @@ public class SingleDeviceGameActivity extends AppCompatActivity {
         PlayersAnnihilateds();
 
         PlayerDataBase[0].setName(name_host);
+
+        for (int i=0; i<Array_names.length; i++){
+
+            PlayerDataBase[i+1].setName(Array_names[i]);
+            Log.i("Names",String.format("%s",Array_names[i]));
+        }
+
         for (int i=0; i<number_players;i++){
             PlayerDataBase[i].setChips(initial_chips);}
 

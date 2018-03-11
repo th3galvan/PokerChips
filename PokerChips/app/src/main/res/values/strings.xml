@@ -64,6 +64,15 @@
     <string name="chooseWinner">Player %1$s choose the winner</string>
     <string name="differentsWinners">You are choosing differents players, please try it again and select the same winner</string>
     <string name="enterName">Please enter your name</string>
+    <string name="second">Please write the name of the second player</string>
+    <string name="third">Please write the name of the third player</string>
+    <string name="fourth">Please write the name of the fourth player</string>
+    <string name="fifth">Please write the name of the fifth player</string>
+    <string name="sixth">Please write the name of the sixth player</string>
+    <string name="seventh">Please write the name of the seventh player</string>
+    <string name="eighth">Please write the name of the eighth player</string>
+    <string name="nineth">Please write the name of the nineth player</string>
+    <string name="tenth">Please write the name of the tenth player</string>
     <string name="enterCode">Please enter code</string>
     <string name="codeIncorrect">The code is not correct</string>
     <string name="enterPlayers">Please enter number of players</string>
@@ -80,7 +89,6 @@
     <string name="adapter_txt_turn" translatable="false">Turn</string>
     <string name="minPlayers">Minimum number of players is 2</string>
     <string name="ONLINE" translatable="false">ONLINE</string>
-
     <string name="SecondPlayer">Write second player\'s name</string>
     <string name="ThirdPlayer">Write third player\'s name</string>
     <string name="FourthPlayer">Write fourth player\'s name</string>
@@ -90,6 +98,7 @@
     <string name="EightPlayer">Write eighth player\'s name</string>
     <string name="NinethPlayer">Write nineth player\'s name</string>
     <string name="TenthPlayer">Write tenth player\'s name</string>
-
+    <string name="PLAY">PLAY</string>
+    <string name="Rule">The list of players will be in the order specified below</string>
 
 </resources>

@@ -142,10 +142,10 @@
         android:id="@+id/btn_done_gotoqr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/nextAcction"
-        android:layout_alignParentBottom="true"
         android:layout_alignLeft="@+id/txt_players_number"
-        android:layout_alignStart="@+id/txt_players_number" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/txt_players_number"
+        android:text="@string/ONLINE" />
 
     <TextView
         android:id="@+id/txt_unity"

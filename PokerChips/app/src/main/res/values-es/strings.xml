@@ -66,13 +66,24 @@
     <string name="allin">All IN</string>
     <string name="Error">Error</string>
 
-    <string name="SecondPlayer">Write second player\'s name</string>
-    <string name="ThirdPlayer">Write third player\'s name</string>
-    <string name="FourthPlayer">Write fourth player\'s name</string>
-    <string name="FifthPlayer">Write fifth player\'s name</string>
-    <string name="SixthPlayer">Write sixth player\'s name</string>
-    <string name="SeventhPlayer">Write seventh player\'s name</string>
-    <string name="EightPlayer">Write eighth player\'s name</string>
-    <string name="NinethPlayer">Write nineth player\'s name</string>
-    <string name="TenthPlayer">Write tenth player\'s name</string>
+    <string name="SecondPlayer">Escribe el nombre del jugador 2</string>
+    <string name="ThirdPlayer">Escribe el nombre del jugador 3</string>
+    <string name="FourthPlayer">Escribe el nombre del jugador 4</string>
+    <string name="FifthPlayer">Escribe el nombre del jugador 5</string>
+    <string name="SixthPlayer">Escribe el nombre del jugador 6</string>
+    <string name="SeventhPlayer">Escribe el nombre del jugador 7</string>
+    <string name="EightPlayer">Escribe el nombre del jugador 8</string>
+    <string name="NinethPlayer">Escribe el nombre del jugador 9</string>
+    <string name="TenthPlayer">Escribe el nombre del jugador 10</string>
+    <string name="PLAY">JUGAR</string>
+    <string name="eighth">Escribe el nombre del jugador 8</string>
+    <string name="fifth">Escribe el nombre del jugador 5</string>
+    <string name="fourth">Escribe el nombre del jugador 4</string>
+    <string name="nineth">Escribe el nombre del jugador 9</string>
+    <string name="second">Escribe el nombre del jugador 2</string>
+    <string name="seventh">Escribe el nombre del jugador 7</string>
+    <string name="sixth">Escribe el nombre del jugador 6</string>
+    <string name="tenth">Escribe el nombre del jugador 10</string>
+    <string name="third">Escribe el nombre del jugador 3</string>
+    <string name="Rule">La lista de jugadores mantendra el orden especificado a continuación</string>
 </resources>

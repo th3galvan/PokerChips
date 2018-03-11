@@ -155,14 +155,13 @@ public class SetGameActivity extends AppCompatActivity {
 
                 //hasta que todos los campos no esten llenos no podemos cambiar de pantalla
                 if(!empty_time & !empty_big & !empty_initial & !empty_name & !empty_players & !empty_change & !max_players & !min_players){
-                    Intent localgame= new Intent(getApplicationContext(), SingleDeviceGameActivity.class);
+                    Intent localgame= new Intent(getApplicationContext(), LocalNamesActivity.class);
                     localgame.putExtra("name",name);
                     localgame.putExtra("playersnumber",number_players);
                     localgame.putExtra("initial_chips",initial_chips);
                     localgame.putExtra("bigblind",big);
                     localgame.putExtra("frecuency",time_big_up);
                     localgame.putExtra("change",change_value_big);
-                    localgame.putExtra("game_id",game_id);
                     startActivity(localgame);}
             }
         });

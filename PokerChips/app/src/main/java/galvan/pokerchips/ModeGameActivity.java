@@ -161,7 +161,7 @@ public class ModeGameActivity extends AppCompatActivity {
                         change_value_big=10;
 
 
-                        Intent fastgame = new Intent(getApplicationContext(), SingleDeviceGameActivity.class);
+                        Intent fastgame = new Intent(getApplicationContext(), LocalNamesActivity.class);
                         fastgame.putExtra("name",name);
                         fastgame.putExtra("playersnumber",number_players);
                         fastgame.putExtra("initial_chips",initial_chips);

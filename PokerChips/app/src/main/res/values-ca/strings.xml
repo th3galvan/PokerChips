@@ -66,13 +66,25 @@
     <string name="minPlayers">El nombre mínim de jugadors es 2</string>
     <string name="Error">Error</string>
 
-    <string name="SecondPlayer">Write second player\'s name</string>
-    <string name="ThirdPlayer">Write third player\'s name</string>
-    <string name="FourthPlayer">Write fourth player\'s name</string>
-    <string name="FifthPlayer">Write fifth player\'s name</string>
-    <string name="SixthPlayer">Write sixth player\'s name</string>
-    <string name="SeventhPlayer">Write seventh player\'s name</string>
-    <string name="EightPlayer">Write eighth player\'s name</string>
-    <string name="NinethPlayer">Write nineth player\'s name</string>
-    <string name="TenthPlayer">Write tenth player\'s name</string>
+    <string name="SecondPlayer">Escriu el nom del jugador 2</string>
+    <string name="ThirdPlayer">Escriu el nom del jugador 3</string>
+    <string name="FourthPlayer">Escriu el nom del jugador 4</string>
+    <string name="FifthPlayer">Escriu el nom del jugador 5</string>
+    <string name="SixthPlayer">Escriu el nom del jugador 6</string>
+    <string name="SeventhPlayer">Escriu el nom del jugador 7</string>
+    <string name="EightPlayer">Escriu el nom del jugador 8</string>
+    <string name="NinethPlayer">Escriu el nom del jugador 9</string>
+    <string name="TenthPlayer">Escriu el nom del jugador 10</string>
+    <string name="PLAY">JUGAR</string>
+
+    <string name="eighth">Escriu el nom del jugador 8</string>
+    <string name="fifth">Escriu el nom del jugador 5</string>
+    <string name="fourth">Escriu el nom del jugador 4</string>
+    <string name="nineth">Escriu el nom del jugador 9</string>
+    <string name="second">Escriu el nom del jugador 2</string>
+    <string name="seventh">Escriu el nom del jugador 7</string>
+    <string name="sixth">Escriu el nom del jugador 6</string>
+    <string name="tenth">Escriu el nom del jugador 10</string>
+    <string name="third">Escriu el nom del jugador 3</string>
+    <string name="Rule">La llista de jugadores mantrindrá l\'ordre especificat a continuació</string>
 </resources>
